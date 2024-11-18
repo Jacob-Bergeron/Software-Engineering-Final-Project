@@ -19,3 +19,38 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+.browseRestaurants{
+  text-align: center;
+  margin-top: 300px;
+}
+
+.browseRestaurants-button{
+  width: 300px;
+  height: 150px;
+  background-color: #b9babd;
+  padding: 20px;
+  border-radius: 25px;
+  color: black;
+  font-size: 25px;
+}
+
+.signIn{
+  text-align: right;
+  margin-top: -450px;
+}
+
+.signIn-button{
+  width: 125px;
+  height: 75px;
+  background-color: #b9babd;
+  padding: 20px;
+  border-radius: 25px;
+}
+
+.HomePage-Title{
+  text-align: center;
+  font-size: 40px;
+  margin-top: 140px;
+}
