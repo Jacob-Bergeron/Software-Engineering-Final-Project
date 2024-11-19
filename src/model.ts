@@ -51,14 +51,15 @@ export class Restaurant {
     address : string
     numberOfTables : number
     tables : [{number : number, capacity : number}]
-    schedule : [{weekDay : number, openTime : Date, closeTime: Date}]
+    schedule : [{weekDay : number, openTime : string, closeTime: string}]
     uniqueID : string
 
         constructor() {
             this.name = "default";
             this.address = "497 North Parker Drive";
             this.numberOfTables = 0;
-            this.tables = [null]
+            this.tables = [{number : 0, capacity : 0}];
+            this.schedule = [{weekDay : 1, openTime : Date(), closeTime : Date()}];
 
         }
 }
