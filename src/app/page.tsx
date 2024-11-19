@@ -13,6 +13,7 @@ export default function Home() {
 
         <div className = "signIn">
           <button className = "signIn-button">Sign In</button>
+          <Link href="/pages/loginpage">log in</Link> 
         </div>
 
         <div className = "HomePage-Title">

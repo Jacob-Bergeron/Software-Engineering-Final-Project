@@ -1,10 +1,13 @@
+
 export class Model{ 
     administrators : Array<Administrator> 
     managers : Array<Manager>
+    consumers : Array<Consumer>
 
     constructor(){
         this.administrators = []
         this.managers = []
+        this.consumers = []
     }
 }
 
@@ -30,7 +33,7 @@ export class Restaurant {
             this.numberOfTables = 0;
             this.tables = [{number : 0, capacity : 0}];
             this.schedule = [{weekDay : 1, openTime : Date(), closeTime : Date()}];
-
+            this.uniqueID = ""
         }
 }
 
@@ -66,7 +69,5 @@ export class Consumer{
         this.userEmail = ""
         this.hasReservation = false
     }
-
-    
 } 
 
