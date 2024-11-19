@@ -1,28 +1,12 @@
-//this file contains 
-export class Administrator {
-    userName : String
-    password : String
+export class Model{ 
+    administrators : Array<Administrator> 
+    managers : Array<Manager>
 
     constructor(){
-        this.userName = ""
-        this.password = ""
+        this.administrators = []
+        this.managers = []
     }
 }
-
-export class Manager{
-    userName : String
-    password : String
-    myRestaurant : Restaurant 
-    
-    constructor(){
-        this.userName = ""
-        this.password = ""
-        this.myRestaurant
-    }
-
-    
-}
-
 
 export class Tables4U{
     currentDate : Date
@@ -31,20 +15,6 @@ export class Tables4U{
         this.currentDate = new Date();
     }
  }
-
-
-
-export class Model{ 
-
-    administrators : Array<Administrator> 
-    managers : Array<Manager>
-
-    constructor(){
-        this.administrators = []
-        this.managers = []
-    }
-
-}
 
 export class Restaurant {
     name : string
@@ -63,3 +33,40 @@ export class Restaurant {
 
         }
 }
+
+//this file contains 
+export class Administrator {
+    userName : String
+    password : String
+
+    constructor(){
+        this.userName = ""
+        this.password = ""
+    }
+}
+
+export class Manager{
+    userName : String
+    password : String
+    myRestaurant : Restaurant 
+    
+    // un = username, ps = password
+    constructor(un:String, ps :string, res: Restaurant){
+        this.userName = un
+        this.password = ps
+        this.myRestaurant = res // <- does this work? Or do I need to set each property separate
+    }
+}
+
+export class Consumer{
+    userEmail : String
+    hasReservation : Boolean
+
+    constructor(){
+        this.userEmail = ""
+        this.hasReservation = false
+    }
+
+    
+} 
+
