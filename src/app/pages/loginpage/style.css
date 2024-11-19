@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.login-page{
+    margin: 20px;
+}
+
+.login-page .UserNameInput{
+    padding: 8px;
+    font-size: 16px;
+    border: 2px solid #000;
+    border-radius: 4px; 
+    width: 100%;
+}
+
+.login-page .UserName{
+    font-weight: bold;
+    margin-bottom: 8px;
+    display: block
+}
