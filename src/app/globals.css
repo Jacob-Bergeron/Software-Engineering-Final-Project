@@ -54,3 +54,11 @@ body {
   font-size: 40px;
   margin-top: 140px;
 }
+
+.link-button{
+  width: 125px;
+  height: 75px;
+  background-color: #b9babd;
+  padding: 20px;
+  border-radius: 25px;
+}
