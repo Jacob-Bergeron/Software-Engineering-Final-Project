@@ -21,7 +21,7 @@ export default function Home() {
 
         <div>
           <p>
-            <Link href="/tablespage" className = "link-button">Go to Tables Page</Link>
+            <Link href="/pages/tablespage" className = "link-button">Go to Tables Page</Link>
           </p>
         </div>
 
