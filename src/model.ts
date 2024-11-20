@@ -91,10 +91,10 @@ export class Restaurant {
         }
 }
 
-export class functions {
-    Restaurant : Array<Restaurant> | undefined;
+// export class functions {
+//     Restaurant : Array<Restaurant> | undefined;
 
-    constructor() {
-        this.Restaurant = undefined;
-    }
-}
+//     constructor() {
+//         this.Restaurant = undefined;
+//     }
+// }

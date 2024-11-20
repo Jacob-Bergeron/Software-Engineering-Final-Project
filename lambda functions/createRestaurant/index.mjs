@@ -25,7 +25,9 @@ export const handler = async (event) => {
     const response = {
         statusCode: 200,
         result: {
-            "name" : re
+            "id" : res.id,
+            "name" : res.name,
+            "address" : res.address
         }
     }
 

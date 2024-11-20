@@ -29,7 +29,10 @@
     padding: 8px;
     font-size: 16px;
     border: 2px solid #000;
-    border-radius: 1px; }
+    border-radius: 1px; 
+    color: black;
+
+}
 
 .login-page .PasswordInput{
     margin: 8px;
@@ -37,6 +40,8 @@
     font-size: 16px;
     border: 2px solid #000;
     border-radius: 1px; 
+    color: black;
+
 }
 
 .login-page .login-button{
@@ -45,4 +50,8 @@
     border-radius: 1px; 
     padding: 10px;
     color: black;
+}
+
+.back-button-login{
+    transform: translateY(-98vh);
 }

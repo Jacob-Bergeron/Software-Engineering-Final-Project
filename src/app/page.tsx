@@ -14,7 +14,7 @@ export default function Home() {
         <div className = "signIn">
         <p>
             <Link href="/pages/loginpage" className = "signIn-button">Sign In</Link>
-          </p>
+        </p>
         </div>
 
         <div className = "HomePage-Title">
