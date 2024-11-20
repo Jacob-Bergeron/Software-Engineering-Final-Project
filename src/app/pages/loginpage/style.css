@@ -9,19 +9,19 @@
     text-align: center;
     flex-direction: column;
     min-height: 100vh;
-    max-width: 500px;
-    width: 100%;
-    background-color: aqua;
+    background-color: white;
 }
 
 .login-page .Username{
     font-weight: bold;
     margin: 8px;
+    color: black;
 }
 
 .login-page .Password{  
     font-weight: bold;
     margin: 8px;
+    color: black;
 }
 
 .login-page .UsernameInput{
@@ -44,4 +44,5 @@
     border: 2px solid #000;
     border-radius: 1px; 
     padding: 10px;
+    color: black;
 }

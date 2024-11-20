@@ -75,7 +75,7 @@ export class Restaurant {
     address : string
     uniqueID : string
     activated : boolean
-    
+
     tables : Array<Table>
     schedule : Array<RestaurantSchedule>
     reservations : Array<Reservation>
@@ -87,17 +87,14 @@ export class Restaurant {
             this.activated = false;
             this.tables = [];
             this.schedule = [];
+            this.reservations = [];
         }
+}
 
-        setReservation() {
+export class functions {
+    Restaurant : Array<Restaurant> | undefined;
 
-        }
-
-        edit(){
-
-        }
-
-        activate(){
-
-        }
+    constructor() {
+        this.Restaurant = undefined;
+    }
 }

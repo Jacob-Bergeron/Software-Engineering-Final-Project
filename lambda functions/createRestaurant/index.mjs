@@ -11,11 +11,9 @@ export const handler = async (event) => {
 
     let createRestaurant = (id, name, address) => {
         return new Promise((resolve, reject) => {
-
             pool.query("INSERT INTO All_Restaurants (id, name, address) VALUES (?, ?, ?) ", 
                 [id, name, address], (error, rows) => {
                 if (error) { return reject(error); }
-
                 return resolve(rows);
             })
         })
@@ -27,7 +25,7 @@ export const handler = async (event) => {
     const response = {
         statusCode: 200,
         result: {
-
+            "name" : re
         }
     }
 
