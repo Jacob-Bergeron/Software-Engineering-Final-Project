@@ -38,7 +38,7 @@ body {
 
 .signIn{
   text-align: right;
-  margin-top: -450px;
+  margin-top: -435px;
 }
 
 .signIn-button{
@@ -55,10 +55,3 @@ body {
   margin-top: 140px;
 }
 
-.link-button{
-  width: 125px;
-  height: 75px;
-  background-color: #b9babd;
-  padding: 20px;
-  border-radius: 25px;
-}

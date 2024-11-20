@@ -12,17 +12,13 @@ export default function Home() {
 
 
         <div className = "signIn">
-          <button className = "signIn-button">Sign In</button>
+        <p>
+            <Link href="/pages/loginpage" className = "signIn-button">Sign In</Link>
+          </p>
         </div>
 
         <div className = "HomePage-Title">
           <p>Tables4U</p>
-        </div>
-
-        <div>
-          <p>
-            <Link href="/pages/tablespage" className = "link-button">Go to Tables Page</Link>
-          </p>
         </div>
 
       </div>

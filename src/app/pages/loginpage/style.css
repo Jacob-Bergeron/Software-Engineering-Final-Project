@@ -3,19 +3,41 @@
 @tailwind utilities;
 
 .login-page{
-    margin: 20px;
+    margin-top: 250px;
+    text-align: center;
 }
 
-.login-page .UserNameInput{
+.login-page .UsernameInput{
     padding: 8px;
     font-size: 16px;
     border: 2px solid #000;
-    border-radius: 4px; 
-    width: 100%;
+    border-radius: 1px; }
+
+.login-page .Username{
+    font-weight: bold;
+    margin: 8px;
+    display:block;
+
 }
 
-.login-page .UserName{
+.login-page .Password{
     font-weight: bold;
-    margin-bottom: 8px;
-    display: block
+    margin: 8px;
+    display:block;
+}
+
+.login-page .PasswordInput{
+    padding: 8px;
+    font-size: 16px;
+    border: 2px solid #000;
+    border-radius: 1px; 
+}
+
+.login-page .login-button{
+    display:block;
+    margin: 8px;
+    border: 2px solid #000;
+    border-radius: 1px; 
+    padding: 10px;
+    margin-left: 700px;
 }
