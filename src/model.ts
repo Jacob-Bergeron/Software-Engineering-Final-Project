@@ -20,16 +20,17 @@ export class Restaurant {
     name : string
     address : string
     numberOfTables : number
-    tables : [{number : number, capacity : number}]
-    schedule : [{weekDay : number, openTime : string, closeTime: string}]
+    tables : [{tableNumber : number, capacity : number}]
+    schedule : [{date : string, openTime : string, closeTime: string}]
     uniqueID : string
+    //TODO construct reservation datatype
 
         constructor() {
             this.name = "default";
             this.address = "497 North Parker Drive";
             this.numberOfTables = 0;
-            this.tables = [{number : 0, capacity : 0}];
-            this.schedule = [{weekDay : 1, openTime : Date(), closeTime : Date()}];
+            this.tables = [{tableNumber : 0, capacity : 0}];
+            this.schedule = [{date : Date(), openTime : Date(), closeTime : Date()}];
 
         }
 }
