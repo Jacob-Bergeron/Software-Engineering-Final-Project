@@ -19,7 +19,8 @@ export const handler = async (event) => {
         })
     }
     
-
+    // need to create authentication on client or server 
+    // need to pass args to createRestaurant 'event.blah'
     const res = await createRestaurant();
 
     const response = {

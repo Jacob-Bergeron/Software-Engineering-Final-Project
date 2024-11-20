@@ -57,5 +57,12 @@
 }
 
 .login-page .register{
-    
+    color: black;
 }
+
+.login-page .register-button{
+    color: blue;
+    text-decoration: underline;
+}   
+
+
