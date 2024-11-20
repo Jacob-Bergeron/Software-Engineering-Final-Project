@@ -1,3 +1,7 @@
+'use client'                     // NEED THIS to be able to embed HTML in TSX file
+import React from 'react'
+
+
 import Link from 'next/link';
 
 
