@@ -9,17 +9,29 @@ export const handler = async (event) => {
     });
 
 
-    let createRestaurant = () => {
+    let createRestaurant = (id, name, address) => {
         return new Promise((resolve, reject) => {
-            pool.query(, [], (error, value) => {
+
+            pool.query("INSERT INTO All_Restaurants (id, name, address) VALUES (?, ?, ?) ", 
+                [id, name, address], (error, rows) => {
                 if (error) { return reject(error); }
-                // turns into array containing single value [ { num: 13 } ]
-                let output = JSON.parse(JSON.stringify(value))
-                
-                // return first entry and grab its 'num' attribute
-                return resolve(output[0].num);
+
+                return resolve(rows);
             })
         })
     }
     
+
+    const res = await createRestaurant();
+
+    const response = {
+        statusCode: 200,
+        result: {
+
+        }
+    }
+
+    pool.end()      // close DB connections
+
+    return response;
 }

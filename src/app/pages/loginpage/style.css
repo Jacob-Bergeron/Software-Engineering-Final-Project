@@ -3,30 +3,36 @@
 @tailwind utilities;
 
 .login-page{
-    margin-top: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
+    flex-direction: column;
+    min-height: 100vh;
+    max-width: 500px;
+    width: 100%;
+    background-color: aqua;
+}
+
+.login-page .Username{
+    font-weight: bold;
+    margin: 8px;
+}
+
+.login-page .Password{  
+    font-weight: bold;
+    margin: 8px;
 }
 
 .login-page .UsernameInput{
+    margin: 8px;
     padding: 8px;
     font-size: 16px;
     border: 2px solid #000;
     border-radius: 1px; }
 
-.login-page .Username{
-    font-weight: bold;
-    margin: 8px;
-    display:block;
-
-}
-
-.login-page .Password{
-    font-weight: bold;
-    margin: 8px;
-    display:block;
-}
-
 .login-page .PasswordInput{
+    margin: 8px;
     padding: 8px;
     font-size: 16px;
     border: 2px solid #000;
@@ -34,10 +40,8 @@
 }
 
 .login-page .login-button{
-    display:block;
     margin: 8px;
     border: 2px solid #000;
     border-radius: 1px; 
     padding: 10px;
-    margin-left: 700px;
 }
