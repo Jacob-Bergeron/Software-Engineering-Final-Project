@@ -11,6 +11,8 @@ export default function loginpage() {
             <label className = "Password">Password </label>
             <input type="text" className = "PasswordInput" placeholder="Enter Password"/>
             <button className = "login-button">Sign In</button>
+            <label className = "register">Not an admin or manager? Sign up</label>
+            <button className = "register-button">here</button>
         </div>
 
         <div className = "back-button-login">

@@ -80,15 +80,15 @@ export class Restaurant {
     schedule : Array<RestaurantSchedule>
     reservations : Array<Reservation>
 
-        constructor() {
-            this.name = "default";
-            this.address = "497 North Parker Drive";
-            this.uniqueID = "methhead freestyle";
-            this.activated = false;
-            this.tables = [];
-            this.schedule = [];
-            this.reservations = [];
-        }
+    constructor() {
+        this.name = "default";
+        this.address = "497 North Parker Drive";
+        this.uniqueID = "methhead freestyle";
+        this.activated = false;
+        this.tables = [];
+        this.schedule = [];
+        this.reservations = [];
+    }
 }
 
 // export class functions {
