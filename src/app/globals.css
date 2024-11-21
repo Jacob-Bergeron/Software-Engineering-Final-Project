@@ -43,7 +43,7 @@ body {
 
 .signIn{
   text-align: right;
-  margin-top: -435px;
+  transform: translateY(-98vh);
 }
 
 .signIn-button{
@@ -58,7 +58,8 @@ body {
 .HomePage-Title{
   text-align: center;
   font-size: 40px;
-  margin-top: 140px;
+  color: black;
+  margin: 12px;
 }
 
 .back-button{

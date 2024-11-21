@@ -5,11 +5,9 @@ import axios from 'axios';
 // all WEB traffic using this API instance. You should replace this endpoint with whatever
 // you developed for the tutorial and adjust resources as necessary.
 const instance = axios.create({
-    baseURL: 'https://q3l4c6o0hh.execute-api.us-east-2.amazonaws.com'
-  });
+	baseURL: 'https://q3l4c6o0hh.execute-api.us-east-2.amazonaws.com'
+});
   
-
-
 export default function createRestaurant() {
     const [redraw, forceRedraw] = React.useState(0)       // used to conveniently request redraw after model change
 
@@ -18,8 +16,6 @@ export default function createRestaurant() {
         forceRedraw(redraw+1)
     }
 
-
-    
     function createNewRestaurant(){
         let username = document.getElementById("username") as HTMLInputElement
         let password = document.getElementById("password") as HTMLInputElement
@@ -28,11 +24,11 @@ export default function createRestaurant() {
 
         // POST and payload to send to API gateway
         instance.post('/restaurant', {"username":username.value, "password":password.value, 
-                                            "restaurantName":resName.value, "address": resAddress.value})
+                                      "restaurantName":resName.value, "address": resAddress.value})
             .then(function(response){ // just copying from calc example, what 
 
                 // Does anything else go in here?
-                
+                // is this the response from the database? we could pass back the uniqueID, for instance.
                 andRefreshDisplay()
             })
             .catch(function(error : any) {
