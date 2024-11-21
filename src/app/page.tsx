@@ -12,11 +12,7 @@ export default function Home() {
           <p>
               <Link href="/pages/browserestaurantspage" className = "browseRestaurants-button">Browse Restaurants</Link>
           </p>
-
-          
-
         </div>
-
 
         <div className = "signIn">
         <p>
