@@ -14,12 +14,16 @@ export default function loginpage() {
             <label className = "register">Create Account</label>
             <button className = "register-button">Sign up here</button>
         </div>
+        <div>
+        
+        </div>
 
         <div className = "back-button-login">
             <p>
                 <Link href="/" className = "back-button">Back</Link>
             </p>
         </div>
+        
         </div>
 
     );

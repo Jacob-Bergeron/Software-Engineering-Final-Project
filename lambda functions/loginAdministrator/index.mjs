@@ -8,18 +8,13 @@ export const handler = async (event) => {
         database: "Tables4u"
     });
 
-
-    let CountConstants = () => {
+    let logi = (auth, id, name, address) => {
         return new Promise((resolve, reject) => {
-            pool.query("SELECT COUNT(*) AS `num` FROM Constants;", [], (error, value) => {
+            pool.query("", 
+                [id, name, address], (error, rows) => {
                 if (error) { return reject(error); }
-                // turns into array containing single value [ { num: 13 } ]
-                let output = JSON.parse(JSON.stringify(value))
-                
-                // return first entry and grab its 'num' attribute
-                return resolve(output[0].num);
+                return resolve(rows);
             })
         })
     }
-    
 }
