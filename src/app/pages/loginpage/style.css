@@ -4,41 +4,66 @@
 
 
 .login-page{
-    margin-top: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: white;
 }
-
-.login-page .UsernameInput{
-    padding: 8px;
-    font-size: 16px;
-    border: 2px solid #000;
-    border-radius: 1px; }
 
 .login-page .Username{
     font-weight: bold;
     margin: 8px;
-    display:block;
+    color: black;
 }
 
-.login-page .Password{
+.login-page .Password{  
     font-weight: bold;
     margin: 8px;
-    display:block;
+    color: black;
 }
 
-.login-page .PasswordInput{
+.login-page .UsernameInput{
+    margin: 8px;
     padding: 8px;
     font-size: 16px;
     border: 2px solid #000;
     border-radius: 1px; 
+    color: black;
+
+}
+
+.login-page .PasswordInput{
+    margin: 8px;
+    padding: 8px;
+    font-size: 16px;
+    border: 2px solid #000;
+    border-radius: 1px; 
+    color: black;
+
 }
 
 .login-page .login-button{
-    display:block;
     margin: 8px;
     border: 2px solid #000;
     border-radius: 1px; 
     padding: 10px;
-    margin-left: 700px;
+    color: black;
 }
+
+.back-button-login{
+    transform: translateY(-98vh);
+}
+
+.login-page .register{
+    color: black;
+}
+
+.login-page .register-button{
+    color: blue;
+    text-decoration: underline;
+}   
+
 

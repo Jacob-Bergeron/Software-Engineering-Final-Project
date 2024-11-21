@@ -20,11 +20,16 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-
 .browseRestaurants{
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
-  margin-top: 300px;
+  flex-direction: column;
+  background-color: aqua;
+  min-height: 100vh;
 }
+
 
 .browseRestaurants-button{
   width: 300px;
@@ -47,11 +52,21 @@ body {
   background-color: #b9babd;
   padding: 20px;
   border-radius: 25px;
+  color: black;
 }
 
 .HomePage-Title{
   text-align: center;
   font-size: 40px;
   margin-top: 140px;
+}
+
+.back-button{
+  width: 125px;
+  height: 75px;
+  background-color: #b9babd;
+  padding: 20px;
+  border-radius: 25px;
+  color: black;
 }
 

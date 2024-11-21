@@ -1,43 +1,3 @@
-
-export class Model{ 
-    administrators : Array<Administrator> 
-    managers : Array<Manager>
-    consumers : Array<Consumer>
-
-    constructor(){
-        this.administrators = []
-        this.managers = []
-        this.consumers = []
-    }
-}
-
-export class Tables4U{
-    currentDate : Date
-    
-    constructor(){
-        this.currentDate = new Date();
-    }
- }
-
-export class Restaurant {
-    name : string
-    address : string
-    numberOfTables : number
-    tables : [{tableNumber : number, capacity : number}]
-    schedule : [{date : string, openTime : string, closeTime: string}]
-    uniqueID : string
-    //TODO construct reservation datatype
-
-        constructor() {
-            this.name = "default";
-            this.address = "497 North Parker Drive";
-            this.numberOfTables = 0;
-            this.tables = [{number : 0, capacity : 0}];
-            this.schedule = [{weekDay : 1, openTime : Date(), closeTime : Date()}];
-            this.uniqueID = ""
-        }
-}
-
 //this file contains 
 export class Administrator {
     userName : String
@@ -52,23 +12,89 @@ export class Administrator {
 export class Manager{
     userName : String
     password : String
-    myRestaurant : Restaurant 
+    myRestaurant : Restaurant | undefined
     
-    // un = username, ps = password
-    constructor(un:String, ps :string, res: Restaurant){
-        this.userName = un
-        this.password = ps
-        this.myRestaurant = res // <- does this work? Or do I need to set each property separate
+    constructor(){
+        this.userName = ""
+        this.password = ""
+        this.myRestaurant = undefined
+    }
+
+    
+}
+
+
+export class Tables4U{
+    currentDate : Date
+    
+    constructor(){
+        this.currentDate = new Date();
+    }
+ }
+
+
+
+export class Model{ 
+
+    administrators : Array<Administrator> 
+    managers : Array<Manager>
+
+    constructor(){
+        this.administrators = []
+        this.managers = []
+    }
+
+}
+
+export class Reservation {
+    reservation : [{table : [{tableNumber : 0, capacity : 0}] | undefined, time : string, date : string, userEmail : string}]
+
+    constructor () {
+        this.reservation = [{table : undefined, time : "11:00", date : Date(), userEmail : "joe_biden@DOD.gov"}];
     }
 }
 
-export class Consumer{
-    userEmail : String
-    hasReservation : Boolean
+export class Table {
+    table : [{tableNumber : number, capacity : number}] | undefined;
 
-    constructor(){
-        this.userEmail = ""
-        this.hasReservation = false
+    constructor() {
+        this.table = undefined;
     }
-} 
+}
 
+export class RestaurantSchedule {
+    schedule : [{date : string, openTime : string, closeTime: string}] | undefined;
+
+    constructor() {
+        this.schedule = undefined;
+    }
+}
+
+export class Restaurant {
+    name : string
+    address : string
+    uniqueID : string
+    activated : boolean
+
+    tables : Array<Table>
+    schedule : Array<RestaurantSchedule>
+    reservations : Array<Reservation>
+
+    constructor() {
+        this.name = "default";
+        this.address = "497 North Parker Drive";
+        this.uniqueID = "methhead freestyle";
+        this.activated = false;
+        this.tables = [];
+        this.schedule = [];
+        this.reservations = [];
+    }
+}
+
+// export class functions {
+//     Restaurant : Array<Restaurant> | undefined;
+
+//     constructor() {
+//         this.Restaurant = undefined;
+//     }
+// }
