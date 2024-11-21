@@ -10,7 +10,7 @@ const instance = axios.create({
   
 
 
-export default function Home() {
+export default function createRestaurant() {
     const [redraw, forceRedraw] = React.useState(0)       // used to conveniently request redraw after model change
 
     // utility method (that can be passed around) for refreshing display in React

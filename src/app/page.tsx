@@ -9,13 +9,14 @@ export default function Home() {
   return (
     <div>
         <div className = "browseRestaurants">
+        <div className = "HomePage-Title">
+            <p>Tables4U</p>
+          </div>
           <p>
               <Link href="/pages/browserestaurantspage" className = "browseRestaurants-button">Browse Restaurants</Link>
           </p>
 
-          <div className = "HomePage-Title">
-            <p>Tables4U</p>
-          </div>
+          
 
         </div>
 
