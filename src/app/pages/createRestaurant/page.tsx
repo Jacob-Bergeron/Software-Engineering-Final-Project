@@ -1,6 +1,6 @@
 'use client'                     // NEED THIS to be able to embed HTML in TSX file
 import React from 'react'
-import axios from "axios";
+import axios from 'axios';
 
 // all WEB traffic using this API instance. You should replace this endpoint with whatever
 // you developed for the tutorial and adjust resources as necessary.
@@ -20,7 +20,7 @@ export default function createRestaurant() {
 
 
     
-    function createRestaurant(){
+    function createNewRestaurant(){
         let username = document.getElementById("username") as HTMLInputElement
         let password = document.getElementById("password") as HTMLInputElement
         let resName = document.getElementById("restaurant name") as HTMLInputElement
@@ -29,13 +29,13 @@ export default function createRestaurant() {
         // POST and payload to send to API gateway
         instance.post('/restaurant', {"username":username.value, "password":password.value, 
                                             "restaurantName":resName.value, "address": resAddress.value})
-            .then(function(repsonse){ // just copying from calc example, what 
+            .then(function(response){ // just copying from calc example, what 
 
-                // Does anything else go in here
+                // Does anything else go in here?
                 
                 andRefreshDisplay()
             })
-            .catch(function(error){
+            .catch(function(error : any) {
                 console.log(error)
             })
       }
