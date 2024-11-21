@@ -8,29 +8,35 @@ export const handler = async (event) => {
         database: "Tables4u"
     });
 
+    let createManagerAccount = (man_id, res_id, username, password) => {
+        return new Promise((resolve,reject) => {
+            pool.query("INSERT INTO Manager_Accounts (man_UUID, res_UUID, username, password) VALUES (?, ?, ?, ?)", 
+            [man_id, res_id, username, password], (error, rows) => {
+                if (error) { return reject(error); }
+                return resolve(rows);
+            })
+        })
+    }
 
-    // async function
     let createRestaurant = (id, name, address) => {
         return new Promise((resolve, reject) => {
-            pool.query("INSERT INTO All_Restaurants (id, name, address) VALUES (?, ?, ?) ", 
+            pool.query("INSERT INTO All_Restaurants (res_UUID, restaurantName, address) VALUES (?, ?, ?)", 
                 [id, name, address], (error, rows) => {
                 if (error) { return reject(error); }
                 return resolve(rows);
             })
         })
     }
-    
-    // need to create authentication on client or server?
 
-    const res = await createRestaurant(event.id, event.name, event.address);
+    const ans = await createManagerAccount(event.man_UUID, event.res_UUID, event.username, event.password)
+    const res = await createRestaurant(event.res_UUID, event.restaurantName, event.address);
 
     // this is what is returned to client
     const response = {
         statusCode: 200,
         result: {
-            "id" : event.id,
-            "name" : event.name,
-            "address" : event.address
+            "res_UUID" : event.res_UUID,
+            "man_UUID" : event.man_UUID
         }
     }
 
