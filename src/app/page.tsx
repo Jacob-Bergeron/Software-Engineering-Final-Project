@@ -10,13 +10,13 @@ export default function Home() {
             <p>Tables4U</p>
           </div>
           <p>
-              <Link href="/pages/browserestaurantspage" className = "browseRestaurants-button">Browse Restaurants</Link>
+              <Link href="/pages/browse-restaurants" className = "browseRestaurants-button">Browse Restaurants</Link>
           </p>
         </div>
 
         <div className = "signIn">
         <p>
-            <Link href="/pages/loginpage" className = "signIn-button">Sign In</Link>
+            <Link href="/pages/login-page" className = "signIn-button">Sign In</Link>
         </p>
         </div>
     </div>

@@ -12,7 +12,9 @@ export default function loginpage() {
             <input type="text" className = "PasswordInput" placeholder="Enter Password"/>
             <button className = "login-button">Sign In</button>
             <label className = "register">Don't Have A Restaurant?</label>
-            <button className = "register-button">Create Restaurant</button>
+            <p>
+                <Link href="/pages/manager/create-restaurant" className = "register-button">Create Restaurant</Link>
+            </p>
         </div>
         <div>
         
