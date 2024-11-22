@@ -1,57 +1,64 @@
 'use client'                     // NEED THIS to be able to embed HTML in TSX file
 import React from 'react'
-import axios from 'axios';
+import axios from "axios";
+import { v4 as uuidv4 } from 'uuid';
 
 // all WEB traffic using this API instance. You should replace this endpoint with whatever
 // you developed for the tutorial and adjust resources as necessary.
 const instance = axios.create({
-	baseURL: 'https://q3l4c6o0hh.execute-api.us-east-2.amazonaws.com'
+  baseURL: 'https://q3l4c6o0hh.execute-api.us-east-2.amazonaws.com/initial/git'
 });
-  
-export default function createRestaurant() {
-    const [redraw, forceRedraw] = React.useState(0)       // used to conveniently request redraw after model change
-
-    // utility method (that can be passed around) for refreshing display in React
-    const andRefreshDisplay = () => {
-        forceRedraw(redraw+1)
-    }
-
-    function createNewRestaurant(){
-        let username = document.getElementById("username") as HTMLInputElement
-        let password = document.getElementById("password") as HTMLInputElement
-        let resName = document.getElementById("restaurant name") as HTMLInputElement
-        let resAddress = document.getElementById("restaurant address") as HTMLInputElement
-
-        // POST and payload to send to API gateway
-        instance.post('/restaurant', {"username":username.value, "password":password.value, 
-                                      "restaurantName":resName.value, "address": resAddress.value})
-            .then(function(response){ // just copying from calc example, what 
-
-                // Does anything else go in here?
-                // is this the response from the database? we could pass back the uniqueID, for instance.
-                andRefreshDisplay()
-            })
-            .catch(function(error : any) {
-                console.log(error)
-            })
-      }
-            
 
 
-    // HTML Elements
-    return (
-      <div>
-        <div className = "createRestaurant-page">
-            <label className = "Username">Username </label>
-            <input id="username" type="text" className = "UsernameInput" placeholder="Enter Username"/>
-            <label className = "Password">Password </label>
-            <input id="password" type="text" className = "PasswordInput" placeholder="Enter Password"/>
-            <label>Restaurant Name</label>
-            <input id="restaurant name" type="text" placeholder="Enter Restaurant Name"/>
-            <label>Street Address</label>
-            <input id="restaurant address"type="text" placeholder="Enter address"/>
-            <button>create restaurant</button>
-        </div>
-      </div>
-    );
+
+export default function Home() {
+  const [redraw, forceRedraw] = React.useState(0)       // used to conveniently request redraw after model change
+
+  // utility method (that can be passed around) for refreshing display in React
+  const andRefreshDisplay = () => {
+    forceRedraw(redraw + 1)
   }
+
+  function createRestaurant() {
+    let username = document.getElementById("username") as HTMLInputElement
+    let password = document.getElementById("password") as HTMLInputElement
+    let resName = document.getElementById("restaurant name") as HTMLInputElement
+    let resAddress = document.getElementById("restaurant address") as HTMLInputElement
+    let res_UUID = uuidv4();
+    let man_UUID = uuidv4();
+
+    // POST and payload to send to API gateway
+    instance.post('/restaurant', {
+      "username": username.value, "password": password.value, "res_UUID": res_UUID, // or res_UUID?
+      "restaurantName": resName.value, "address": resAddress.value, "man_UUID" : man_UUID
+    })
+      .then(function (repsonse) { // just copying from calc example, 
+
+        // Does anything else go in here
+
+        andRefreshDisplay()
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+  }
+
+
+
+  // HTML Elements
+  return (
+    <div>
+      <div className="createRestaurant-page">
+        <label className="Username">Username </label>
+        <input id="username" type="text" className="UsernameInput" placeholder="Enter Username" />
+        <label className="Password">Password </label>
+        <input id="password" type="text" className="PasswordInput" placeholder="Enter Password" />
+        <label>Restaurant Name</label>
+        <input id="restaurant name" type="text" placeholder="Enter Restaurant Name" />
+        <label>Street Address</label>
+        <input id="restaurant address" type="text" placeholder="Enter address" />
+        <button onClick={(e) => createRestaurant()}>create restaurant</button>
+      </div>
+    </div>
+  );
+}
