@@ -6,9 +6,8 @@ import { v4 as uuidv4 } from 'uuid';
 // all WEB traffic using this API instance. You should replace this endpoint with whatever
 // you developed for the tutorial and adjust resources as necessary.
 const instance = axios.create({
-  baseURL: 'https://q3l4c6o0hh.execute-api.us-east-2.amazonaws.com/initial/git'
+  baseURL: 'https://q3l4c6o0hh.execute-api.us-east-2.amazonaws.com/initial/'
 });
-
 
 
 export default function Home() {
@@ -34,16 +33,19 @@ export default function Home() {
     })
       .then(function (repsonse) { // just copying from calc example, 
 
-        // Does anything else go in here
+        // Does anything else go in here?
 
+        username.value = ''
+        password.value = ''
+        resName.value = ''
+        resAddress.value = '';
+        
         andRefreshDisplay()
       })
       .catch(function (error) {
         console.log(error)
       })
   }
-
-
 
   // HTML Elements
   return (
