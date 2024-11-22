@@ -1,6 +1,7 @@
 'use client'                     // NEED THIS to be able to embed HTML in TSX file
 import React from 'react'
 import axios from "axios";
+import Link from 'next/link';
 import { v4 as uuidv4 } from 'uuid';
 
 // all WEB traffic using this API instance. You should replace this endpoint with whatever
@@ -50,6 +51,12 @@ export default function Home() {
   // HTML Elements
   return (
     <div>
+       <div>
+            <p>
+                <Link href="/pages/login-page" className = "back-button">Back</Link>
+            </p>
+        </div>
+        
       <div className="createRestaurant-page">
         <label className="Username">Username </label>
         <input id="username" type="text" className="UsernameInput" placeholder="Enter Username" />
