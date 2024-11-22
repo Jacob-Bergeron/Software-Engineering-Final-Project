@@ -1,13 +1,4 @@
 //this file contains 
-export class Administrator {
-    userName : String
-    password : String
-
-    constructor(){
-        this.userName = ""
-        this.password = ""
-    }
-}
 
 export class Manager{
     userName : String
