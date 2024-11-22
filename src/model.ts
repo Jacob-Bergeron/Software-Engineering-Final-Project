@@ -19,8 +19,6 @@ export class Manager{
         this.password = ""
         this.myRestaurant = undefined
     }
-
-    
 }
 
 
