@@ -1,17 +1,19 @@
 //this file contains 
 
+// For this implementation, manager on client side does not need to know their restaurant
 export class Manager{
-    userName : String
+    username : String
     password : String
-    myRestaurant : Restaurant | undefined
     
-    constructor(){
-        this.userName = ""
-        this.password = ""
-        this.myRestaurant = undefined
+    constructor(name:string, password:string){
+        this.username = name
+        this.password = password
+    }
+
+    getUsername(){
+        return this.username
     }
 }
-
 
 export class Tables4U{
     currentDate : Date
@@ -21,10 +23,7 @@ export class Tables4U{
     }
  }
 
-
-
 export class Model{ 
-
     administrators : Array<Administrator> 
     managers : Array<Manager>
 
@@ -32,7 +31,6 @@ export class Model{
         this.administrators = []
         this.managers = []
     }
-
 }
 
 export class Reservation {
