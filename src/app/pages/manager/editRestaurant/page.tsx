@@ -1,7 +1,7 @@
 'use client'                     // NEED THIS to be able to embed HTML in TSX file
-import React from 'react'
+import React from 'react';
 import axios from "axios";
-import { Model } from '../model';
+import { Model, Manager } from '../../../../model'
 import { v4 as uuidv4 } from 'uuid';
 
 // all WEB traffic using this API instance. You should replace this endpoint with whatever
@@ -19,15 +19,18 @@ export default function editRestaurantPage() {
     }
 
 
-    function editRestaurant() {
+    function editRestaurantTime() {
 
         let openTime = document.getElementById("openingTime") as HTMLInputElement
         let closeTime = document.getElementById("closingingTime") as HTMLInputElement
 
-        instance.post('/editRestaurant', {
-            "openingTime": openTime.value, "closingTime": closeTime.value
-        })
-            .then(function (response){
+        // can't continue until loginRestaurant has been completed
+        // let credentials 
+
+            instance.post('/restaurant/editTime', {
+                "openingTime": openTime.value, "closingTime": closeTime.value
+            })
+            .then(function (response) {
 
 
             })
@@ -38,14 +41,13 @@ export default function editRestaurantPage() {
 
 
     return (
-
         <div>
             <div className="editRestaurant-page">
                 <label>Opening Time </label>
                 <input id="openingTime" type="text" placeholder="Enter Opening Time" />
                 <label >Closing Time</label>
                 <input id="closingTIme" type="text" placeholder="Enter Closing Time" />
-                <button onClick={(e) => editRestaurant}>Submit Changes</button>
+                <button onClick={(e) => editRestaurantTime}>Submit Changes</button>
             </div>
         </div>
     );
