@@ -8,27 +8,31 @@ export const handler = async (event) => {
         database: "Tables4u"
     });
 
-    //replace this with the function which lists all restaurants.
-    let createManagerAccount = (man_id, res_id, username, password) => {
+    //replace this with the new function for the adminDeleteRestaurant lambda function.
+    let deleteRestaurant = (res_id, username, password) => {
         return new Promise((resolve,reject) => {
-            pool.query("INSERT INTO Manager_Accounts (man_UUID, res_UUID, username, password) VALUES (?, ?, ?, ?)", 
-            [man_id, res_id, username, password], (error, rows) => {
-                if (error) { return reject(error); }
-                return resolve(rows);
-            })
+            if (username == "admin" && password == "password") {
+                pool.query("DELETE FROM All_Restaraunts WHERE res_UUID = ?", 
+                [ res_id, username, password], (error, rows) => {
+                    if (error) { return reject(error); }
+                    return resolve(rows);
+                })
+            }  
         })
     }
 
-    const ans = await createManagerAccount(event.man_UUID, event.res_UUID, event.username, event.password)
+    const ans = await deleteRestaurant(event.res_UUID, event.username, event.password)
 
     // this is what is returned to client
     const response = {
         statusCode: 200,
         result: {
-            "res_UUID" : event.res_UUID,
-            "man_UUID" : event.man_UUID
+            "res_UUID" : event.res_UUID
         }
     }
+
+    //need to figure out how to return the table to the front-end. 
+    //Could create another functionality to this lambda function?
 
     pool.end()      // close DB connections
     return response;
