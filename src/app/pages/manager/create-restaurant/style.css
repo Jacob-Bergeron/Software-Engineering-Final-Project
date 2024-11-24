@@ -1,0 +1,44 @@
+
+
+createRestaurant-page{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: white;
+}
+
+.createRestaurant-page .Username{
+    font-weight: bold;
+    margin: 8px;
+    color: black;
+}
+
+.createRestaurant-page .Password{  
+    font-weight: bold;
+    margin: 8px;
+    color: black;
+}
+
+.createRestaurant-page .UsernameInput{
+    margin: 8px;
+    padding: 8px;
+    font-size: 16px;
+    border: 2px solid #000;
+    border-radius: 1px; 
+    color: black;
+
+}
+
+.createRestaurant-page .PasswordInput{
+    margin: 8px;
+    padding: 8px;
+    font-size: 16px;
+    border: 2px solid #000;
+    border-radius: 1px; 
+    color: black;
+
+}
+

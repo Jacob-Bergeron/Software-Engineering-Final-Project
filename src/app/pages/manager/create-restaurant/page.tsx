@@ -3,6 +3,7 @@ import React from 'react'
 import axios from "axios";
 import Link from 'next/link';
 import { v4 as uuidv4 } from 'uuid';
+import './style.css';
 
 // all WEB traffic using this API instance. You should replace this endpoint with whatever
 // you developed for the tutorial and adjust resources as necessary.
@@ -62,10 +63,10 @@ export default function Home() {
         <input id="username" type="text" className="UsernameInput" placeholder="Enter Username" />
         <label className="Password">Password </label>
         <input id="password" type="text" className="PasswordInput" placeholder="Enter Password" />
-        <label>Restaurant Name</label>
-        <input id="restaurant name" type="text" placeholder="Enter Restaurant Name" />
-        <label>Street Address</label>
-        <input id="restaurant address" type="text" placeholder="Enter address" />
+        <label className = "restaurantName">Restaurant Name</label>
+        <input className = "restaurantNameInput" id="restaurant name" type="text" placeholder="Enter Restaurant Name" />
+        <label className = "address" >Street Address</label>
+        <input className = "addressInput" id="restaurant address" type="text" placeholder="Enter address" />
         <button onClick={(e) => createRestaurant()}>create restaurant</button>
       </div>
     </div>
