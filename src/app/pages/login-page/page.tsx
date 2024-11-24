@@ -50,7 +50,11 @@ export default function loginpage() {
                 "username": username.value, "password": password.value
             })
             .then(function (response){
-                 
+                  
+                
+            })
+            .catch(function(error){
+                console.log(error)
             })
             modelInstance.setManager(username.value, password.value);
 

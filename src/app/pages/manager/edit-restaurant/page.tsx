@@ -1,9 +1,7 @@
 'use client'                     // NEED THIS to be able to embed HTML in TSX file
 import React from 'react';
 import axios from "axios";
-import { Model } from '../../../../model'
 import { modelInstance } from '../../../../model';
-import { v4 as uuidv4 } from 'uuid';
 
 // all WEB traffic using this API instance. You should replace this endpoint with whatever
 // you developed for the tutorial and adjust resources as necessary.
@@ -43,9 +41,6 @@ export default function editRestaurantPage() {
     }
 
     modelInstance.getManager();
-
-
-
 
     return (
         <div>
