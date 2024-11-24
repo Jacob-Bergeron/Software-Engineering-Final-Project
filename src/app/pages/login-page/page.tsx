@@ -32,9 +32,6 @@ export default function loginpage() {
         let username = document.getElementById("username") as HTMLInputElement
         let password = document.getElementById("password") as HTMLInputElement
 
-
-        
-
         //Admin login section
         if (!(isManager)){
             if (username.value == 'admin' && password.value == 'password'){
@@ -45,12 +42,12 @@ export default function loginpage() {
         //Manager login section
         else if(isManager){
             //Finish
-            instance.post('/resource',{
+            instance.post('/',{
                 "username": username.value, "password": password.value
             })
             .then(function (response){
                   
-                
+
             })
             .catch(function(error){
                 console.log(error)
