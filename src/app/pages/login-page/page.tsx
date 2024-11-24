@@ -1,5 +1,6 @@
 'use client'
 import './style.css';
+import { modelInstance } from '../../../model';
 import Link from 'next/link';
 import React from 'react';
 import axios from "axios";
@@ -51,6 +52,7 @@ export default function loginpage() {
             .then(function (response){
                  
             })
+            modelInstance.setManager(username.value, password.value);
 
         }
         
