@@ -1,6 +1,8 @@
 'use client'                     // NEED THIS to be able to embed HTML in TSX file
 import React from 'react';
 import axios from "axios";
+import { modelInstance } from '../../../../model';
+
 
 
 // all WEB traffic using this API instance. You should replace this endpoint with whatever
@@ -20,8 +22,11 @@ export default function editRestaurantPage() {
 
     function activeRestaurant() {
 
-        instance.post('', {
+        let username = modelInstance.getManager()?.password;
+        
 
+        instance.post('/resource', {
+            "username" : username
         })
             .then(function (response) {
 

@@ -42,12 +42,12 @@ export default function loginpage() {
         //Manager login section
         else if(isManager){
             //Finish
-            instance.post('/resource',{
+            instance.post('/',{
                 "username": username.value, "password": password.value
             })
             .then(function (response){
                   
-                
+
             })
             .catch(function(error){
                 console.log(error)
