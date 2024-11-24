@@ -30,7 +30,7 @@ export default function Home() {
 
     // POST and payload to send to API gateway
     instance.post('/restaurant', {
-      "username": username.value, "password": password.value, "res_UUID": res_UUID, // or res_UUID?
+      "username": username.value, "password": password.value, "res_UUID": res_UUID,
       "restaurantName": resName.value, "address": resAddress.value, "man_UUID" : man_UUID
     })
       .then(function (repsonse) { // just copying from calc example, 
