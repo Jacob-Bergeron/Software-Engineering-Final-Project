@@ -8,14 +8,10 @@ export const handler = async (event) => {
     database: "Tables4u",
   });
 
-  
-  //! TODO: Pass the restaurant UUID to this method so that the SQL query can find it and add the information
-  //! to the correct restaurant
-
   let editRestaurant = (openTime, closeTime, id) => {
     return new Promise((resolve, reject) => {
       pool.query(
-        "INSERT INTO All_Restaurants (openTime, closeTime) VALUES (?, ?) WHERE res_UUID = (?)", 
+        "UPDATE All_Restaurants SET openTime = ?, closeTime = ? WHERE res_UUID = ?",
         [openTime, closeTime, id],
         (error, rows) => {
           if (error) {
@@ -27,12 +23,13 @@ export const handler = async (event) => {
     });
   };
 
-  const changes = await editRestaurant(event.openTime, event.closeTime,);
+  const changes = await editRestaurant(event.openTime, event.closeTime, event.res_UUID);
 
   // this is what is returned to client
   const response = {
     statusCode: 200,
     result: {
+        "id" : event.res_UUID,
         "openTime" : event.openTime,
         "closeTime" : event.closeTime
     },
