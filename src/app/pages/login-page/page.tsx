@@ -39,8 +39,7 @@ export default function loginpage() {
         if (!(isManager)){
             if (username.value == 'admin' && password.value == 'password'){
                 //Successful admin login
-                alert("login admin")
-                andRefreshDisplay();
+                window.location.href = '/pages/administrator/homepage';
             }
         }
         //Manager login section
