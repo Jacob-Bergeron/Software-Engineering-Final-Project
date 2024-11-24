@@ -12,62 +12,25 @@ const instance = axios.create({
 
 
 export default function Home() {
-  const [redraw, forceRedraw] = React.useState(0)       // used to conveniently request redraw after model change
 
-  // utility method (that can be passed around) for refreshing display in React
-  const andRefreshDisplay = () => {
-    forceRedraw(redraw + 1)
-  }
 
-  function createRestaurant() {
-    let username = document.getElementById("username") as HTMLInputElement
-    let password = document.getElementById("password") as HTMLInputElement
-    let resName = document.getElementById("restaurant name") as HTMLInputElement
-    let resAddress = document.getElementById("restaurant address") as HTMLInputElement
-    let res_UUID = uuidv4();
-    let man_UUID = uuidv4();
 
-    // POST and payload to send to API gateway
-    instance.post('/restaurant', {
-      "username": username.value, "password": password.value, "res_UUID": res_UUID, // or res_UUID?
-      "restaurantName": resName.value, "address": resAddress.value, "man_UUID" : man_UUID
-    })
-      .then(function (repsonse) { // just copying from calc example, 
-
-        // Does anything else go in here?
-
-        username.value = ''
-        password.value = ''
-        resName.value = ''
-        resAddress.value = '';
-        
-        andRefreshDisplay()
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
-  }
-
-  // HTML Elements
   return (
     <div>
-       <div>
-            <p>
-                <Link href="/pages/login-page" className = "back-button">Back</Link>
-            </p>
+        <div className = "browseRestaurants">
+        <div className = "HomePage-Title">
+            <p>Tables4U</p>
+          </div>
+          <p>
+              <Link href="/pages/browse-restaurants" className = "browseRestaurants-button">Browse Restaurants</Link>
+          </p>
         </div>
-        
-      <div className="createRestaurant-page">
-        <label className="Username">Username </label>
-        <input id="username" type="text" className="UsernameInput" placeholder="Enter Username" />
-        <label className="Password">Password </label>
-        <input id="password" type="text" className="PasswordInput" placeholder="Enter Password" />
-        <label>Restaurant Name</label>
-        <input id="restaurant name" type="text" placeholder="Enter Restaurant Name" />
-        <label>Street Address</label>
-        <input id="restaurant address" type="text" placeholder="Enter address" />
-        <button onClick={(e) => createRestaurant()}>create restaurant</button>
-      </div>
+
+        <div className = "signIn">
+        <p>
+            <Link href="/pages/login-page" className = "signIn-button">Sign In</Link>
+        </p>
+        </div>
     </div>
   );
 }
