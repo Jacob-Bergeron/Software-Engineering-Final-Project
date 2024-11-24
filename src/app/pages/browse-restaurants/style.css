@@ -1,0 +1,25 @@
+.browseRestaurants{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: white;
+}
+
+.browseRestaurants .listActiveRestaurants{
+    position: relative;
+    top: 2px;
+    left: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+}
+
+.back-button-browse-restaurants{
+    transform: translateY(-98vh);
+}
