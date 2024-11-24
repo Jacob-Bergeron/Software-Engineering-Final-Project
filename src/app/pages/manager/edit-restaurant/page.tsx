@@ -44,9 +44,6 @@ export default function editRestaurantPage() {
 
     modelInstance.getManager();
 
-
-
-
     return (
         <div>
             <div className="editRestaurant-page">
