@@ -1,29 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-
-createRestaurant-page{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    flex-direction: column;
-    min-height: 100vh;
-    background-color: white;
-}
 
 .createRestaurant-page .Username{
     font-weight: bold;
-    margin: 8px;
+    margin: 4px;
     color: black;
 }
 
 .createRestaurant-page .Password{  
     font-weight: bold;
-    margin: 8px;
+    margin: 4px;
     color: black;
 }
 
+.createRestaurant-page .restaurantName{
+    font-weight: bold;
+    margin: 4px;
+    color: black;
+}
+
+.createRestaurant-page .address{  
+    font-weight: bold;
+    margin: 4px;
+    color: black;
+}
+
+
 .createRestaurant-page .UsernameInput{
-    margin: 8px;
+    margin: 4px;
     padding: 8px;
     font-size: 16px;
     border: 2px solid #000;
@@ -33,12 +39,61 @@ createRestaurant-page{
 }
 
 .createRestaurant-page .PasswordInput{
-    margin: 8px;
+    margin: 4px;
     padding: 8px;
     font-size: 16px;
     border: 2px solid #000;
     border-radius: 1px; 
     color: black;
 
+}
+
+.createRestaurant-page .restaurantNameInput{
+    margin: 4px;
+    padding: 8px;
+    font-size: 16px;
+    border: 2px solid #000;
+    border-radius: 1px; 
+    color: black;
+
+}
+
+.createRestaurant-page .addressInput{
+    margin: 4px;
+    padding: 8px;
+    font-size: 16px;
+    border: 2px solid #000;
+    border-radius: 1px; 
+    color: black;
+
+}
+
+.createRestaurant-page .title{
+    margin: 4px;
+    font-size: 32px;
+    color: black;
+
+}
+
+.createRestaurant-page .createButton{
+    border: 2px solid #000;
+    color: black;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 2px;
+}
+
+.createRestaurant-page{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: white;
+}
+
+.back-button-create{
+    transform: translateY(2vh);
 }
 

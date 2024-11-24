@@ -52,13 +52,14 @@ export default function Home() {
   // HTML Elements
   return (
     <div>
-       <div>
+       <div className = "back-button-create">
             <p>
                 <Link href="/pages/login-page" className = "back-button">Back</Link>
             </p>
         </div>
         
       <div className="createRestaurant-page">
+        <h1 className = "title">Create A Restaurant</h1>
         <label className="Username">Username </label>
         <input id="username" type="text" className="UsernameInput" placeholder="Enter Username" />
         <label className="Password">Password </label>
@@ -67,7 +68,7 @@ export default function Home() {
         <input className = "restaurantNameInput" id="restaurant name" type="text" placeholder="Enter Restaurant Name" />
         <label className = "address" >Street Address</label>
         <input className = "addressInput" id="restaurant address" type="text" placeholder="Enter address" />
-        <button onClick={(e) => createRestaurant()}>create restaurant</button>
+        <button className = "createButton" onClick={(e) => createRestaurant()}>Create Restaurant</button>
       </div>
     </div>
   );
