@@ -15,6 +15,7 @@ export default function BrowserRestaurantsPage() {
 
     // Function to fetch active restaurants
     const listActiveRestaurants = async () => {
+
         try {
             // Send a GET request to the API to fetch active restaurants
             const response = await instance.get('/consumerListRestaurants'); 
@@ -48,6 +49,11 @@ export default function BrowserRestaurantsPage() {
     return (
         <div>
             <div className="browserestaurants">
+            <div className="back-button-browse-restaurants">
+                    <p>
+                        <Link href="/" className="back-button">Back</Link>
+                    </p>
+                </div>
                 <h2>Active Restaurants</h2>
                 <div className="listActiveRestaurants">
                     {error && <p>{error}</p>} {/* Show error message if there was an issue */}
@@ -68,11 +74,7 @@ export default function BrowserRestaurantsPage() {
                     )}
                 </div>
 
-                <div className="back-button-browse-restaurants">
-                    <p>
-                        <Link href="/" className="back-button">Back</Link>
-                    </p>
-                </div>
+                
             </div>
         </div>
     );
