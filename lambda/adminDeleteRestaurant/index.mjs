@@ -8,33 +8,39 @@ export const handler = async (event) => {
         database: "Tables4u"
     });
 
-    //replace this with the function which lists all restaurants.
-    let listAllRestaurants = () => {
+    //replace this with the new function for the adminDeleteRestaurant lambda function.
+    let deleteRestaurant = (res_id, username, password) => {
         return new Promise((resolve,reject) => {
-            pool.query("SELECT * FROM All_Restaurants", (error, rows) => {
-                if (error) { return reject(error); }
-                return resolve(rows);
-            })
+            if (username == "admin" && password == "password") {
+                pool.query("DELETE FROM All_Restaurants WHERE res_UUID = ?", 
+                [ res_id, username, password], (error, rows) => {
+                    if (error) { return reject(error); }
+                    return resolve(rows);
+                })
+            } else {
+                return reject(new Error("unauthorized user"));
+            }
         })
     }
 
-    const ans = await listAllRestaurants(event.username)
-
+    
     // this is what is returned to client
-
     try {
-        const restaurants = await listAllRestaurants();
+        const ans = await deleteRestaurant(event.res_UUID, event.username, event.password)
         const response = {
-            statusCode : 200,
-            result : restaurants
-        };
+        statusCode: 200,
+        result: {
+            "res_UUID" : event.res_UUID
+        }}
+        return response;
     } catch (error) {
         const response = {
-            statusCode : 400,
-            message : "Internal Error", //replace with desired error message.
-            error : error.message
-        };
+            statusCode: 400,
+            message: "Internal Error",
+            error: error.message
+        }
+        return response;
+    } finally {
+        pool.end()
     }
-    pool.end();
-    return response;
 }

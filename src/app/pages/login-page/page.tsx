@@ -34,11 +34,16 @@ export default function loginpage() {
         let username = document.getElementById("username") as HTMLInputElement
         let password = document.getElementById("password") as HTMLInputElement
 
+
+
         //Admin login section
         if (!(isManager)) {
             if (username.value == 'admin' && password.value == 'password') {
                 //Successful admin login
                 window.location.href = '/pages/administrator/homepage';
+            }
+            else {
+                alert("invalid credentials")
             }
         }
 

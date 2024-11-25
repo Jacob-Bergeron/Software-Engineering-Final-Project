@@ -28,16 +28,21 @@ export const handler = async (event) => {
         })
     }
 
-    const ans = await createManagerAccount(event.man_UUID, event.res_UUID, event.username, event.password)
-    const res = await createRestaurant(event.res_UUID, event.restaurantName, event.address);
+    let response;
 
-    // this is what is returned to client
-    const response = {
-        statusCode: 200,
-        result: {
-            "res_UUID" : event.res_UUID,
-            "man_UUID" : event.man_UUID
-        }
+    try{
+        const ans = await createManagerAccount(event.man_UUID, event.res_UUID, event.username, event.password)
+        const res = await createRestaurant(event.res_UUID, event.restaurantName, event.address);
+        response = {
+            statusCode : 200,
+            result : ans,res
+        };
+    } catch(error){
+        response = {
+            statusCode : 400,
+            message : "Internal Error",
+            error : error.message
+        };
     }
 
     pool.end()      // close DB connections

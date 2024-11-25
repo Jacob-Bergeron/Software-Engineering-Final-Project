@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.browseRestaurants{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+  background-color: white;
+  min-height: 100vh;
+}
+
+
+.browseRestaurants-button{
+  width: 300px;
+  height: 150px;
+  background-color: rgb(140, 124, 62);
+  padding: 20px;
+  border-radius: 25px;
+  color: black;
+  font-size: 25px;
+}
+
+.signIn{
+  text-align: right;
+  transform: translateY(-98vh);
+}
+
+.signIn-button{
+  width: 125px;
+  height: 75px;
+  background-color: #b9babd;
+  padding: 20px;
+  border-radius: 25px;
+  color: black;
+}
+
+.HomePage-Title{
+  text-align: center;
+  font-size: 40px;
+  color: black;
+  margin: 12px;
+}
+
+.back-button{
+  width: 125px;
+  height: 75px;
+  background-color: #b9babd;
+  padding: 20px;
+  border-radius: 25px;
+  color: black;
+}
+
