@@ -25,13 +25,21 @@ export const handler = async (event) => {
         });
   }
 
-  const activated = await activateRestaurant(event.res_UUID)
 
   let response; 
     // this is what is returned to client
-    response = {
-        statusCode: 200,
-        "message" : "successfully activated"
+    try{
+        const activated = await activateRestaurant(event.res_UUID)
+        response = {
+            statusCode: 200,
+            "message" : "successfully activated"
+        };
+    } catch(error){
+        response ={
+            statusCode : 400,
+            message : "Internal Error",
+            error : error.message
+        };
     }
 
     pool.end()      // close DB connections
