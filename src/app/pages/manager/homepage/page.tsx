@@ -37,9 +37,9 @@ export default function managerHomePage() {
 
   let restaurantName
   let address
+  let activity = 0
   let startTime
   let closeTime
-  let active
 
   // get the res_UUID from the manager database
   instance.post('resource', {
@@ -57,21 +57,38 @@ export default function managerHomePage() {
   instance.post('resource', {
     "res_uuid": res_uuid
   }).then(function (response) {
-    
+    let status = response.data.status
+
+
+    if (status == 200) {
+      restaurantName = response.data.result.body[0].restaurantName
+      address = response.data.result.body[0].address
+      activity = response.data.result.body[0].isActive
+      startTime = response.data.result.body[0].startTime || "null"
+      closeTime = response.data.result.body[0].closeTime || "null"
+
+      // change the display if the restaurant is active
+      if (activity == 1) {
+        setisActive(true)
+      }
+    }
 
   }).catch(function (error) {
     console.log(error)
   })
 
 
-
-  if (true) {
+// HTML
+  if (isActive) {
     return (
       <div>
         <div className="active-restaurant">
+          <label className="active-sign">ACTIVE</label>
           <div className="restaurant-info">
-            <label className = "restaurant-name">Restaurant Name</label>
-            <label className = "restaurant-address">Address</label>
+            <label className="restaurant-name">Restaurant Name: {restaurantName}</label>
+            <label className="restaurant-address">Address: {address}</label>
+            <label className="restaurant-opentime">Opens at: {startTime}</label>
+            <label className="restaurant-closetime">Closes at: {closeTime}</label>
           </div>
         </div>
 
@@ -86,9 +103,15 @@ export default function managerHomePage() {
   else {
     return (
       <div>
-        <h1>
-          inactive
-        </h1>
+        <div className="inactive-restaurant">
+          <label className="inactive-sign">INACTIVE</label>
+          <div className="restaurant-info">
+            <label className="restaurant-name">Restaurant Name: {restaurantName}</label>
+            <label className="restaurant-address">Address: {address}</label>
+            <label className="restaurant-opentime">Opens at: {startTime}</label>
+            <label className="restaurant-closetime">Closes at: {closeTime}</label>
+          </div>
+        </div>
       </div >
     );
   }
