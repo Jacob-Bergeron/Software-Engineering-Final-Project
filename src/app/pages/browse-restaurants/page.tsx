@@ -15,14 +15,21 @@ export default function BrowserRestaurantsPage() {
 
     // Function to fetch active restaurants
     const listActiveRestaurants = async () => {
-
         try {
             // Send a GET request to the API to fetch active restaurants
-            const response = await instance.get('/consumerListRestaurants'); 
-            
-            if (response.status === 200 && response.data.result) {
-                // Store the restaurant data in state
-                setRestaurants(response.data.result);
+            const response = await instance.get('/consumerListRestaurants');
+                
+            // Check if there is a body and parse it if necessary
+            let resultData;
+            if (response.status === 200 && response.data.body) {
+                const body = JSON.parse(response.data.body); // Parse the body if it's a string
+                resultData = body.result;
+            } else {
+                resultData = response.data.result; // Fallback if the structure is different
+            }
+    
+            if (resultData && resultData.length > 0) {
+                setRestaurants(resultData); // Store the restaurant data in state
             } else {
                 setError('No active restaurants found');
             }
@@ -31,10 +38,9 @@ export default function BrowserRestaurantsPage() {
             if (axios.isAxiosError(err)) {
                 setError(`Axios error: ${err.message}`);
                 console.error("Axios Error:", err.message);
-                console.error("Error Response:", err.response); // This will give you the response object, if any
-                console.error("Error Request:", err.request); // This will give you the request object, if any
+                console.error("Error Response:", err.response);
+                console.error("Error Request:", err.request);
             } else {
-                // General error handling (non-Axios error)
                 setError('Unexpected error occurred');
                 console.error("Unexpected Error:", err);
             }
@@ -45,7 +51,6 @@ export default function BrowserRestaurantsPage() {
     useEffect(() => {
         listActiveRestaurants();
     }, []);  // Empty dependency array means this runs only once after the first render
-
     return (
         <div>
             <div className="browserestaurants">
@@ -54,18 +59,18 @@ export default function BrowserRestaurantsPage() {
                         <Link href="/" className="back-button">Back</Link>
                     </p>
                 </div>
-                <h2>Active Restaurants</h2>
                 <div className="listActiveRestaurants">
+                <h2>Active Restaurants</h2>
                     {error && <p>{error}</p>} {/* Show error message if there was an issue */}
                     {restaurants.length > 0 ? (
                         <ul>
                             {restaurants.map((restaurant) => (
                                 <li key={restaurant.res_UUID}>
-                                    <h3>{restaurant.restaurantName}</h3>
+                                    <p>{"-----------------------"}</p>
+                                    <h3><strong> Restaurant Name: </strong>{restaurant.restaurantName}</h3>
                                     <p><strong>Address:</strong> {restaurant.address}</p>
                                     <p><strong>Open Time:</strong> {restaurant.openTime}</p>
                                     <p><strong>Close Time:</strong> {restaurant.closeTime}</p>
-                                    <p><strong>Status:</strong> {restaurant.isActive ? 'Active' : 'Inactive'}</p>
                                 </li>
                             ))}
                         </ul>
@@ -73,8 +78,6 @@ export default function BrowserRestaurantsPage() {
                         <p>No active restaurants available.</p>
                     )}
                 </div>
-
-                
             </div>
         </div>
     );
