@@ -20,18 +20,19 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.browseRestaurants{
+.viewAll{
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
   flex-direction: column;
-  background-color: white;
+  background-color: rgb(148, 177, 195);
   min-height: 100vh;
+  
 }
 
 
-.browseRestaurants-button{
+.viewAll-button{
   width: 300px;
   height: 150px;
   background-color: rgb(140, 124, 62);
@@ -39,6 +40,7 @@ body {
   border-radius: 25px;
   color: black;
   font-size: 25px;
+  transform: translateY(-30vh);
 }
 
 .signIn{
@@ -55,8 +57,9 @@ body {
   color: black;
 }
 
-.HomePage-Title{
+.adminHomePage-Title{
   text-align: center;
+  transform: translateY(-30vh);
   font-size: 40px;
   color: black;
   margin: 12px;

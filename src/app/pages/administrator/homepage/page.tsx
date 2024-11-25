@@ -18,12 +18,12 @@ export default function Home() {
 
   return (
     <div>
-        <div className = "browseRestaurants">
-        <div className = "HomePage-Title">
+        <div className = "viewAll">
+        <div className = "adminHomePage-Title">
             <p>ADMIN CONSOLE</p>
           </div>
           <p>
-              <Link href="./view-restaurants" className = "browseRestaurants-button">View All Restaurants</Link>
+              <Link href="./view-restaurants" className = "viewAll-button">View All Restaurants</Link>
           </p>
         </div>
 
@@ -35,7 +35,7 @@ export default function Home() {
 
         <div className = "return">
         <p> 
-
+            <Link href="./homepage" className = "back-button">Home</Link>
         </p>
         </div>
     </div>

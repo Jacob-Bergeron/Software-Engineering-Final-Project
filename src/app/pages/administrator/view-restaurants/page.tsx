@@ -1,22 +1,23 @@
-'use client'                     // NEED THIS to be able to embed HTML in TSX file
-import React, { useEffect, useState } from 'react';
-import axios from "axios";
-import Link from 'next/link';
-import { v4 as uuidv4 } from 'uuid';
-import './styles.css'
+'use client'; // This is necessary to use React hooks in Next.js 13 (for client-side rendering)
 
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import Link from 'next/link';
+import './styles.css';
+
+// Axios instance for API requests
 const instance = axios.create({
     baseURL: 'https://q3l4c6o0hh.execute-api.us-east-2.amazonaws.com/initial/',
 });
 
-export default function ViewRestaurants() {
+export default function adminViewRestaurants() {
     const [restaurants, setRestaurants] = useState<any[]>([]);  // State to hold restaurant data
     const [error, setError] = useState<string>('');  // State to hold any error messages
 
-    // Function to fetch ALL restaurants
-    const adminListRestaurants = async () => {
+    // Function to fetch active restaurants
+    const listAll = async () => {
         try {
-            // Send a GET request to the API to fetch restaurants
+            // Send a GET request to the API to fetch active restaurants
             const response = await instance.get('/adminListRestaurants');
                 
             // Check if there is a body and parse it if necessary
@@ -49,15 +50,17 @@ export default function ViewRestaurants() {
 
     // Use useEffect to fetch data when the component mounts
     useEffect(() => {
-        adminListRestaurants();
+        listAll();
     }, []);  // Empty dependency array means this runs only once after the first render
     return (
         <div>
+            <div className = "back-button-format">
                     <Link href="/" className="back-button">Back</Link>
+            </div>
             <div className="browserestaurants">
             
-                <div className="adminListRestaurants">
-                <div className="header">Restaurants</div>
+                <div className="listAll">
+                <div className="adminHeader">Restaurants</div>
                     {error && <p>{error}</p>} {/* Show error message if there was an issue */}
                     {restaurants.length > 0 ? (
                         <ul>
@@ -67,12 +70,11 @@ export default function ViewRestaurants() {
                                     <p><strong>Address:</strong> {restaurant.address}</p>
                                     <p><strong>Open Time:</strong> {restaurant.openTime}</p>
                                     <p><strong>Close Time:</strong> {restaurant.closeTime}</p>
-                                    <p><strong>Active?:</strong> {restaurant.active}</p>
                                 </li>
                             ))}
                         </ul>
                     ) : (
-                        <p>No restaurants available. Build a better site bozo.</p>
+                        <p>No active restaurants available.</p>
                     )}
                 </div>
             </div>
