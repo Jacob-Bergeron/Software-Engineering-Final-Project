@@ -8,6 +8,12 @@
   min-height: 100vh;
 }
 
+.inactive-restaurant {
+  display: flex;
+  background-color: white;
+  min-height: 100vh;
+}
+
 .restaurant-info {
   background-color: lightgray;
   min-height: 100vh;
@@ -15,12 +21,53 @@
 }
 
 .restaurant-name {
+  position: absolute;
   color: black;
   font-size: 32px;
-  transform: translateY(), translateX(5vh);
+  transform: translateX(0vh) translateY(0vh);
 }
 
 .restaurant-address {
+  position: absolute;
+  transform: translateX(0vh) translateY(6vh);
   color: black;
   font-size: 20px;
+}
+
+.restaurant-opentime {
+  position: absolute;
+  transform: translateX(0vh) translateY(10vh);
+  color: black;
+  font-size: 20px;
+}
+
+.restaurant-closetime {
+  position: absolute;
+  transform: translateX(0vh) translateY(14vh);
+  color: black;
+  font-size: 20px;
+}
+
+.active-sign {
+  position: absolute;
+  text-align: center;
+  background-color: lightgreen;
+  border-radius: 2px;
+  border-color: black;
+  border: 1px;
+  transform: translateX(80vh) translateY(0vh);
+  font-size: 30px;
+  width: 120px;
+}
+
+.inactive-sign {
+  position: absolute;
+  text-align: center;
+  background-color: red;
+  border-radius: 2px;
+  border-color: black;
+  border: 1px;
+  transform: translateX(80vh) translateY(0vh);
+  font-size: 30px;
+  width: 150px;
 }
