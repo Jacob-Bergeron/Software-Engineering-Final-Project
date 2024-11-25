@@ -42,7 +42,7 @@ export default function managerHomePage() {
   let closeTime
 
   // get the res_UUID from the manager database
-  instance.post('resource', {
+  instance.post('getCorrespondingRestaurant', {
     "username": username
   }).then(function (response) {
 
@@ -54,7 +54,7 @@ export default function managerHomePage() {
   })
 
   // get restaurant data from the All_Restaurants table
-  instance.post('resource', {
+  instance.post('getRestaurantData', {
     "res_uuid": res_uuid
   }).then(function (response) {
     let status = response.data.status
@@ -76,7 +76,7 @@ export default function managerHomePage() {
   }).catch(function (error) {
     console.log(error)
   })
-
+//alert(restaurantName);
 
 // HTML
   if (isActive) {
