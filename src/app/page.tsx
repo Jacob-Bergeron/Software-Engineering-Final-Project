@@ -9,8 +9,8 @@ export default function Home() {
   return (
     <div>
         <div className = "browseRestaurants">
-        <div className = "HomePage-Title">
-            <p>Tables4U</p>
+          <div className = "HomePage-Title">
+              <p>Tables4U</p>
           </div>
           <p>
               <Link href="/pages/browse-restaurants" className = "browseRestaurants-button">Browse Restaurants</Link>
@@ -18,9 +18,9 @@ export default function Home() {
         </div>
 
         <div className = "signIn">
-        <p>
-            <Link href="/pages/login-page" className = "signIn-button">Sign In</Link>
-        </p>
+          <p>
+              <Link href="/pages/login-page" className = "signIn-button">Sign In</Link>
+          </p>
         </div>
     </div>
   );

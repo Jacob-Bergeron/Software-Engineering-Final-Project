@@ -74,3 +74,14 @@ body {
   color: black;
 }
 
+.logout-button {
+  width: 500px;
+  height: 150px;
+  background-color: rgb(140, 124, 62);
+  padding: 20px;
+  border-radius: 25px;
+  color: black;
+  font-size: 25px;
+  text-align: center;
+  transform: translateY(-30vh);
+}

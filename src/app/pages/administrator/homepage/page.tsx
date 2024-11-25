@@ -38,6 +38,13 @@ export default function Home() {
             <Link href="./homepage" className = "back-button">Home</Link>
         </p>
         </div>
+
+        <div className = "Log Out">
+        <p>
+            <Link href="../login-page" className = "logout-button">Log Out</Link>
+        </p>
+        </div>
+
     </div>
   );
 }

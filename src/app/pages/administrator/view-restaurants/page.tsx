@@ -70,6 +70,7 @@ export default function adminViewRestaurants() {
                                     <p><strong>Address:</strong> {restaurant.address}</p>
                                     <p><strong>Open Time:</strong> {restaurant.openTime}</p>
                                     <p><strong>Close Time:</strong> {restaurant.closeTime}</p>
+                                    <p><strong>Active?:</strong> {restaurant.closeTime}</p>
                                 </li>
                             ))}
                         </ul>
