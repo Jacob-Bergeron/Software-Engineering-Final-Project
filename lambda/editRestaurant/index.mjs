@@ -23,17 +23,26 @@ export const handler = async (event) => {
     });
   };
 
-  const changes = await editRestaurant(event.openTime, event.closeTime, event.res_UUID);
+  let response;
 
   // this is what is returned to client
-  const response = {
-    statusCode: 200,
-    result: {
-        "id" : event.res_UUID,
-        "openTime" : event.openTime,
-        "closeTime" : event.closeTime
-    },
-  };
+  try{
+    const changes = await editRestaurant(event.openTime, event.closeTime, event.res_UUID);
+    response = {
+      statusCode: 200,
+      result: {
+          "id" : event.res_UUID,
+          "openTime" : event.openTime,
+          "closeTime" : event.closeTime
+      },
+    };
+  } catch(error){
+    response = {
+      statusCode : 400,
+      message : "Internal Error",
+      error : error.message
+    };
+  }
 
   pool.end(); // close DB connections
 
