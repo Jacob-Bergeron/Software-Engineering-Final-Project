@@ -8,7 +8,7 @@ export const handler = async (event) => {
     database: "Tables4u",
   });
 
-  let getRestaurantData = (username) => {
+  let getRestaurantUUID = (username) => {
     return new Promise((resolve, reject) => {
       pool.query(
         "SELECT res_UUID FROM Manager_Accounts WHERE username = ?",
@@ -22,6 +22,7 @@ export const handler = async (event) => {
       );
     });
   };
+<<<<<<< Updated upstream
 let response;
 
   // this is what is returned to client
@@ -41,7 +42,21 @@ let response;
     };
   }
    
+=======
+
+  const ans = await getRestaurantData(event.username);
+
+  // this is what is returned to client
+  const response = {
+    statusCode: 200,
+    result: {
+      body: ans 
+    },
+  };
+
+>>>>>>> Stashed changes
   pool.end(); // close DB connections
 
   return response;
 };
+

@@ -34,6 +34,8 @@ export class Manager{
         getManager(){
             return this.manager;
         }
+
+        
 }
 
 export const modelInstance = new Model();
