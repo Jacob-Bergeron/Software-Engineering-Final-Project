@@ -61,3 +61,7 @@ p {
     margin: 5px 0;                /* Add margin between details */
     color: #666;                  /* Lighter color for address, times, etc. */
 }
+
+.back-button-format{
+    transform: translateY(2vh);
+}

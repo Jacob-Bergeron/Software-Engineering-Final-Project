@@ -42,6 +42,9 @@ export default function loginpage() {
                 //Successful admin login
                 window.location.href = '/pages/administrator/homepage';
             }
+            else {
+                alert("invalid credentials")
+            }
         }
         
         //Manager login section
