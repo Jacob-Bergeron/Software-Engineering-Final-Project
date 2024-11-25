@@ -12,7 +12,7 @@ export const handler = async (event) => {
     // Function to fetch active restaurants
     let getActiveRestaurants = () => {
         return new Promise((resolve, reject) => {
-            pool.query("SELECT res_UUID, restaurantName, address, isActive, openTime, closeTime FROM All_Restaurants WHERE isActive=1", [], (error, rows) => {
+            pool.query("SELECT * FROM All_Restaurants WHERE isActive=1", (error, rows) => {
                 if (error) {
                     return reject(error); // Reject if there is a MySQL error
                 } else {
