@@ -41,6 +41,8 @@ export default function loginpage() {
             if (username.value == 'admin' && password.value == 'password') {
                 //Successful admin login
                 window.location.href = '/pages/administrator/homepage';
+            } else if (username.value == 'bonus' && password.value == 'amongus') {
+                window.location.href = '/pages/administrator/bonus-page';
             }
             else {
                 alert("invalid credentials")
