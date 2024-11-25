@@ -3,6 +3,7 @@ import React from 'react'
 import axios from "axios";
 import Link from 'next/link';
 import { v4 as uuidv4 } from 'uuid';
+import './styles.css'
 
 // all WEB traffic using this API instance. You should replace this endpoint with whatever
 // you developed for the tutorial and adjust resources as necessary.
@@ -19,16 +20,16 @@ export default function Home() {
     <div>
         <div className = "browseRestaurants">
         <div className = "HomePage-Title">
-            <p>Tables4U</p>
+            <p>ADMIN CONSOLE</p>
           </div>
           <p>
-              <Link href="/pages/browse-restaurants" className = "browseRestaurants-button">Browse Restaurants</Link>
+              <Link href="./view-restaurants" className = "browseRestaurants-button">View All Restaurants</Link>
           </p>
         </div>
 
         <div className = "signIn">
         <p>
-            <Link href="/pages/login-page" className = "signIn-button">Sign In</Link>
+            <Link href="./bonus-page" className = "signIn-button">Sign In</Link>
         </p>
         </div>
     </div>
