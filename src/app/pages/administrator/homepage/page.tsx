@@ -32,6 +32,12 @@ export default function Home() {
             <Link href="./bonus-page" className = "signIn-button">Sign In</Link>
         </p>
         </div>
+
+        <div className = "return">
+        <p> 
+
+        </p>
+        </div>
     </div>
   );
 }
