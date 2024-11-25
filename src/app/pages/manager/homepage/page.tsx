@@ -1,6 +1,8 @@
 'use client'                     // NEED THIS to be able to embed HTML in TSX file
 import React from 'react'
 import axios from "axios";
+import { modelInstance } from '../../../../model';
+
 import { v4 as uuidv4 } from 'uuid';
 
 // all WEB traffic using this API instance. You should replace this endpoint with whatever
@@ -23,13 +25,22 @@ export default function managerHomePage() {
         // should display options to edit
           // future closed/opened days
 
-    // therefore, the first thing that should be done is a GET for the 
+    // therefore, the first thing that should be done is a POST for the 
     // restaurant data of the current manager that is logged in
 
-    // instance.get('/resource')
-    // .then(function (response) {
+    let currentManager = modelInstance.getManager()
+    let username = currentManager?.username
+    let password = currentManager?.password
 
-    // })
+    // get the res_UUID from the manager database
+    instance.post('resource', {
+      "username" : username
+    }).then(function (response) {
+      let status = response.data.status
+
+    })
+    
+    instance.post('resource')
 
   return (
     <div>
