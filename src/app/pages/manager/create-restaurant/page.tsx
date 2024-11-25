@@ -33,9 +33,7 @@ export default function Home() {
       "username": username.value, "password": password.value, "res_UUID": res_UUID, // or res_UUID?
       "restaurantName": resName.value, "address": resAddress.value, "man_UUID" : man_UUID
     })
-      .then(function (repsonse) { // just copying from calc example, 
-
-        // Does anything else go in here?
+      .then(function (response) { // just copying from calc example, 
 
         username.value = ''
         password.value = ''

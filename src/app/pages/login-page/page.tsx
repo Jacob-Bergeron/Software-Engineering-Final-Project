@@ -34,7 +34,6 @@ export default function loginpage() {
         let username = document.getElementById("username") as HTMLInputElement
         let password = document.getElementById("password") as HTMLInputElement
 
-
         //Admin login section
         if (!(isManager)) {
             if (username.value == 'admin' && password.value == 'password') {
@@ -42,7 +41,7 @@ export default function loginpage() {
                 window.location.href = '/pages/administrator/homepage';
             }
         }
-        
+
         //Manager login section
         else if (isManager) {
             instance.post('/loginManager', {
