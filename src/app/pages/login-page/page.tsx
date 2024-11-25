@@ -46,7 +46,7 @@ export default function loginpage() {
                 alert("invalid credentials")
             }
         }
-        
+
         //Manager login section
         else if (isManager) {
             instance.post('/loginManager', {

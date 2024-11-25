@@ -21,16 +21,14 @@ export default function editRestaurantPage() {
 
 
     function activeRestaurant() {
+        let username = modelInstance.getManager()?.username;
 
-        let username = modelInstance.getManager()?.password;
-        
-
-        instance.post('/resource', {
-            "username" : username
+        instance.post('/activateRestaurant', {
+            "username": username
         })
             .then(function (response) {
 
-
+                andRefreshDisplay()
             })
             .catch(function (error) {
                 console.log(error)
@@ -40,7 +38,7 @@ export default function editRestaurantPage() {
 
     return (
         <div>
-
+            <button onClick={(e) => activeRestaurant()}>Activate</button>
         </div>
     );
 }
