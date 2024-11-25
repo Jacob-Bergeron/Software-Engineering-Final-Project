@@ -34,7 +34,7 @@ body {
 .browseRestaurants-button{
   width: 300px;
   height: 150px;
-  background-color: #b9babd;
+  background-color: rgb(140, 124, 62);
   padding: 20px;
   border-radius: 25px;
   color: black;
