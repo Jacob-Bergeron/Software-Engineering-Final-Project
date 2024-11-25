@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
+import './style.css';
 
 // Axios instance for API requests
 const instance = axios.create({
@@ -53,20 +54,16 @@ export default function BrowserRestaurantsPage() {
     }, []);  // Empty dependency array means this runs only once after the first render
     return (
         <div>
+                    <Link href="/" className="back-button">Back</Link>
             <div className="browserestaurants">
-            <div className="back-button-browse-restaurants">
-                    <p>
-                        <Link href="/" className="back-button">Back</Link>
-                    </p>
-                </div>
+            
                 <div className="listActiveRestaurants">
-                <h2>Active Restaurants</h2>
+                <div className="header">Restaurants</div>
                     {error && <p>{error}</p>} {/* Show error message if there was an issue */}
                     {restaurants.length > 0 ? (
                         <ul>
                             {restaurants.map((restaurant) => (
                                 <li key={restaurant.res_UUID}>
-                                    <p>{"-----------------------"}</p>
                                     <h3><strong> Restaurant Name: </strong>{restaurant.restaurantName}</h3>
                                     <p><strong>Address:</strong> {restaurant.address}</p>
                                     <p><strong>Open Time:</strong> {restaurant.openTime}</p>
