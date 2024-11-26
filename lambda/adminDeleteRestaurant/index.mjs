@@ -23,10 +23,24 @@ export const handler = async (event) => {
         })
     }
 
+    let deleteManager = (res_id, username, password) => {
+        return new Promise((resolve,reject) => {
+            if(username=="admin" && password=="password"){
+            pool.query("DELETE FROM Manager_Accounts WHERE res_UUID = ?",
+                [ res_id], (error,rows) => {
+                    if(error) {return reject(error);}
+                    return resolve(rows);
+                })
+            } else {
+                return reject(new Error("unauthorized user"));}
+        })
+    }
+
     
     // this is what is returned to client
     try {
         const ans = await deleteRestaurant(event.res_UUID, event.username, event.password)
+        const a = await deleteManager(event.res_UUID, event.username, event.password)
         const response = {
         statusCode: 200,
         result: {
