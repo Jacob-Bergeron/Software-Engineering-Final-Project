@@ -32,7 +32,7 @@ export default function adminViewRestaurants() {
             if (resultData && resultData.length > 0) {
                 setRestaurants(resultData); // Store the restaurant data in state
             } else {
-                setError('No active restaurants found');
+                setError('No restaurants found');
             }
         } catch (err) {
             // Handle and log network errors
@@ -54,8 +54,8 @@ export default function adminViewRestaurants() {
     }, []);  // Empty dependency array means this runs only once after the first render
     return (
         <div>
-            <div>
-                    <Link href="./homepage" className="back-button">Back</Link>
+            <div className = "back-button-format">
+                    <Link href="/pages/administrator/homepage" className="back-button">Back</Link>
             </div>
             <div className="browserestaurants">
             
@@ -70,12 +70,12 @@ export default function adminViewRestaurants() {
                                     <p><strong>Address:</strong> {restaurant.address}</p>
                                     <p><strong>Open Time:</strong> {restaurant.openTime}</p>
                                     <p><strong>Close Time:</strong> {restaurant.closeTime}</p>
-                                    <p><strong>Active?:</strong> {restaurant.closeTime}</p>
+                                    <p><strong>Active?:</strong> {restaurant.isActive}</p>
                                 </li>
                             ))}
                         </ul>
                     ) : (
-                        <p>No active restaurants available.</p>
+                        <p>No restaurants available.</p>
                     )}
                 </div>
             </div>
