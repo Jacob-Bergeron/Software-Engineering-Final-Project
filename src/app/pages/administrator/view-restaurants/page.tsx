@@ -19,35 +19,38 @@ export default function adminViewRestaurants() {
     const [error, setError] = useState<string>('');  // State to hold any error messages
 
     // Function to fetch active restaurants
-    const listAll = () => { //deleted async so I can try something
-        instance.get('/adminListRestaurants').then((response) => {
+    const listAll = async () => { //deleted async so I can try something
+        try {
+            // Send a GET request to the API to fetch active restaurants
+            
+            const response = await instance.get('/adminListRestaurants');
+                
+            // Check if there is a body and parse it if necessary
+            let resultData;
             if (response.status === 200 && response.data.body) {
-                const body = JSON.parse(response.data.body);
-                const resultingData = body.result;
-                if (resultingData && resultingData.length > 0) {
-                    setRestaurants(resultingData);
-                } else {
-                    setError("No Active Restaurants on this poverty-aah site.");
-                }
+                const body = JSON.parse(response.data.body); // Parse the body if it's a string
+                resultData = body.result;
             } else {
-                setError("Unexpected response structure.");
+                resultData = response.data.result; // Fallback if the structure is different
             }
-        })
-        .catch((err) => {
-            if (axios.isAxiosError(err)) {
-                setError('Axios Error: ${err.message}');
-                console.error("Axios Error:", err.message);
-                if (err.response) {
-                    console.error("Error Response:", err.response);
-                } else if (err.request) {
-                    console.error("Error Request:", err.request);
-                }
+    
+            if (resultData && resultData.length > 0) {
+                setRestaurants(resultData); // Store the restaurant data in state
             } else {
-                setError('Unexpected Error occurred.');
+                setError('No active restaurants found');
+            }
+        } catch (err) {
+            // Handle and log network errors
+            if (axios.isAxiosError(err)) {
+                setError(`Axios error: ${err.message}`);
+                console.error("Axios Error:", err.message);
+                console.error("Error Response:", err.response);
+                console.error("Error Request:", err.request);
+            } else {
+                setError('Unexpected error occurred');
                 console.error("Unexpected Error:", err);
             }
-        })
-        
+        }
     };
 
     // Use useEffect to fetch data when the component mounts

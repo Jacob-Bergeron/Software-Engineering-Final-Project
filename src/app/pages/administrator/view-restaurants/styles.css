@@ -20,7 +20,7 @@
   text-align: center;           /* Ensure the header is centered horizontally */
 }
 
-.listAll .listActiveRestaurants {
+.adminViewRestaurants .listAll {
   display: flex;
   justify-content: center;      /* Center the list items horizontally */
   align-items: flex-start;      /* Align the list items at the top */
@@ -62,6 +62,6 @@ p {
   color: #666;                  /* Lighter color for address, times, etc. */
 }
 
-.back-button-format{
+.back-button{
   transform: translateY(2vh);
 }
