@@ -9,6 +9,9 @@ import './styles.css';
 const instance = axios.create({
     baseURL: 'https://q3l4c6o0hh.execute-api.us-east-2.amazonaws.com/initial',
     timeout: 5000, //optional: establish a timeout for requests.
+    headers: {
+        'x-api-key': 'XZERw16yF64AQcuycqQlP3VjcKgmRJpe4QOVjbvH', // Replace with your new API key
+    },
 });
 
 export default function adminViewRestaurants() {
