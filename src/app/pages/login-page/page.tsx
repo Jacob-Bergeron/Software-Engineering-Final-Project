@@ -61,8 +61,10 @@ export default function loginpage() {
                         // if the body has something in it 
                         if (response.data.result.body.length > 0) {
                             if (response.data.result.body[0].username == username.value && response.data.result.body[0].password == password.value) {
+                                modelInstance.setManager(username.value, password.value);
+                                const managerString = encodeURIComponent(JSON.stringify(modelInstance.getManager()));
                                 // navigate to manager home page
-                                window.location.href = "/pages/manager/homepage"
+                                window.location.href = `/pages/manager/homepage?manager=${managerString}`;
                             }
                         } else {
                             alert("invalid credentials")
@@ -79,7 +81,6 @@ export default function loginpage() {
                     console.log(error)
                 })
             // Set the manager credentials client side
-            modelInstance.setManager(username.value, password.value);
         }
     }
 
