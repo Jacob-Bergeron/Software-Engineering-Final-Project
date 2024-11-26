@@ -102,3 +102,12 @@
   transform: translateX(80vh) translateY(7vh);
   font-size: 25px;
 }
+
+.activate-button{
+  position: absolute;
+  text-align: center;
+  background-color: white;
+  border-radius: 2px;
+  border-color: black;
+  border: 1px;
+}
