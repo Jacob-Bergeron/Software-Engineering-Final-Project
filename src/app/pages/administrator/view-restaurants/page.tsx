@@ -7,7 +7,11 @@ import './styles.css';
 
 // Axios instance for API requests
 const instance = axios.create({
-    baseURL: 'https://q3l4c6o0hh.execute-api.us-east-2.amazonaws.com/initial/',
+    baseURL: 'https://q3l4c6o0hh.execute-api.us-east-2.amazonaws.com/initial',
+    timeout: 5000, //optional: establish a timeout for requests.
+    headers: {
+        'x-api-key': 'XZERw16yF64AQcuycqQlP3VjcKgmRJpe4QOVjbvH', // Replace with your new API key
+    },
 });
 
 export default function adminViewRestaurants() {
@@ -15,9 +19,10 @@ export default function adminViewRestaurants() {
     const [error, setError] = useState<string>('');  // State to hold any error messages
 
     // Function to fetch active restaurants
-    const listAll = async () => {
+    const listAll = async () => { //deleted async so I can try something
         try {
             // Send a GET request to the API to fetch active restaurants
+            
             const response = await instance.get('/adminListRestaurants');
                 
             // Check if there is a body and parse it if necessary
