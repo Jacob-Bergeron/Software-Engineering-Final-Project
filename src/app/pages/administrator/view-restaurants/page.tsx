@@ -9,6 +9,9 @@ import './styles.css';
 const instance = axios.create({
     baseURL: 'https://q3l4c6o0hh.execute-api.us-east-2.amazonaws.com/initial',
     timeout: 5000, //optional: establish a timeout for requests.
+    //headers: {
+    //    'x_api_key:' : 'XZERw16yF64AQcuycqQlP3VjcKgmRJpe4QOVjbvH'
+    //}
 });
 
 export default function adminViewRestaurants() {
@@ -55,7 +58,7 @@ export default function adminViewRestaurants() {
     };
 
     // Function to delete restaurants [admin]
-    const deleteRestaurant = async (res_UUID: string) => {
+    const deleteRestaurant = async (res_UUID: string, username: string, password: string) => {
         try {
             const response = await instance.delete('/adminDeleteRestaurant', {
                 data: {res_UUID, adminUsername, adminPassword},
@@ -106,7 +109,7 @@ export default function adminViewRestaurants() {
                                     <p><strong>Active?:</strong> {restaurant.isActive}</p>
                                     <button 
                                         className="delete-button" onClick={() => 
-                                            deleteRestaurant(restaurant.res_UUID)}>Delete this restaurant?
+                                            deleteRestaurant(restaurant.res_UUID, adminUsername, adminPassword)}>Delete this restaurant?
                                     </button> 
                                 </li>
                             ))}
