@@ -9,14 +9,14 @@ import './styles.css';
 const instance = axios.create({
     baseURL: 'https://q3l4c6o0hh.execute-api.us-east-2.amazonaws.com/initial',
     timeout: 5000, //optional: establish a timeout for requests.
-    headers: {
-        'x-api-key': 'XZERw16yF64AQcuycqQlP3VjcKgmRJpe4QOVjbvH', // Replace with your new API key
-    },
 });
 
 export default function adminViewRestaurants() {
     const [restaurants, setRestaurants] = useState<any[]>([]);  // State to hold restaurant data
     const [error, setError] = useState<string>('');  // State to hold any error messages
+
+    const adminUsername = 'admin';
+    const adminPassword = 'password';
 
     // Function to fetch active restaurants
     const listAll = async () => { //deleted async so I can try something
@@ -24,6 +24,7 @@ export default function adminViewRestaurants() {
             // Send a GET request to the API to fetch active restaurants
             
             const response = await instance.get('/adminListRestaurants');
+            console.log(response.data);
                 
             // Check if there is a body and parse it if necessary
             let resultData;
@@ -53,6 +54,33 @@ export default function adminViewRestaurants() {
         }
     };
 
+    // Function to delete restaurants [admin]
+    const deleteRestaurant = async (res_UUID: string) => {
+        try {
+            const response = await instance.delete('/adminDeleteRestaurant', {
+                data: {res_UUID, adminUsername, adminPassword},
+            });
+            if (response.status === 200) {
+                setRestaurants(restaurants.filter(restaurant => restaurant.resUUID !== res_UUID))
+                alert("Restaurant deleted.")
+            } else {
+                setError("Restaurant deletion failed!");
+                alert("Restaurant deletion failed!");
+            }
+        } catch (err) {
+            // Handle and log network errors
+            if (axios.isAxiosError(err)) {
+                setError(`Axios error: ${err.message}`);
+                console.error("Axios Error:", err.message);
+                console.error("Error Response:", err.response);
+                console.error("Error Request:", err.request);
+            } else {
+                setError('Unexpected error occurred');
+                console.error("Unexpected Error:", err);
+            }
+        }
+    }
+
     // Use useEffect to fetch data when the component mounts
     useEffect(() => {
         listAll();
@@ -76,6 +104,7 @@ export default function adminViewRestaurants() {
                                     <p><strong>Open Time:</strong> {restaurant.openTime}</p>
                                     <p><strong>Close Time:</strong> {restaurant.closeTime}</p>
                                     <p><strong>Active?:</strong> {restaurant.isActive}</p>
+                                    <button className = 'delete-button'>Delete this Restaurant</button> 
                                 </li>
                             ))}
                         </ul>
