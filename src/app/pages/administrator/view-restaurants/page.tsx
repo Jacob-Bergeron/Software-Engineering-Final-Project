@@ -61,7 +61,7 @@ export default function adminViewRestaurants() {
     const deleteRestaurant = async (res_UUID: string, username: string, password: string) => {
         try {
             const response = await instance.delete('/adminDeleteRestaurant', {
-                data: {res_UUID, adminUsername, adminPassword},
+                data: {res_UUID, username, password},
             });
             if (response.status === 200) {
                 setRestaurants(restaurants.filter(restaurant => restaurant.resUUID !== res_UUID))
