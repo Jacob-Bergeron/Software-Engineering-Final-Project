@@ -88,9 +88,6 @@
     color: black;
 }
 
-.time-edits .submitChanges{
-  
-}
 
 .changeTime-sign{
   position: absolute;
@@ -101,4 +98,24 @@
   border: 1px;
   transform: translateX(80vh) translateY(7vh);
   font-size: 25px;
+}
+
+.activate-outside{
+  position: absolute;
+  background-color: white;
+  transform: translateX(160vh) translateY(85vh);
+}
+
+.activate-button{
+  position: absolute;
+  background-color: white;
+  border-radius: 2px;
+  border-color: black;
+  border: 1px;
+  color: black;
+  background-color: lightgreen;
+  width:200px;
+  height: 100px;
+  font-size: 25px;
+  font-weight: bold;
 }
