@@ -46,7 +46,7 @@ export default function editRestaurantPage() {
                 <input id="openingTime" type="text" placeholder="Enter Opening Time" />
                 <label >Closing Time</label>
                 <input id="closingTIme" type="text" placeholder="Enter Closing Time" />
-                <button onClick={(e) => editRestaurantTime}>Submit Changes</button>
+                <button onClick={(e) => editRestaurantTime()}>Submit Changes</button>
             </div>
         </div>
     );

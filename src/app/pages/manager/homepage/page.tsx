@@ -25,8 +25,9 @@ export default function managerHomePage() {
   const [closeTime, setcloseTime] = React.useState(null)
   const [res_UUID, setres_UUID] = React.useState(null)
 
-
-
+  const [openTimeInput, setOpenTimeInput] = React.useState("");
+  const [closeTimeInput, setCloseTimeInput] = React.useState("");
+  
   const queryParams = new URLSearchParams(window.location.search);
   const managerString = queryParams.get('manager');
   const manager = managerString ? JSON.parse(decodeURIComponent(managerString)) : null;
@@ -77,62 +78,50 @@ export default function managerHomePage() {
 
 
   // REACT COMPONENTS
-  function EditRestaurantTime() {
-    let openTimeInput = document.getElementById("openingTime") as HTMLInputElement
-    let closeTimeInput = document.getElementById("closingingTime") as HTMLInputElement
+  async function EditRestaurantTime() {
+    
 
-    instance.post('/restaurant/editTime', {
-      "openingTime": openTimeInput.value, "closingTime": closeTimeInput.value
-    })
-      .then(function (response) {
-
+    try{
+        const response = await instance.post('/restaurant/editTime', {
+            "openTime": openTimeInput, "closeTime": closeTimeInput, "res_UUID": res_UUID
+        });
 
         andRefreshDisplay()
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
-  }
-
-
-  function ActiveRestaurant() {
-    instance.post('/activateRestaurant', {
-      "res_UUID": res_UUID
-    })
-      .then(function (response) {
-
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
-  }
-
-  function RetrieveTables() {
-    instance.post('/', {
-      "res_UUID": res_UUID
-    }).then(function (response) {
-      let status = response.data.statusCode
-
-      if (status == 200) {
-        
-      }
-
-
-    }).catch(function (error) {
+        alert("success")
+    }  
+    catch(error){
+      alert("error")
       console.log(error)
-    })
-  }
+    }
+}
 
-  function TablesList(props:any) {
-    if(!props.tables) return <div>No tables to display</div>
-    return (
-    <ul>
-      {
-      // list of tables
-      }
-    </ul>
-    )
-  }
+
+async function ActiveRestaurant() {
+
+  try{
+      const response = await instance.post('/restaurant/activate', {
+          "res_UUID": res_UUID
+      });
+
+      andRefreshDisplay()
+    }
+    catch(error) {
+        console.log(error)
+    }
+
+}
+
+function retrieveTables(){
+  instance.post('/', {
+    "res_UUID" : res_UUID
+  }).then(function (response) {
+    alert("success")
+
+  }).catch(function(error) {
+    alert("error")
+    console.log(error)
+  })
+}
 
 
 
@@ -166,29 +155,34 @@ export default function managerHomePage() {
           {/* Signs */}
           <label className="inactive-sign">INACTIVE</label>
           <label className="changeTime-sign">Change Schedule</label>
-          {/* Signs */}
+          {/* Restaurant Info Display */}
           <div className="restaurant-info">
             <label className="restaurant-name">Restaurant Name: {restaurantName}</label>
             <label className="restaurant-address">Address: {address}</label>
             <label className="restaurant-opentime">Opens at: {startTime}</label>
             <label className="restaurant-closetime">Closes at: {closeTime}</label>
           </div>
+          {/* Change the Time */}
           <div className="time-edits">
-            <label className="openTime-label">Opening Time </label>
-            <input className="openTime-input" id="openingTime" type="text" placeholder="Enter Opening Time" />
-            <label className="closeTime-label">Closing Time</label>
-            <input className="closeTime-input" id="closingTime" type="text" placeholder="Enter Closing Time" />
-            <button className="submit-changes" onClick={(e) => EditRestaurantTime}>Submit Changes</button>
+                    <label className = "openTime-label">Opening Time </label>
+                    <input className = "openTime-input" id="openingTime" type="text" 
+                    value={openTimeInput} onChange={(e) => setOpenTimeInput(e.target.value)} placeholder="Enter Opening Time" />
+                    <label className = "closeTime-label">Closing Time</label>
+                    <input className = "closeTime-input"id="closingTime" type="text" 
+                    value={closeTimeInput} onChange={(e) => setCloseTimeInput(e.target.value)} placeholder="Enter Closing Time" />
+                    <button className = "submit-changes" onClick={EditRestaurantTime}>Submit Changes</button>
           </div>
-          <div className="activate">
-            <button className="active-button" onClick={(e) => ActiveRestaurant()}>Activate</button>
+          {/* Activate the Restaurant */}
+          <div className="activate-outside">
+              <button className = "activate-button" onClick={ActiveRestaurant}>Activate Restaurant</button>
           </div>
         </div>
-
-        <TablesList ></TablesList>
-      </div>
             
+        
 
+              
+
+      </div >
     );
   }
 }

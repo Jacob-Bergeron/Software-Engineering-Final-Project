@@ -72,27 +72,26 @@
   width: 150px;
 }
 
-.time-edits{
+.time-edits {
   position: absolute;
   transform: translateX(80vh) translateY(12vh);
   flex-direction: column;
   text-align: center;
 }
 
-.time-edits .openTime-input, .openTime-label, .closeTime-input, .closeTime-label .submit-changes{
-    margin: 2px;
-    padding: 4px;
-    font-size: 16px;
-    border: 2px solid #000;
-    border-radius: 1px; 
-    color: black;
+.time-edits .openTime-input,
+.openTime-label,
+.closeTime-input,
+.closeTime-label .submit-changes {
+  margin: 2px;
+  padding: 4px;
+  font-size: 16px;
+  border: 2px solid #000;
+  border-radius: 1px;
+  color: black;
 }
 
-.time-edits .submitChanges{
-  
-}
-
-.changeTime-sign{
+.changeTime-sign {
   position: absolute;
   text-align: center;
   background-color: white;
@@ -103,11 +102,22 @@
   font-size: 25px;
 }
 
-.activate-button{
+.activate-outside {
   position: absolute;
-  text-align: center;
+  background-color: white;
+  transform: translateX(160vh) translateY(85vh);
+}
+
+.activate-button {
+  position: absolute;
   background-color: white;
   border-radius: 2px;
   border-color: black;
   border: 1px;
+  color: black;
+  background-color: lightgreen;
+  width: 200px;
+  height: 100px;
+  font-size: 25px;
+  font-weight: bold;
 }
