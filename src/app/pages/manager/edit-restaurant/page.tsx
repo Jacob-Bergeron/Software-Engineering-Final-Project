@@ -21,25 +21,20 @@ export default function editRestaurantPage() {
 
 
     function editRestaurantTime() {
-
         let openTime = document.getElementById("openingTime") as HTMLInputElement
         let closeTime = document.getElementById("closingingTime") as HTMLInputElement
-
-        // can't continue until loginRestaurant has been completed
-        // let credentials 
 
             instance.post('/restaurant/editTime', {
                 "openingTime": openTime.value, "closingTime": closeTime.value
             })
             .then(function (response) {
 
-
             })
             .catch(function (error) {
                 console.log(error)
             })
 
-
+            
     }
 
     modelInstance.getManager();
