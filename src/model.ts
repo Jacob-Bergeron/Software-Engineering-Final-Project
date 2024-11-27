@@ -24,8 +24,6 @@ export class Manager{
             this.manager = null;
         }
 
-        //Not an actual error
-        manager : Manager
 
         setManager(username : string, password : string){
             this.manager = new Manager(username,password)

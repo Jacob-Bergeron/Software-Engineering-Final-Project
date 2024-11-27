@@ -31,12 +31,13 @@ export default function managerHomePage() {
 
   const[tables,setTables] = React.useState([])
 
+  
   const queryParams = new URLSearchParams(window.location.search);
   const managerString = queryParams.get('manager');
   const manager = managerString ? JSON.parse(decodeURIComponent(managerString)) : null;
 
 
-  //Variables
+  //Variablesgo
   let currentManager = manager;
   let username = currentManager?.username
 
