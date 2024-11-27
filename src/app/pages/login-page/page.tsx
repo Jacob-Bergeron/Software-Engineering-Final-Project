@@ -2,7 +2,7 @@
 import './style.css';
 import { modelInstance } from '../../../model';
 import Link from 'next/link';
-import React from 'react';
+import React, {Suspense, useState, useEffect} from 'react';
 import axios from "axios";
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
@@ -18,8 +18,13 @@ export default function loginpage() {
     const [isManager, setisManager] = React.useState(false);
     const [redraw, forceRedraw] = React.useState(0)
     const router = useRouter();
-    const searchParams = useSearchParams();
+    const [searchParams, setSearchParams] = useState<URLSearchParams | null>(null); // Change to URLSearchParams
     
+    useEffect(() => {
+        // This effect runs on the client side, after the component is mounted.
+        const params = useSearchParams();
+        setSearchParams(params); // Capture the search parameters on the client
+    }, []);
 
     // reset the client side credentials any time this page is loaded 
     modelInstance.setManager("", "")
@@ -102,6 +107,7 @@ export default function loginpage() {
 
     //Html Elements
     return (
+        <Suspense fallback={<div>Loading...</div>}>
         <div>
             <div className="login-page">
 
@@ -137,6 +143,7 @@ export default function loginpage() {
             </div>
 
         </div>
+        </Suspense>
 
     );
 
