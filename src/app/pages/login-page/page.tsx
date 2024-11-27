@@ -4,6 +4,8 @@ import { modelInstance } from '../../../model';
 import Link from 'next/link';
 import React from 'react';
 import axios from "axios";
+import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 
 // all WEB traffic using this API instance. You should replace this endpoint with whatever
@@ -15,6 +17,9 @@ const instance = axios.create({
 export default function loginpage() {
     const [isManager, setisManager] = React.useState(false);
     const [redraw, forceRedraw] = React.useState(0)
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    
 
     // reset the client side credentials any time this page is loaded 
     modelInstance.setManager("", "")
@@ -64,9 +69,9 @@ export default function loginpage() {
                         if (response.data.result.body.length > 0) {
                             if (response.data.result.body[0].username == username.value && response.data.result.body[0].password == password.value) {
                                 modelInstance.setManager(username.value, password.value);
-                                const managerString = encodeURIComponent(JSON.stringify(modelInstance.getManager()));
-                                // navigate to manager home page
-                                window.location.href = `/pages/manager/homepage?manager=${managerString}`;
+                                sessionStorage.setItem('managerData', JSON.stringify(modelInstance.getManager()));
+                                window.location.href = '/pages/manager/homepage';
+
                             }
                         } else {
                             alert("invalid credentials")

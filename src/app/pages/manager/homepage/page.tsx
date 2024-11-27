@@ -1,8 +1,11 @@
 'use client'                     // NEED THIS to be able to embed HTML in TSX file
-import React from 'react'
+import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import { modelInstance } from '../../../../model';
 import './style.css';
+
+
+
 
 
 // all WEB traffic using this API instance. You should replace this endpoint with whatever
@@ -16,7 +19,7 @@ export default function managerHomePage() {
 
   const andRefreshDisplay = () => {
     forceRedraw(redraw + 1)
-}
+  }
 
   const [isActive, setisActive] = React.useState(false);
   const [restaurantName, setrestaurantName] = React.useState(null)
@@ -24,18 +27,21 @@ export default function managerHomePage() {
   const [startTime, setstartTime] = React.useState(null)
   const [closeTime, setcloseTime] = React.useState(null)
   const [res_UUID, setres_UUID] = React.useState(null)
-
   const [openTimeInput, setOpenTimeInput] = React.useState("");
   const [closeTimeInput, setCloseTimeInput] = React.useState("");
+
+  const [username, setUsername] = useState('');
+
+  useEffect(() => {
+    const storedManagerData   
+ = sessionStorage.getItem('managerData');
+    if (storedManagerData) {
+      const currentManager = JSON.parse(storedManagerData);
+      setUsername(currentManager.username);
+    }
+  }, []);
   
-  const queryParams = new URLSearchParams(window.location.search);
-  const managerString = queryParams.get('manager');
-  const manager = managerString ? JSON.parse(decodeURIComponent(managerString)) : null;
-
-
-  //Variables
-  let currentManager = manager;
-  let username = currentManager?.username
+  
 
   let activity = 0
 
