@@ -24,7 +24,10 @@ export class Manager{
             this.manager = null;
         }
 
+<<<<<<< HEAD
         
+=======
+>>>>>>> 6b178901211a4f7056cc1b3604842184b30beb1e
 
         setManager(username : string, password : string){
             this.manager = new Manager(username,password)
