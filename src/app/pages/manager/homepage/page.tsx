@@ -1,8 +1,11 @@
 'use client'                     // NEED THIS to be able to embed HTML in TSX file
-import React from 'react'
+import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import { modelInstance } from '../../../../model';
 import './style.css';
+
+
+
 
 
 // all WEB traffic using this API instance. You should replace this endpoint with whatever
@@ -25,21 +28,20 @@ export default function managerHomePage() {
   const [startTime, setstartTime] = React.useState(null)
   const [closeTime, setcloseTime] = React.useState(null)
   const [res_UUID, setres_UUID] = React.useState(null)
-
   const [openTimeInput, setOpenTimeInput] = React.useState("");
   const [closeTimeInput, setCloseTimeInput] = React.useState("");
 
-  const[tables,setTables] = React.useState([])
 
-  
-  const queryParams = new URLSearchParams(window.location.search);
-  const managerString = queryParams.get('manager');
-  const manager = managerString ? JSON.parse(decodeURIComponent(managerString)) : null;
+  const [username, setUsername] = useState('');
 
-
-  //Variablesgo
-  let currentManager = manager;
-  let username = currentManager?.username
+useEffect(() => {
+    const storedManagerData   
+ = sessionStorage.getItem('managerData');
+    if (storedManagerData) {
+      const currentManager = JSON.parse(storedManagerData);
+      setUsername(currentManager.username);
+    }
+  }, []);
 
   let activity = 0
 
