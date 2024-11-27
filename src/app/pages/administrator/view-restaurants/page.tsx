@@ -7,7 +7,7 @@ import './styles.css';
 
 // Axios instance for API requests
 const instance = axios.create({
-    baseURL: 'https://q3l4c6o0hh.execute-api.us-east-2.amazonaws.com/initial',
+    baseURL: 'https://q3l4c6o0hh.execute-api.us-east-2.amazonaws.com/initial/',
     timeout: 5000, //optional: establish a timeout for requests.
     //headers: {
     //    'x_api_key:' : 'XZERw16yF64AQcuycqQlP3VjcKgmRJpe4QOVjbvH'
@@ -17,6 +17,12 @@ const instance = axios.create({
 export default function adminViewRestaurants() {
     const [restaurants, setRestaurants] = useState<any[]>([]);  // State to hold restaurant data
     const [error, setError] = useState<string>('');  // State to hold any error messages
+    const [redraw, forceRedraw] = React.useState(0)
+
+
+    const andRefreshDisplay = () => {
+        forceRedraw(redraw + 1)
+    }
 
     const adminUsername = 'admin';
     const adminPassword = 'password';
@@ -58,14 +64,17 @@ export default function adminViewRestaurants() {
     };
 
     // Function to delete restaurants [admin]
-    const deleteRestaurant = async (res_UUID: string, username: string, password: string) => {
+    const deleteRestaurant = async (res_UUID: string) => {
         try {
-            const response = await instance.delete('/adminDeleteRestaurant', {
-                data: {res_UUID, username, password},
+            const response = await instance.post('/adminDeleteRestaurant', {
+                res_UUID
             });
             if (response.status === 200) {
-                setRestaurants(restaurants.filter(restaurant => restaurant.resUUID !== res_UUID))
+                setRestaurants((prevRestaurants) =>
+                    prevRestaurants.filter(restaurant => restaurant.res_UUID !== res_UUID)
+                );
                 alert("Restaurant deleted.")
+                andRefreshDisplay()
             } else {
                 setError("Restaurant deletion failed!");
                 alert("Restaurant deletion failed!");
@@ -109,7 +118,7 @@ export default function adminViewRestaurants() {
                                     <p><strong>Active?:</strong> {restaurant.isActive}</p>
                                     <button 
                                         className="delete-button" onClick={() => 
-                                            deleteRestaurant(restaurant.res_UUID, adminUsername, adminPassword)}>Delete this restaurant?
+                                            deleteRestaurant(restaurant.res_UUID)}>Delete this restaurant?
                                     </button> 
                                 </li>
                             ))}
