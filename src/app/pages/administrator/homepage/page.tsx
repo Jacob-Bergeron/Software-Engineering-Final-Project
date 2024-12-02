@@ -13,31 +13,23 @@ const instance = axios.create({
 
 
 export default function Home() {
-
-
-
   return (
     <div>
-        <div className = "browseRestaurants">
-        <div className = "HomePage-Title">
+        <div className = "viewAll">
+        <div className = "adminHomePage-Title">
             <p>ADMIN CONSOLE</p>
           </div>
           <p>
-              <Link href="./view-restaurants" className = "browseRestaurants-button">View All Restaurants</Link>
+              <Link href="./view-restaurants" className = "viewAll-button">View All Restaurants</Link>
           </p>
         </div>
 
         <div className = "signIn">
         <p>
-            <Link href="./bonus-page" className = "signIn-button">Sign In</Link>
+            <Link href="../login-page" className = "signIn-button">Log Out</Link>
         </p>
         </div>
 
-        <div className = "return">
-        <p> 
-
-        </p>
-        </div>
     </div>
   );
 }

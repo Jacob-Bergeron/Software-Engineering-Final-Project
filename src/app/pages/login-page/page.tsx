@@ -2,8 +2,10 @@
 import './style.css';
 import { modelInstance } from '../../../model';
 import Link from 'next/link';
-import React from 'react';
+import React, {Suspense, useState, useEffect} from 'react';
 import axios from "axios";
+import { useRouter } from 'next/navigation';
+//import { useSearchParams } from 'next/navigation';
 
 
 // all WEB traffic using this API instance. You should replace this endpoint with whatever
@@ -15,6 +17,15 @@ const instance = axios.create({
 export default function loginpage() {
     const [isManager, setisManager] = React.useState(false);
     const [redraw, forceRedraw] = React.useState(0)
+    const router = useRouter();
+    const [searchParams, setSearchParams] = useState<URLSearchParams | null>(null); // Change to URLSearchParams
+    
+    useEffect(() => {
+        // This effect runs on the client side, after the component is mounted.
+        //const params = useSearchParams();
+        const params = new URLSearchParams(window.location.search);
+        setSearchParams(params); // Capture the search parameters on the client
+    }, []);
 
     // reset the client side credentials any time this page is loaded 
     modelInstance.setManager("", "")
@@ -41,6 +52,8 @@ export default function loginpage() {
             if (username.value == 'admin' && password.value == 'password') {
                 //Successful admin login
                 window.location.href = '/pages/administrator/homepage';
+            } else if (username.value == 'bonus' && password.value == 'gru') {
+                window.location.href = '/pages/administrator/bonus-page';
             }
             else {
                 alert("invalid credentials")
@@ -61,8 +74,10 @@ export default function loginpage() {
                         // if the body has something in it 
                         if (response.data.result.body.length > 0) {
                             if (response.data.result.body[0].username == username.value && response.data.result.body[0].password == password.value) {
-                                // navigate to manager home page
-                                window.location.href = "/pages/manager/homepage"
+                                modelInstance.setManager(username.value, password.value);
+                                sessionStorage.setItem('managerData', JSON.stringify(modelInstance.getManager()));
+                                window.location.href = '/pages/manager/homepage';
+
                             }
                         } else {
                             alert("invalid credentials")
@@ -79,7 +94,6 @@ export default function loginpage() {
                     console.log(error)
                 })
             // Set the manager credentials client side
-            modelInstance.setManager(username.value, password.value);
         }
     }
 
@@ -94,6 +108,7 @@ export default function loginpage() {
 
     //Html Elements
     return (
+        <Suspense fallback={<div>Loading...</div>}>
         <div>
             <div className="login-page">
 
@@ -129,6 +144,7 @@ export default function loginpage() {
             </div>
 
         </div>
+        </Suspense>
 
     );
 

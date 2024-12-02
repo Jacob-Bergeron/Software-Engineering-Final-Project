@@ -14,7 +14,6 @@ export class Manager{
     }
 }
 
-
     export class Model{ 
         managers : Array<Manager>
         manager : Manager | null
@@ -24,9 +23,6 @@ export class Manager{
             this.manager = null;
         }
 
-        //Not an actual error
-        manager : Manager
-
         setManager(username : string, password : string){
             this.manager = new Manager(username,password)
         }
@@ -34,6 +30,8 @@ export class Manager{
         getManager(){
             return this.manager;
         }
+
+        
 }
 
 export const modelInstance = new Model();

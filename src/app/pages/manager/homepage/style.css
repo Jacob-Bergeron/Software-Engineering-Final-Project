@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.active-restaurant {
+  display: flex;
+  background-color: white;
+  min-height: 100vh;
+}
+
+.inactive-restaurant {
+  display: flex;
+  background-color: white;
+  min-height: 100vh;
+}
+
+.restaurant-info {
+  background-color: lightgray;
+  min-height: 100vh;
+  min-width: 80vh;
+}
+
+.restaurant-name {
+  position: absolute;
+  color: black;
+  font-size: 32px;
+  transform: translateX(0vh) translateY(0vh);
+}
+
+.restaurant-address {
+  position: absolute;
+  transform: translateX(0vh) translateY(6vh);
+  color: black;
+  font-size: 20px;
+}
+
+.restaurant-opentime {
+  position: absolute;
+  transform: translateX(0vh) translateY(10vh);
+  color: black;
+  font-size: 20px;
+}
+
+.restaurant-closetime {
+  position: absolute;
+  transform: translateX(0vh) translateY(14vh);
+  color: black;
+  font-size: 20px;
+}
+
+.active-sign {
+  position: absolute;
+  text-align: center;
+  background-color: lightgreen;
+  border-radius: 2px;
+  border-color: black;
+  border: 1px;
+  transform: translateX(80vh) translateY(0vh);
+  font-size: 30px;
+  width: 120px;
+}
+
+.inactive-sign {
+  position: absolute;
+  text-align: center;
+  background-color: red;
+  border-radius: 2px;
+  border-color: black;
+  border: 1px;
+  transform: translateX(80vh) translateY(0vh);
+  font-size: 30px;
+  width: 150px;
+}
+
+.time-edits {
+  position: absolute;
+  transform: translateX(80vh) translateY(12vh);
+  flex-direction: column;
+  text-align: center;
+}
+
+.time-edits .openTime-input,
+.openTime-label,
+.closeTime-input,
+.closeTime-label .submit-changes {
+  margin: 2px;
+  padding: 4px;
+  font-size: 16px;
+  border: 2px solid #000;
+  border-radius: 1px;
+  color: black;
+}
+
+.changeTime-sign {
+  position: absolute;
+  text-align: center;
+  background-color: white;
+  border-radius: 2px;
+  border-color: black;
+  border: 1px;
+  transform: translateX(80vh) translateY(7vh);
+  font-size: 25px;
+}
+
+.activate-outside {
+  position: absolute;
+  background-color: white;
+  transform: translateX(160vh) translateY(85vh);
+}
+
+.activate-button {
+  position: absolute;
+  background-color: white;
+  border-radius: 2px;
+  border-color: black;
+  border: 1px;
+  color: black;
+  background-color: lightgreen;
+  width: 200px;
+  height: 100px;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.table-info{
+  position : absolute;
+  top: 300px;
+  left: 450px
+}

@@ -18,6 +18,7 @@ export default function BrowserRestaurantsPage() {
     const listActiveRestaurants = async () => {
         try {
             // Send a GET request to the API to fetch active restaurants
+            
             const response = await instance.get('/consumerListRestaurants');
                 
             // Check if there is a body and parse it if necessary
@@ -47,6 +48,7 @@ export default function BrowserRestaurantsPage() {
             }
         }
     };
+    
 
     // Use useEffect to fetch data when the component mounts
     useEffect(() => {
