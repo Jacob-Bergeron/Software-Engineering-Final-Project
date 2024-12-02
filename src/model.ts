@@ -14,7 +14,6 @@ export class Manager{
     }
 }
 
-
     export class Model{ 
         managers : Array<Manager>
         manager : Manager | null
@@ -23,11 +22,6 @@ export class Manager{
             this.managers = []
             this.manager = null;
         }
-
-<<<<<<< HEAD
-        
-=======
->>>>>>> 6b178901211a4f7056cc1b3604842184b30beb1e
 
         setManager(username : string, password : string){
             this.manager = new Manager(username,password)
