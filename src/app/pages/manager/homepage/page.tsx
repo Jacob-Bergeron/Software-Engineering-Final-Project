@@ -30,6 +30,8 @@ export default function managerHomePage() {
   const [res_UUID, setres_UUID] = React.useState(null)
   const [openTimeInput, setOpenTimeInput] = React.useState("");
   const [closeTimeInput, setCloseTimeInput] = React.useState("");
+  const [tableNumberInput, setTableNumber] = React.useState("");
+  const [numSeatsInput, setNumSeats] = React.useState("");
   const [username, setUsername] = useState('');
   
 
@@ -100,6 +102,19 @@ export default function managerHomePage() {
     }
   }
 
+  async function createTable() {
+    try {
+      const response = await instance.post('/restaurant/createTable', {
+        "res_UUID": res_UUID, "tableNumber" : tableNumberInput, "numSeats" : numSeatsInput
+      });
+
+      andRefreshDisplay()
+    }
+    catch (error) {
+      console.log(error)
+    }
+
+  }
 
   async function ActiveRestaurant() {
 
@@ -115,6 +130,7 @@ export default function managerHomePage() {
     }
 
   }
+
 
   async function retrieveTables(setTables: any) {
   instance
@@ -184,6 +200,7 @@ const TablesList = () => {
           {/* Signs */}
           <label className="inactive-sign">INACTIVE</label>
           <label className="changeTime-sign">Change Schedule</label>
+          <label className="createTable-sign">Create Table</label>
           {/* Restaurant Info Display */}
           <div className="restaurant-info">
             <label className="restaurant-name">Restaurant Name: {restaurantName}</label>
@@ -200,6 +217,17 @@ const TablesList = () => {
             <input className="closeTime-input" id="closingTime" type="text"
               value={closeTimeInput} onChange={(e) => setCloseTimeInput(e.target.value)} placeholder="Enter Closing Time" />
             <button className="submit-changes" onClick={EditRestaurantTime}>Submit Changes</button>
+          </div>
+          {/* Create Table */}
+          <div className="create-table">
+            <label className="tableNumber-label">Table Number</label>
+            <input className="tableNumber-input" id="tableNumber" type="text"
+              value={tableNumberInput} onChange={(e) => setTableNumber(e.target.value)} placeholder="Enter Table Number" />
+            <label className="numSeats-label"> Number of Seats </label>
+            <input className="numSeats-input" id="numSeats" type="text"
+              value={numSeatsInput} onChange={(e) => setNumSeats(e.target.value)} placeholder="Enter Table Number" />
+            <button className="createTable-button" onClick={createTable}>Create Table</button>
+
           </div>
           {/* Activate the Restaurant */}
           <div className="activate-outside">

@@ -46,6 +46,7 @@ export default function Home() {
         console.log(error)
       })
   }
+  
 
   // HTML Elements
   return (
