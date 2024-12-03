@@ -30,18 +30,17 @@ export default function managerHomePage() {
   const [res_UUID, setres_UUID] = React.useState(null)
   const [openTimeInput, setOpenTimeInput] = React.useState("");
   const [closeTimeInput, setCloseTimeInput] = React.useState("");
-
-
   const [username, setUsername] = useState('');
+  
 
-useEffect(() => {
-    const storedManagerData   
- = sessionStorage.getItem('managerData');
-    if (storedManagerData) {
-      const currentManager = JSON.parse(storedManagerData);
-      setUsername(currentManager.username);
-    }
-  }, []);
+  useEffect(() => {
+      const storedManagerData   
+  = sessionStorage.getItem('managerData');
+      if (storedManagerData) {
+        const currentManager = JSON.parse(storedManagerData);
+        setUsername(currentManager.username);
+      }
+    }, []);
 
   let activity = 0
 
