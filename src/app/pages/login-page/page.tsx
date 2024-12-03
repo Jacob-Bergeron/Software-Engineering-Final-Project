@@ -18,14 +18,7 @@ export default function loginpage() {
     const [isManager, setisManager] = React.useState(false);
     const [redraw, forceRedraw] = React.useState(0)
     const router = useRouter();
-    const [searchParams, setSearchParams] = useState<URLSearchParams | null>(null); // Change to URLSearchParams
     
-    useEffect(() => {
-        // This effect runs on the client side, after the component is mounted.
-        //const params = useSearchParams();
-        const params = new URLSearchParams(window.location.search);
-        setSearchParams(params); // Capture the search parameters on the client
-    }, []);
 
     // reset the client side credentials any time this page is loaded 
     modelInstance.setManager("", "")
@@ -51,9 +44,9 @@ export default function loginpage() {
         if (!(isManager)) {
             if (username.value == 'admin' && password.value == 'password') {
                 //Successful admin login
-                window.location.href = '/pages/administrator/homepage';
+                router.push('/pages/administrator/homepage');
             } else if (username.value == 'bonus' && password.value == 'gru') {
-                window.location.href = '/pages/administrator/bonus-page';
+                router.push('/pages/administrator/bonus-page');
             }
             else {
                 alert("invalid credentials")
@@ -76,7 +69,7 @@ export default function loginpage() {
                             if (response.data.result.body[0].username == username.value && response.data.result.body[0].password == password.value) {
                                 modelInstance.setManager(username.value, password.value);
                                 sessionStorage.setItem('managerData', JSON.stringify(modelInstance.getManager()));
-                                window.location.href = '/pages/manager/homepage';
+                                router.push('/pages/manager/homepage');
 
                             }
                         } else {

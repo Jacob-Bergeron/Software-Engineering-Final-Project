@@ -32,18 +32,17 @@ export default function managerHomePage() {
   const [closeTimeInput, setCloseTimeInput] = React.useState("");
   const [tableNumberInput, setTableNumber] = React.useState("");
   const [numSeatsInput, setNumSeats] = React.useState("");
-
-
   const [username, setUsername] = useState('');
+  
 
-useEffect(() => {
-    const storedManagerData   
- = sessionStorage.getItem('managerData');
-    if (storedManagerData) {
-      const currentManager = JSON.parse(storedManagerData);
-      setUsername(currentManager.username);
-    }
-  }, []);
+  useEffect(() => {
+      const storedManagerData   
+  = sessionStorage.getItem('managerData');
+      if (storedManagerData) {
+        const currentManager = JSON.parse(storedManagerData);
+        setUsername(currentManager.username);
+      }
+    }, []);
 
   let activity = 0
 
