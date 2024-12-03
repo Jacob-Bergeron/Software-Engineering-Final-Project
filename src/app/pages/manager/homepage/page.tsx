@@ -43,7 +43,7 @@ useEffect(() => {
     }
   }, []);
 
-  let activity = 0
+  let activity = false
 
   // get the res_UUID from the manager database
   instance.post('/getCorrespondingRestaurant', {
@@ -68,7 +68,7 @@ useEffect(() => {
         setcloseTime(response.data.result.body[0].closeTime || "null")
 
         // change the display if the restaurant is active
-        if (activity == 1) {
+        if (activity == false) {
           setisActive(true)
         }
       }
