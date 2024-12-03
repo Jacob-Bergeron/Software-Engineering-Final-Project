@@ -13,9 +13,6 @@ const instance = axios.create({
 
 
 export default function Home() {
-
-
-
   return (
     <div>
         <div className = "viewAll">
