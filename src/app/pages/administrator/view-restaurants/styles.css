@@ -75,5 +75,10 @@ p {
 }
 
 .back-button{
-  transform: translateY(2vh);
+  width: 125px;
+  height: 75px;
+  background-color: #b9babd;
+  padding: 20px;
+  border-radius: 25px;
+  color: black;
 }
