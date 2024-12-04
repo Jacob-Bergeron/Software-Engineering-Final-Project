@@ -49,6 +49,18 @@
   color: #f9f9f9;
 }
 
+.generate-button {
+  display: relative;
+  width: 230px;
+  height: 50px;
+  border-radius: 2px;
+  background-color: #ca5d5d;
+  vertical-align: auto;
+  font-size: 18px;
+  font-weight: bold;
+  color: #f9f9f9;
+}
+
 ul {
   list-style-type: none;        /* Remove default list bullets */
   padding: 0;                   /* Remove padding */

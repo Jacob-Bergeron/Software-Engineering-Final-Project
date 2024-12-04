@@ -95,7 +95,14 @@ export default function adminViewRestaurants() {
     
 
 
-    function generate(uuid : string){
+    const generateReport = async (res_UUID: string) => {
+        try {
+
+        } catch {
+
+        } finally {
+            
+        }
         
     }
 
@@ -123,8 +130,11 @@ export default function adminViewRestaurants() {
                                     <p><strong>Close Time:</strong> {restaurant.closeTime}</p>
                                     <p><strong>Active?:</strong> {restaurant.isActive}</p>
                                     <button className="delete-button" onClick={() =>
-                                        deleteRestaurant(restaurant.res_UUID)}>Delete this restaurant?</button>
-                                    
+                                        deleteRestaurant(restaurant.res_UUID)}>Delete this restaurant?
+                                        </button>
+                                    <button className="generate-button" onClick={() =>
+                                        generateReport(restaurant.res_UUID)}>Show Availability
+                                        </button>
                                 </li>
                             ))}
                         </ul>
