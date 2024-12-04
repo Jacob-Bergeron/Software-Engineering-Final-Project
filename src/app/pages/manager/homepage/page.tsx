@@ -33,6 +33,8 @@ export default function managerHomePage() {
   const [tableNumberInput, setTableNumber] = React.useState("");
   const [numSeatsInput, setNumSeats] = React.useState("");
   const [username, setUsername] = useState('');
+  const [obj, setObj] = useState<any[]>([]);
+
   
 
   useEffect(() => {
@@ -44,14 +46,13 @@ export default function managerHomePage() {
       }
     }, []);
 
-  let activity = false
 
   // get the res_UUID from the manager database
   instance.post('/getCorrespondingRestaurant', {
     "username": username
   }).then(function (response) {
 
-    setres_UUID(response.data.result.body[0].res_UUID)
+    setres_UUID(response.data.result.body[0].res_UUID || "null")
 
     // get restaurant data from the All_Restaurants table
     instance.post('/managerGetRestaurantData', {
@@ -61,7 +62,7 @@ export default function managerHomePage() {
 
 
       if (status == 200) {
-        activity = response.data.result.body[0].isActive
+        let activity = response.data.result.body[0].isActive
 
         setrestaurantName(response.data.result.body[0].restaurantName || "No Name")
         setAddress(response.data.result.body[0].address || "No Address")
@@ -69,7 +70,10 @@ export default function managerHomePage() {
         setcloseTime(response.data.result.body[0].closeTime || "null")
 
         // change the display if the restaurant is active
-        if (activity == false) {
+        if (activity == 0) {
+          setisActive(false)
+        }
+        else if (activity == 1){
           setisActive(true)
         }
       }
@@ -120,10 +124,9 @@ export default function managerHomePage() {
 
     try {
       const response = await instance.post('/restaurant/activate', {
-        "res_UUID": res_UUID
+        "res_UUID": res_UUID,
       });
-
-      andRefreshDisplay()
+      
     }
     catch (error) {
       console.log(error)
@@ -132,44 +135,34 @@ export default function managerHomePage() {
   }
 
 
-  async function retrieveTables(setTables: any) {
-  instance
-    .post('/restaurant/getTables', {
-      res_UUID: res_UUID,
-    })
-    .then(function (response) {
-      const status = response.data.statusCode;
-      if (status === 200) {
-        const tables = response.data.result.body;
-        if (tables.length > 0) {
-          
+  function retrieveTables() {
+    if (!(res_UUID === null)){
+      instance.post('/restaurant/getTables', {
+        "res_UUID": res_UUID,
+      }).then(function (response) {
+        const status = response.data.statusCode;
+        console.log("Full API Response:", response);
+        if (status === 200) {
+          setObj(response.data.body)          
         } else {
-          alert("No tables found.");
+          alert("Failed to retrieve tables.");
         }
-      } else {
-        alert("Failed to retrieve tables.");
-      }
 
-    })
-    .catch(function (error) {
-      alert("Error retrieving tables.");
-      console.error(error);
-    });
+      }).catch(function (error) {
+        alert("Error retrieving tables.");
+        console.error(error);
+      });
+  }
+  else{
+    alert("res_UUID is null")
+  }
 }
 
-const TablesList = () => {
-  
 
-  return (
-    <div>
-      <h1>Tables</h1>
-      
-    </div>
-  );
-};
-
-
-
+  // Refreshes display anytime there is a change in [obj]
+  useEffect(() => {
+    andRefreshDisplay();
+  }, [obj]);
 
   // HTML
   if (isActive) {
@@ -234,9 +227,23 @@ const TablesList = () => {
             <button className="activate-button" onClick={ActiveRestaurant}>Activate Restaurant</button>
           </div>
           {/* Table Info*/ }
+          <div className = "view-tablesButton">
+            <button className="view-tables" onClick={retrieveTables}>Click Here To View Tables</button>
+          </div>
+
+
           <div className="table-info"> 
-            <h1>table info</h1>
-            <TablesList/>
+          <h1>Available Tables:</h1>
+                <ul>
+                    {obj.map((obj) => (
+                        <li style={{ backgroundColor: 'lightblue', marginBottom: 8, padding: 3 }} key={obj.table_UUID}>
+                            <p>Table: {obj.tableNumber}</p>
+                            <p>Number of Seats: {obj.numSeats}</p>
+                        </li>
+                    ))}
+
+                </ul>
+            
           </div>
         </div>
       </div >
