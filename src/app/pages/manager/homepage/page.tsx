@@ -5,6 +5,8 @@ import { modelInstance } from '../../../../model';
 import './style.css';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { v4 as uuidv4 } from 'uuid';
+
 
 
 
@@ -108,9 +110,9 @@ export default function managerHomePage() {
   async function createTable() {
     try {
       const response = await instance.post('/restaurant/createTable', {
-        "res_UUID": res_UUID, "tableNumber" : tableNumberInput, "numSeats" : numSeatsInput
+        "res_UUID": res_UUID, "tableNumber" : tableNumberInput, "numSeats" : numSeatsInput, "table_UUID" : uuidv4()
       });
-
+      alert("Successfuly Created Table")
       andRefreshDisplay()
     }
     catch (error) {
@@ -180,6 +182,11 @@ export default function managerHomePage() {
     alert("res_UUID is null")
   }
 }
+
+  function editTable(table_UUID : any){
+    sessionStorage.setItem('tableData', JSON.stringify(table_UUID));
+    router.push('/pages/manager/edit-table');
+  }
 
 
   // Refreshes display anytime there is a change in [obj]
@@ -262,9 +269,10 @@ export default function managerHomePage() {
           <h1>Available Tables:</h1>
                 <ul>
                     {obj.map((obj) => (
-                        <li style={{ backgroundColor: 'lightblue', marginBottom: 8, padding: 3 }} key={obj.table_UUID}>
+                        <li style={{ backgroundColor: 'gray', marginBottom: 8, padding: 3 }} key={obj.table_UUID}>
                             <p>Table: {obj.tableNumber}</p>
                             <p>Number of Seats: {obj.numSeats}</p>
+                            <button className = "edit-tableButton" onClick={() => editTable(obj.table_UUID)}>Edit Table</button>
                         </li>
                     ))}
 
