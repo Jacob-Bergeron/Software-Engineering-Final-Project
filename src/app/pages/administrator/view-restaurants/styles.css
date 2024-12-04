@@ -39,9 +39,11 @@
 
 .delete-button {
   display: relative;
+  transform: translateX(15px) translateY(0vh);
   width: 230px;
   height: 50px;
   border-radius: 2px;
+  padding: 10px;
   background-color: #ca5d5d;
   vertical-align: auto;
   font-size: 18px;
@@ -54,7 +56,8 @@
   width: 230px;
   height: 50px;
   border-radius: 2px;
-  background-color: #ca5d5d;
+  padding: 10px;
+  background-color: #5FCE81;
   vertical-align: auto;
   font-size: 18px;
   font-weight: bold;
