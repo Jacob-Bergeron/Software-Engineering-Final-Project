@@ -21,7 +21,6 @@ export default function managerHomePage() {
     forceRedraw(redraw + 1)
   }
 
-
   const [isActive, setisActive] = React.useState(false);
   const [restaurantName, setrestaurantName] = React.useState(null)
   const [address, setAddress] = React.useState(null)
@@ -36,8 +35,6 @@ export default function managerHomePage() {
   const [obj, setObj] = useState<any[]>([]);
   const router = useRouter();
 
-
-  
 
   useEffect(() => {
       const storedManagerData   

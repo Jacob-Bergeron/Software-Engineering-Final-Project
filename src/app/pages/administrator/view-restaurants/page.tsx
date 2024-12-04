@@ -92,11 +92,43 @@ export default function adminViewRestaurants() {
             }
         }
     }
+
+    //function to generate availability report.
+    const generateReport = async (res_UUID: string) => {
+        try {const response = await instance.get('/adminGetAvailability');
+            console.log(response.data);
+                
+            // Check if there is a body and parse it if necessary
+            let resultData;
+            if (response.status === 200 && response.data.body) {
+                const body = JSON.parse(response.data.body); // Parse the body if it's a string
+                resultData = body.result;
+            } else {
+                resultData = response.data.result; // Fallback if the structure is different
+            }
     
+            if (resultData && resultData.length > 0) {
+                setRestaurants(resultData); // Store the restaurant data in state
+            } else {
+                setError('No Tables at this location.');
+            }
+        } catch (err) {
+            // Handle and log network errors
+            if (axios.isAxiosError(err)) {
+                setError(`Axios error: ${err.message}`);
+                console.error("Axios Error:", err.message);
+                console.error("Error Response:", err.response);
+                console.error("Error Request:", err.request);
+            } else {
+                setError('Unexpected error occurred');
+                console.error("Unexpected Error:", err);
+            }
+        }        
+    }
 
-
-    function generate(uuid : string){
-        
+    const handleClick = async (res_UUID: string) => { 
+        await generateReport(res_UUID); 
+        window.location.href = '/pages/administrator/view-restaurants/availability'; // Navigate to the desired page
     }
 
     // Use useEffect to fetch data when the component mounts
@@ -122,9 +154,12 @@ export default function adminViewRestaurants() {
                                     <p><strong>Open Time:</strong> {restaurant.openTime}</p>
                                     <p><strong>Close Time:</strong> {restaurant.closeTime}</p>
                                     <p><strong>Active?:</strong> {restaurant.isActive}</p>
+                                    <button className="generate-button" onClick={() =>
+                                        handleClick(restaurant.res_UUID)}>Show Availability
+                                        </button>
                                     <button className="delete-button" onClick={() =>
-                                        deleteRestaurant(restaurant.res_UUID)}>Delete this restaurant?</button>
-                                    
+                                        deleteRestaurant(restaurant.res_UUID)}>Delete this restaurant?
+                                        </button>
                                 </li>
                             ))}
                         </ul>
