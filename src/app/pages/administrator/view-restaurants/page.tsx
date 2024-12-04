@@ -96,14 +96,35 @@ export default function adminViewRestaurants() {
 
 
     const generateReport = async (res_UUID: string) => {
-        try {
-
-        } catch {
-
-        } finally {
-
-        }
-        
+        try {const response = await instance.get('/adminGetAvailability');
+            console.log(response.data);
+                
+            // Check if there is a body and parse it if necessary
+            let resultData;
+            if (response.status === 200 && response.data.body) {
+                const body = JSON.parse(response.data.body); // Parse the body if it's a string
+                resultData = body.result;
+            } else {
+                resultData = response.data.result; // Fallback if the structure is different
+            }
+    
+            if (resultData && resultData.length > 0) {
+                setRestaurants(resultData); // Store the restaurant data in state
+            } else {
+                setError('No Tables at this location.');
+            }
+        } catch (err) {
+            // Handle and log network errors
+            if (axios.isAxiosError(err)) {
+                setError(`Axios error: ${err.message}`);
+                console.error("Axios Error:", err.message);
+                console.error("Error Response:", err.response);
+                console.error("Error Request:", err.request);
+            } else {
+                setError('Unexpected error occurred');
+                console.error("Unexpected Error:", err);
+            }
+        }        
     }
 
     // Use useEffect to fetch data when the component mounts
