@@ -46,6 +46,14 @@ body {
   transform: translateY(-98vh);
 }
 
+.consumerSignIn{
+  display: flex;
+  align-items: center;
+  text-align: center;
+  transform: translateY(-98vh);
+
+}
+
 .signIn-button{
   width: 125px;
   height: 75px;
