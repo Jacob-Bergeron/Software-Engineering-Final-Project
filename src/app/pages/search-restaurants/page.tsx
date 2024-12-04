@@ -1,5 +1,5 @@
 /*
-12/3 
+12/3
 - Lambda function and API working with the following payload
 - Does display on GUI, given this payload as well
     {
@@ -14,6 +14,12 @@
     //! Edge cases: guests == numSeatsAvailable
     //! Did not test if reservation later in same day would be valid -> 
 //! Note: Pay attention to how data is structured in tables
+
+/*
+12/4
+- Reworked the databases
+- Have not verified edge cases
+*/
 
 
 'use client'                     // NEED THIS to be able to embed HTML in TSX file
