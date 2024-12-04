@@ -67,7 +67,7 @@ export default function managerHomePage() {
         setcloseTime(response.data.result.body[0].closeTime || "null")
 
         // change the display if the restaurant is active
-        if (activity == false) {
+        if (activity == true) {
           setisActive(true)
         }
       }
