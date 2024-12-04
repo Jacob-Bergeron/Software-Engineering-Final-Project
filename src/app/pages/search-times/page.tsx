@@ -47,6 +47,9 @@ export default function SearchTimes() {
                 // set the objects into state
                 setObj(response.data.result.body)
             }
+            else {
+                alert("Could not query")
+            }
 
         }).catch(function (error) {
             console.log(error)
@@ -54,34 +57,35 @@ export default function SearchTimes() {
 
     }
 
-    // Refreshes display anytime there is a change in [restaurants]
+    // Refreshes display anytime there is a change in [obj]
     useEffect(() => {
         andRefreshDisplay();
     }, [obj]);
 
     return (
-        <div>
+        <div >
+
             <div>
-                <h1>Search Times</h1>
+                <h1><u>Search Times</u></h1>
             </div>
 
             <div>
-                <label>Restaurant Name</label>
-                <input onChange={(e) => setResName(e.target.value)} placeholder="input restaurant name" style={{ color: "black" }} />
+                <label style={{ paddingRight: 3 }}>Restaurant Name</label>
+                <input onChange={(e) => setResName(e.target.value)} placeholder="input restaurant name" style={{ color: "black", textAlign: 'center' }} />
             </div>
 
             <div>
-                <label>Date</label>
-                <input onChange={(e) => setDateInput(e.target.value)} placeholder="input date" style={{ color: "black" }} />
+                <label style={{ paddingRight: 3 }}>Date YYYY-MM-DD</label>
+                <input onChange={(e) => setDateInput(e.target.value)} placeholder="input date" style={{ color: "black", textAlign: 'center' }} />
             </div>
 
-            <button onClick={(e) => apiCall()}>Submit</button>
+            <button style={{ background: "green", padding: 2 }} onClick={(e) => apiCall()}>Submit</button>
 
             <div>
-                <h1>Available Times</h1>
+                <h1>Available Times:</h1>
                 <ul>
                     {obj.map((obj) => (
-                        <li key={obj.available_UUID}>
+                        <li style={{ backgroundColor: 'blue', marginBottom: 8, padding: 3 }} key={obj.available_UUID}>
                             <p>Table: {obj.table_UUID}</p>
                             <p>Number of Seats: {obj.numSeats}</p>
                             <p>Start Time: {obj.start_time}</p>
