@@ -14,6 +14,7 @@ export class Manager{
     }
 }
 
+
     export class Model{ 
         managers : Array<Manager>
         manager : Manager | null
