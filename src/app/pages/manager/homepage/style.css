@@ -74,7 +74,7 @@
 
 .time-edits {
   position: absolute;
-  transform: translateX(90vh) translateY(13vh);
+  transform: translateX(85vh) translateY(13vh);
   flex-direction: column;
   text-align: center;
 }
@@ -91,7 +91,7 @@
 
 .create-table{
   position: absolute;
-  transform: translateX(90vh) translateY(30vh);
+  transform: translateX(85vh) translateY(28vh);
   flex-direction: column;
   text-align: center;
 }
@@ -124,7 +124,7 @@
   border-radius: 2px;
   border-color: black;
   border: 1px;
-  transform: translateX(85vh) translateY(25vh);
+  transform: translateX(85vh) translateY(22vh);
   font-size: 25px;
 }
 
@@ -163,7 +163,7 @@
 .view-tables{
   width:150px;
   height:50px;
-  background-color: lightblue;
+  background-color: lightblue; 
 }
 
 .delete-restaurant {
@@ -182,4 +182,13 @@
   font-size: 18px;
   font-weight: bold;
   color: black;
+}
+
+.edit-tableButton{
+  display: relative;
+  background-color: lightgreen;
+  width: 100px;
+  height: 25px;
+  transform: translateX(0vh) translateY(0vh);
+  vertical-align: auto;
 }
