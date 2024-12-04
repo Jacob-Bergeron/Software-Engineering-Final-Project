@@ -131,6 +131,29 @@ export default function managerHomePage() {
 
   }
 
+  const deleteRestaurant = async () => {
+    try{
+      const response = await instance.post('/managerDeleteRestaurant', {
+        res_UUID
+      });
+      if (response.status == 200){
+        alert("Restaurant deleted.")
+        andRefreshDisplay()
+      } else{
+        alert("Restaurant deletion failed!");
+      }
+    } catch (err){
+      // Handle and log network errors
+      if (axios.isAxiosError(err)) {
+        console.error("Axios Error:", err.message);
+        console.error("Error Response:", err.response);
+        console.error("Error Request:", err.request);
+    } else {
+        console.error("Unexpected Error:", err);
+    }
+    }
+  }
+
 
   async function retrieveTables(setTables: any) {
   instance
@@ -227,7 +250,10 @@ const TablesList = () => {
             <input className="numSeats-input" id="numSeats" type="text"
               value={numSeatsInput} onChange={(e) => setNumSeats(e.target.value)} placeholder="Enter Table Number" />
             <button className="createTable-button" onClick={createTable}>Create Table</button>
-
+          </div>
+          {/* Delete Table */}
+          <div className="delete-restaurant">
+            <button className="delete-button" onClick={deleteRestaurant}>Delete Restaurant?</button>
           </div>
           {/* Activate the Restaurant */}
           <div className="activate-outside">
