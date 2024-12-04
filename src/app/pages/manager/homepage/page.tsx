@@ -3,9 +3,7 @@ import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import { modelInstance } from '../../../../model';
 import './style.css';
-
-
-
+import Link from 'next/link';
 
 
 // all WEB traffic using this API instance. You should replace this endpoint with whatever
@@ -51,7 +49,7 @@ export default function managerHomePage() {
     "username": username
   }).then(function (response) {
 
-    setres_UUID(response.data.result.body[0].res_UUID)
+    setres_UUID(response.data.result.body[0].res_UUID || "null")
 
     // get restaurant data from the All_Restaurants table
     instance.post('/managerGetRestaurantData', {
@@ -133,7 +131,7 @@ export default function managerHomePage() {
 
   const deleteRestaurant = async () => {
     try{
-      const response = await instance.post('/managerDeleteRestaurant', {
+      const response = await instance.post('/restaurant/delete', {
         res_UUID
       });
       if (response.status == 200){
@@ -141,6 +139,7 @@ export default function managerHomePage() {
         andRefreshDisplay()
       } else{
         alert("Restaurant deletion failed!");
+        andRefreshDisplay()        
       }
     } catch (err){
       // Handle and log network errors
