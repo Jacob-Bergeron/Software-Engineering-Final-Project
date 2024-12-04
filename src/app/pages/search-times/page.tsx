@@ -57,10 +57,7 @@ export default function SearchTimes() {
 
     }
 
-    // Refreshes display anytime there is a change in [obj]
-    useEffect(() => {
-        andRefreshDisplay();
-    }, [obj]);
+
 
     return (
         <div >
