@@ -4,6 +4,8 @@ import axios from "axios";
 import { modelInstance } from '../../../../model';
 import './style.css';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
 
 
 // all WEB traffic using this API instance. You should replace this endpoint with whatever
@@ -32,6 +34,8 @@ export default function managerHomePage() {
   const [numSeatsInput, setNumSeats] = React.useState("");
   const [username, setUsername] = useState('');
   const [obj, setObj] = useState<any[]>([]);
+  const router = useRouter();
+
 
   
 
@@ -139,7 +143,7 @@ export default function managerHomePage() {
       });
       if (response.status == 200){
         alert("Restaurant deleted.")
-        andRefreshDisplay()
+        router.push('/pages/login-page');
       } else{
         alert("Restaurant deletion failed!");
         andRefreshDisplay()        
