@@ -3,9 +3,7 @@ import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import { modelInstance } from '../../../../model';
 import './style.css';
-
-
-
+import Link from 'next/link';
 
 
 // all WEB traffic using this API instance. You should replace this endpoint with whatever
@@ -134,6 +132,30 @@ export default function managerHomePage() {
 
   }
 
+  const deleteRestaurant = async () => {
+    try{
+      const response = await instance.post('/restaurant/delete', {
+        res_UUID
+      });
+      if (response.status == 200){
+        alert("Restaurant deleted.")
+        andRefreshDisplay()
+      } else{
+        alert("Restaurant deletion failed!");
+        andRefreshDisplay()        
+      }
+    } catch (err){
+      // Handle and log network errors
+      if (axios.isAxiosError(err)) {
+        console.error("Axios Error:", err.message);
+        console.error("Error Response:", err.response);
+        console.error("Error Request:", err.request);
+    } else {
+        console.error("Unexpected Error:", err);
+    }
+    }
+  }
+
 
   function retrieveTables() {
     if (!(res_UUID === null)){
@@ -220,7 +242,10 @@ export default function managerHomePage() {
             <input className="numSeats-input" id="numSeats" type="text"
               value={numSeatsInput} onChange={(e) => setNumSeats(e.target.value)} placeholder="Enter Table Number" />
             <button className="createTable-button" onClick={createTable}>Create Table</button>
-
+          </div>
+          {/* Delete Table */}
+          <div className="delete-restaurant">
+            <button className="delete-button" onClick={deleteRestaurant}>Delete Restaurant?</button>
           </div>
           {/* Activate the Restaurant */}
           <div className="activate-outside">

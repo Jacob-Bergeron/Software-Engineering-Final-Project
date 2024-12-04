@@ -159,8 +159,27 @@
 .view-tablesButton{
   transform: translateX(0vh) translateY(35vh);
 }
+
 .view-tables{
   width:150px;
   height:50px;
   background-color: lightblue;
+}
+
+.delete-restaurant {
+  position: absolute;
+  background-color: white;
+  transform: translateX(125vh) translateY(88vh);
+}
+
+.delete-button {
+  display: relative;
+  width: 200px;
+  height: 50px;
+  border-radius: 2px;
+  background-color: #ca5d5d;
+  vertical-align: auto;
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
 }
