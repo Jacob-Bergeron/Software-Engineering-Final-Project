@@ -130,11 +130,7 @@ export default function loginpage() {
 
             </div>
 
-            <div className="back-button-login">
-                <p>
-                    <Link href="/" className="back-button">Back</Link>
-                </p>
-            </div>
+            
 
         </div>
         </Suspense>

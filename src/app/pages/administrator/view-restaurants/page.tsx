@@ -95,6 +95,10 @@ export default function adminViewRestaurants() {
     
 
 
+    function generate(uuid : string){
+        
+    }
+
     // Use useEffect to fetch data when the component mounts
     useEffect(() => {
         listAll();

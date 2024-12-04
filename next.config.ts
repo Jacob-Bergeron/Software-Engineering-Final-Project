@@ -6,5 +6,4 @@ const nextConfig: NextConfig = {
   basePath : '/psiren-tables4u'
   */
 };
-
 export default nextConfig;
