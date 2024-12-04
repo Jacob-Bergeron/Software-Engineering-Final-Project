@@ -92,9 +92,8 @@ export default function adminViewRestaurants() {
             }
         }
     }
-    
 
-
+    //function to generate availability report.
     const generateReport = async (res_UUID: string) => {
         try {const response = await instance.get('/adminGetAvailability');
             console.log(response.data);
@@ -127,6 +126,11 @@ export default function adminViewRestaurants() {
         }        
     }
 
+    const handleClick = async (res_UUID: string) => { 
+        await generateReport(res_UUID); 
+        window.location.href = '/availability-viewer'; // Navigate to the desired page
+    }
+
     // Use useEffect to fetch data when the component mounts
     useEffect(() => {
         listAll();
@@ -151,7 +155,7 @@ export default function adminViewRestaurants() {
                                     <p><strong>Close Time:</strong> {restaurant.closeTime}</p>
                                     <p><strong>Active?:</strong> {restaurant.isActive}</p>
                                     <button className="generate-button" onClick={() =>
-                                        generateReport(restaurant.res_UUID)}>Show Availability
+                                        handleClick(restaurant.res_UUID)}>Show Availability
                                         </button>
                                     <button className="delete-button" onClick={() =>
                                         deleteRestaurant(restaurant.res_UUID)}>Delete this restaurant?
