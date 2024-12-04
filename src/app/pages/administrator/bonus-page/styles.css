@@ -3,3 +3,11 @@
     height: auto; /*maintain aspect ratio relative to width*/ 
     border: null;
 }
+
+.omni-class {
+    width: 200px;
+    height: auto;
+    vertical-align: middle;
+    align-items: right;
+    border: null;
+}

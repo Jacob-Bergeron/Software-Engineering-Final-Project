@@ -128,7 +128,7 @@ export default function adminViewRestaurants() {
 
     const handleClick = async (res_UUID: string) => { 
         await generateReport(res_UUID); 
-        window.location.href = '/availability'; // Navigate to the desired page
+        window.location.href = '/pages/administrator/view-restaurants/availability'; // Navigate to the desired page
     }
 
     // Use useEffect to fetch data when the component mounts

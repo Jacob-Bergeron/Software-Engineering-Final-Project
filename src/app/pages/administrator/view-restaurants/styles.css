@@ -5,7 +5,7 @@
   text-align: center;           /* Center text inside the container */
   flex-direction: column;       /* Stack items vertically */
   min-height: 100vh;            /* Make the container take up the full height of the viewport */
-  background-color: white;     /* Set background color */
+  background-color: #ffffff;  /* Set background color */
   padding: 20px;                /* Optional: Add some padding to prevent content from touching the edges */
   box-sizing: border-box;       /* Ensure padding doesn't mess with the layout */
   position: relative;           /* To allow absolute positioning of the back button */
