@@ -32,11 +32,15 @@ export default function MakeReservation() {
 
 
     function apiCall() {
-        instance.post('', {
-            "email": email, "resName": resName, "date": date, "table_UUID":table_UUID, "timeStart":timeStart, "numGuests":numGuests
+        instance.post('/makeReservation', {
+            "email": email, "resName": resName, "date": date, "table_UUID": table_UUID, "timeStart": timeStart, "numGuests": numGuests
         }).then(function (response) {
             let status = response.data.statusCode
 
+            //if successful in reaching database AND there is something in the payload coming to client
+            if (status == 200 && response.data.result) {
+                alert("Confirmation code is" + response.data.result.body)
+            }
 
         }).catch(function (error) {
             console.log(error)
