@@ -22,6 +22,12 @@ export default function Home() {
               <Link href="/pages/login-page" className = "signIn-button">Sign In</Link>
           </p>
         </div>
+
+        <div className = "consumerSignIn">
+          <p>
+              <Link href="/pages/find-reservation" className = "signIn-button">Find an Existing Reservation</Link>
+          </p>
+        </div>
     </div>
   );
 }
