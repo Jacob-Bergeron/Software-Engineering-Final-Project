@@ -56,9 +56,6 @@ export default function BrowserRestaurantsPage() {
     }, []);  // Empty dependency array means this runs only once after the first render
     return (
         <div>
-            <div className = "back-button-format">
-                    <Link href="/" className="back-button">Back</Link>
-            </div>
             <div className="browserestaurants">
             
                 <div className="listActiveRestaurants">
