@@ -25,6 +25,13 @@ export class Consumer{
 
     getEmail(){
         return this.email
+export class Table{
+    table_UUID : String
+    res_UUID : String
+
+    constructor(table:string,res:string){
+        this.table_UUID = table;
+        this.res_UUID = res;
     }
 }
 
@@ -33,11 +40,13 @@ export class Consumer{
         managers : Array<Manager>
         manager : Manager | null
         consumer : Consumer | null
+        table : Table | null
 
         constructor(){
             this.managers = []
             this.manager = null;
             this.consumer = null;
+            this.table = null;
         }
 
         setManager(username : string, password : string){
@@ -54,6 +63,14 @@ export class Consumer{
 
         getManager(){
             return this.manager;
+        }
+
+        setTable(table : any, res : any){
+            this.table = new Table(table,res)
+        }
+
+        getTable(){
+            return this.table;
         }
 
         

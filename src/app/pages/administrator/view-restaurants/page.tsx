@@ -154,9 +154,9 @@ export default function adminViewRestaurants() {
                                     <p><strong>Open Time:</strong> {restaurant.openTime}</p>
                                     <p><strong>Close Time:</strong> {restaurant.closeTime}</p>
                                     <p><strong>Active?:</strong> {restaurant.isActive}</p>
-                                    <button className="generate-button" onClick={() =>
-                                        handleClick(restaurant.res_UUID)}>Show Availability
-                                        </button>
+                                    {restaurant.isActive ? ( <button className="generate-button" onClick={() => 
+                                        handleClick(restaurant.res_UUID)}> Show Availability </button> ) 
+                                        : null}
                                     <button className="delete-button" onClick={() =>
                                         deleteRestaurant(restaurant.res_UUID)}>Delete this restaurant?
                                         </button>
