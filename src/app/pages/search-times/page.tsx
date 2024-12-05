@@ -11,6 +11,11 @@
 //! 12/3
 //! Barely any testing done to this 
 
+/*
+12/4
+- Updated this to work with the new data base
+*/
+
 
 'use client'                     // NEED THIS to be able to embed HTML in TSX file
 import React, { useEffect, useState } from 'react';
@@ -81,12 +86,11 @@ export default function SearchTimes() {
             <div>
                 <h1>Available Times:</h1>
                 <ul>
-                    {obj.map((obj) => (
-                        <li style={{ backgroundColor: 'blue', marginBottom: 8, padding: 3 }} key={obj.available_UUID}>
-                            <p>Table: {obj.table_UUID}</p>
+                    {obj.map((obj, index) => (
+                        <li style={{ backgroundColor: 'blue', marginBottom: 8, padding: 3 }} key={index}>
+                            <p>Table ID: {obj.table_UUID}</p>
                             <p>Number of Seats: {obj.numSeats}</p>
-                            <p>Start Time: {obj.start_time}</p>
-                            <p>End Time: {obj.end_time}</p>
+                            <p>Time Available: {obj.timeStart}</p>
                         </li>
                     ))}
                 </ul>
