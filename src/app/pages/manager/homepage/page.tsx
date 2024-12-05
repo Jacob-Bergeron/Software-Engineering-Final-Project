@@ -34,7 +34,7 @@ export default function managerHomePage() {
   const [closeTimeInput, setCloseTimeInput] = React.useState("");
   const [tableNumberInput, setTableNumber] = React.useState("");
   const [numSeatsInput, setNumSeats] = React.useState("");
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState("")
   const [obj, setObj] = useState<any[]>([]);
   const [isPopupVisible, setisPopupVisible] = React.useState(false)
   const [tableInfo, settableInfo] = React.useState("")
