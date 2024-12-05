@@ -1,0 +1,53 @@
+.admin-report-util {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.back-button-format {
+    margin: 10px;
+}
+
+.admin-container {
+    display: flex;
+    flex: 1;
+}
+
+.left-column, .middle-column, .right-column {
+    flex: 1;
+    padding: 20px;
+    border: 1px solid #ccc;
+    overflow-y: auto;
+}
+
+.left-column {
+    background-color: #FAF9F6;
+}
+
+.middle-column {
+    background-color: #A3C1DA;
+}
+
+.right-column {
+    background-color: #FAF9F6;
+}
+
+.reserved {
+    color: red;
+}
+
+.available {
+    color: green;
+}
+
+.restaurant-list div {
+    cursor: pointer;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    color: #000;
+}
+
+.restaurant-list div:hover {
+    background-color: #eee;
+}
