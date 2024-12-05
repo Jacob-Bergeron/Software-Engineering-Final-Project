@@ -16,6 +16,7 @@ const instance = axios.create({
   baseURL: 'https://q3l4c6o0hh.execute-api.us-east-2.amazonaws.com/initial/'
 });
 
+
 export default function managerHomePage() {
   const [redraw, forceRedraw] = React.useState(0)
 
@@ -115,6 +116,7 @@ export default function managerHomePage() {
         "res_UUID": res_UUID, "tableNumber" : tableNumberInput, "numSeats" : numSeatsInput, "table_UUID" : uuidv4()
       });
       alert("Successfuly Created Table")
+      retrieveTables()
       andRefreshDisplay()
     }
     catch (error) {
@@ -168,7 +170,6 @@ export default function managerHomePage() {
         "res_UUID": res_UUID,
       }).then(function (response) {
         const status = response.data.statusCode;
-        console.log("Full API Response:", response);
         if (status === 200) {
           setObj(response.data.body)          
         } else {
@@ -213,13 +214,19 @@ export default function managerHomePage() {
 
   function submitEditTable(){
     let table_UUID = modelInstance.getTable()?.table_UUID;
+    if (parseInt(tableInfo,10) > 9 || parseInt(tableInfo,10) < 1){
+      alert("Invalid seat number. (1-8) Required")
+    }
+    else{
     instance.post('/restaurant/editTable', {
       "table_UUID" : table_UUID, "numSeats" : tableInfo
     }).then(function (response) {
       const status = response.data.statusCode;
       if (status === 200) {
         andRefreshDisplay()
-        alert("successfully edited table")
+        closePopup()
+        retrieveTables()
+        alert("Successfully Edited Table")
       } else {
         alert("Failed to retrieve table.");
       }
@@ -229,15 +236,8 @@ export default function managerHomePage() {
       console.error(error);
     });
   }
+  }
 
-
-
-
-
-  // Refreshes display anytime there is a change in [obj]
-  useEffect(() => {
-    andRefreshDisplay();
-  }, [obj]);
 
   // HTML
   if (isActive) {
