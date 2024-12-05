@@ -19,20 +19,20 @@
     color: black;
 }
 
-.restaurant-info .date{  
-    font-weight: bold;
-    margin: 8px;
-    color: black;
+.cancel-reservation{
+    position: absolute;
+    background-color: white;
+    transform: translateX(150vh) translateY(-55vh);
 }
 
-.restaurant-info .time{  
+.cancel-button{
+    display: relative;
+    width: 200px;
+    height: 50px;
+    border-radius: 2px;
+    background-color: #ca5d5d;
+    vertical-align: auto;
+    font-size: 18px;
     font-weight: bold;
-    margin: 8px;
-    color: black;
-}
-
-.restaurant-info .numberGuests{  
-    font-weight: bold;
-    margin: 8px;
     color: black;
 }

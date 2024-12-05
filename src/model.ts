@@ -25,6 +25,8 @@ export class Consumer{
 
     getEmail(){
         return this.email
+    }
+}
 export class Table{
     table_UUID : String
     res_UUID : String
