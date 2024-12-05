@@ -21,15 +21,15 @@
 }
 
 .left-column {
-    background-color: #f8f8f8;
+    background-color: #FAF9F6;
 }
 
 .middle-column {
-    background-color: #fff;
+    background-color: #A3C1DA;
 }
 
 .right-column {
-    background-color: #f8f8f8;
+    background-color: #FAF9F6;
 }
 
 .reserved {
@@ -45,6 +45,7 @@
     margin: 10px 0;
     padding: 10px;
     border: 1px solid #ddd;
+    color: #000;
 }
 
 .restaurant-list div:hover {
