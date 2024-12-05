@@ -35,6 +35,8 @@ export default function managerHomePage() {
   const [numSeatsInput, setNumSeats] = React.useState("");
   const [username, setUsername] = useState('');
   const [obj, setObj] = useState<any[]>([]);
+  const [isPopupVisible, setisPopupVisible] = React.useState(false)
+  const [tableInfo, settableInfo] = React.useState("")
   const router = useRouter();
 
 
@@ -184,9 +186,52 @@ export default function managerHomePage() {
 }
 
   function editTable(table_UUID : any){
-    sessionStorage.setItem('tableData', JSON.stringify(table_UUID));
-    router.push('/pages/manager/edit-table');
+    modelInstance.setTable(table_UUID,res_UUID);
+    setisPopupVisible(true)
   }
+
+  function closePopup() {
+    setisPopupVisible(false);
+  }
+
+  const renderPopup = () => {
+    if (!isPopupVisible) return null; 
+    return (
+      <div className="edit-tablePopup">
+        <div>
+          <button className = "close-edit-tablePopup-Button" onClick={closePopup}>Close</button>
+        </div>
+
+        <div>
+        <input className="edit-tableInput" type="text"
+              value={tableInfo} onChange={(e) => settableInfo(e.target.value)} placeholder="Enter New Number of Tables" />
+        <button className = "edit-tableInputButton" onClick={submitEditTable}>Submit</button>
+        </div>
+      </div>
+    );
+  };
+
+  function submitEditTable(){
+    let table_UUID = modelInstance.getTable()?.table_UUID;
+    instance.post('/restaurant/editTable', {
+      "table_UUID" : table_UUID, "numSeats" : tableInfo
+    }).then(function (response) {
+      const status = response.data.statusCode;
+      if (status === 200) {
+        andRefreshDisplay()
+        alert("successfully edited table")
+      } else {
+        alert("Failed to retrieve table.");
+      }
+
+    }).catch(function (error) {
+      alert("Error retrieving table.");
+      console.error(error);
+    });
+  }
+
+
+
 
 
   // Refreshes display anytime there is a change in [obj]
@@ -279,6 +324,11 @@ export default function managerHomePage() {
                 </ul>
             
           </div>
+          {/*Edit Table*/}
+          {renderPopup()}
+
+
+
         </div>
       </div >
     );

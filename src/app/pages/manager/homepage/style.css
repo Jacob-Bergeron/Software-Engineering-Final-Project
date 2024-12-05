@@ -131,7 +131,7 @@
 .activate-outside {
   position: absolute;
   background-color: white;
-  transform: translateX(160vh) translateY(85vh);
+  transform: translateX(158vh) translateY(84vh);
 }
 
 .activate-button {
@@ -191,4 +191,39 @@
   height: 25px;
   transform: translateX(0vh) translateY(0vh);
   vertical-align: auto;
+}
+
+.edit-tablePopup{
+  width: 400px;
+  height: 100px;
+  background-color: lightpink;
+  z-index: 2;
+  transform: translateX(-19vh) translateY(45vh);
+}
+
+
+.close-edit-tablePopup-Button{
+  margin: 4px;
+  padding: 4px;
+  border-radius: 2px;
+  border: 1px solid;
+  border-color: #000 ;
+  color: black;
+}
+
+.edit-tableInput{
+  color: white;
+  background-color: black;
+  transform: translateX(-0vh) translateY(0vh);
+  border: 1px solid;
+  border-color: #000 ;
+  padding: 4px;
+  margin: 4px;
+}
+
+.edit-tableInputButton{
+  background-color: black;
+  color: white;
+  width: 60px;
+  height: 25px;
 }
