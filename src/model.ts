@@ -14,18 +14,42 @@ export class Manager{
     }
 }
 
+export class Consumer{
+    email : String
+    sixDigitCode : String
+    
+    constructor(name:string, password:string){
+        this.email = name
+        this.sixDigitCode = password
+    }
+
+    getEmail(){
+        return this.email
+    }
+}
+
 
     export class Model{ 
         managers : Array<Manager>
         manager : Manager | null
+        consumer : Consumer | null
 
         constructor(){
             this.managers = []
             this.manager = null;
+            this.consumer = null;
         }
 
         setManager(username : string, password : string){
             this.manager = new Manager(username,password)
+        }
+
+        setConsumer(email : string, sixDigitCode : string){
+            this.consumer = new Consumer(email,sixDigitCode)
+        }
+
+        getConsumer(){
+            return this.consumer;
         }
 
         getManager(){

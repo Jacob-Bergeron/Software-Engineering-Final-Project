@@ -13,10 +13,12 @@ const instance = axios.create({
     baseURL: 'https://q3l4c6o0hh.execute-api.us-east-2.amazonaws.com/initial/'
 });
 
-export default function loginpage() {
+export default function findReservationPage() {
     const [redraw, forceRedraw] = React.useState(0)
     const router = useRouter();
     
+    modelInstance.setConsumer("", "")
+
 
     const andRefreshDisplay = () => {
         forceRedraw(redraw + 1)
@@ -24,16 +26,15 @@ export default function loginpage() {
 
 
     //Function that is called when 
-    function login() {
+    function findReservation() {
         //Get username and password
-        let username = document.getElementById("username") as HTMLInputElement
-        let password = document.getElementById("password") as HTMLInputElement
+        let email = document.getElementById("email") as HTMLInputElement
+        let sixDigitCode = document.getElementById("sixDigitCode") as HTMLInputElement
 
 
 
-        //Manager login section
-            instance.post('/getReservation', { // make lambda function
-                "username": username.value, "password": password.value
+            instance.post('/findReservation', { // make lambda function
+                "email": email.value, "sixDigitCode": sixDigitCode.value
             })
                 // 'response' is the JSON that is returned from LAMBDA could be 200 or 400
                 .then(function (response) {
@@ -43,10 +44,10 @@ export default function loginpage() {
                         console.log(response.data.body)
                         // if the body has something in it 
                         if (response.data.result.body.length > 0) {
-                            if (response.data.result.body[0].username == username.value && response.data.result.body[0].password == password.value) {
-                                modelInstance.setManager(username.value, password.value);
-                                sessionStorage.setItem('managerData', JSON.stringify(modelInstance.getManager()));
-                                router.push('/pages/manager/homepage');
+                            if (response.data.result.body[0].email == email.value && response.data.result.body[0].sixDigitCode == sixDigitCode.value) {
+                                modelInstance.setConsumer(email.value, sixDigitCode.value);
+                                sessionStorage.setItem('consumerData', JSON.stringify(modelInstance.getConsumer()));
+                                router.push('/pages/reservation-information');
 
                             }
                         } else {
@@ -73,11 +74,11 @@ export default function loginpage() {
         <Suspense fallback={<div>Loading...</div>}>
         <div>
             <div className="login-page">
-                <label className="Username">Email </label>
-                <input id="username" type="text" className="UsernameInput" placeholder="Enter Email" />
-                <label className="Password">Code </label>
-                <input id="password" type="text" className="PasswordInput" placeholder="Enter 6-digit Code" />
-                <button className="login-button" onClick={(e) => login()}>Find Reservation</button>
+                <label className="email">Email </label>
+                <input id="email" type="text" className="UsernameInput" placeholder="Enter Email" />
+                <label className="sixDigitCode">Code </label>
+                <input id="sixDigitCode" type="text" className="PasswordInput" placeholder="Enter 6-digit Code" />
+                <button className="login-button" onClick={(e) => findReservation()}>Find Reservation</button>
             </div>
         </div>
         </Suspense>

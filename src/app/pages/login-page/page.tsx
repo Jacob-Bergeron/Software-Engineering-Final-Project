@@ -5,7 +5,6 @@ import Link from 'next/link';
 import React, {Suspense, useState, useEffect} from 'react';
 import axios from "axios";
 import { useRouter } from 'next/navigation';
-//import { useSearchParams } from 'next/navigation';
 
 
 // all WEB traffic using this API instance. You should replace this endpoint with whatever

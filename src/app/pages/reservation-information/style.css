@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.restaurant-info{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: white;
+}
+
+.restaurant-info .name{
+    font-weight: bold;
+    margin: 8px;
+    color: black;
+}
+
+.restaurant-info .date{  
+    font-weight: bold;
+    margin: 8px;
+    color: black;
+}
+
+.restaurant-info .time{  
+    font-weight: bold;
+    margin: 8px;
+    color: black;
+}
+
+.restaurant-info .numberGuests{  
+    font-weight: bold;
+    margin: 8px;
+    color: black;
+}

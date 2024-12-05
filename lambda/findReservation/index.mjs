@@ -8,11 +8,12 @@ export const handler = async (event) => {
     database: "Tables4u",
   });
 
-  let getRestaurantData = (res_UUID) => {
+
+  let findReservation = (email, sixDigitCode) => {
     return new Promise((resolve, reject) => {
       pool.query(
-        "SELECT * FROM All_Restaurants WHERE res_UUID = ?",
-        [res_UUID],
+        "SELECT * FROM Consumer_Accounts WHERE email = ? AND sixDigitCode = ?", 
+        [email, sixDigitCode],
         (error, rows) => {
           if (error) {
             return reject(error);
@@ -21,26 +22,27 @@ export const handler = async (event) => {
         }
       );
     });
-  };
-let response;
-
-  // this is what is returned to client
-  try{
-    const ans = await getRestaurantData(event.res_UUID);
-    response = {
-      statusCode: 200,
-      result: {
-        body: ans 
-      },
-    }
-  } catch(error){
-    response = {
-      statusCode : 400,
-      message : "Internal Error",
-      error : error.message
-    };
   }
-   
+
+
+const credentials = await findReservation(event.email,event.sixDigitCode)
+  
+let response;
+try {
+  response = {
+    statusCode: 200,
+    result: {
+        body : credentials
+    },
+  };
+} catch(error)  {
+  response = {
+    statusCode: 400,
+    message:"Could not retieve contents",
+  }
+}
+
+
   pool.end(); // close DB connections
 
   return response;
