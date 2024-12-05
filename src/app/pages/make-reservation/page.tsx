@@ -2,8 +2,26 @@
 Assumptions:
 - The user knows all of the data related to their resservation to input
 */
+/*
+12/4 
+- Lambda works
+- API works
+- GUI works
+- Given following payload: ** make sure database is empty before trying
 
+{
+  "email": "test@gmail.com",
+  "resName": "test",
+  "date": "2024-12-25",
+  "table_UUID": "table1",
+  "timeStart": "1700",
+  "numGuests": "5"
+}
 
+*/
+
+//! 12/4 
+//! Barely any testing done to this
 
 
 
@@ -41,6 +59,9 @@ export default function MakeReservation() {
             if (status == 200 && response.data.result) {
                 alert("Confirmation code is" + response.data.result.body)
             }
+            else {
+                alert("400 or invalid response")
+            }
 
         }).catch(function (error) {
             console.log(error)
@@ -58,32 +79,32 @@ export default function MakeReservation() {
 
             <div>
                 <label>Email:</label>
-                <input onChange={(e) => setEmail(e.target.value)}></input>
+                <input onChange={(e) => setEmail(e.target.value)} style={{ color: "black", textAlign: 'center' }}></input>
             </div>
 
             <div>
                 <label>Restaurant Name:</label>
-                <input onChange={(e) => setResName(e.target.value)} ></input>
+                <input onChange={(e) => setResName(e.target.value)} style={{ color: "black", textAlign: 'center' }}></input>
             </div>
 
             <div>
                 <label>Date:</label>
-                <input onChange={(e) => setDate(e.target.value)} ></input>
+                <input onChange={(e) => setDate(e.target.value)} style={{ color: "black", textAlign: 'center' }} ></input>
             </div>
 
             <div>
                 <label>Table ID:</label>
-                <input onChange={(e) => setTable_UUID(e.target.value)} ></input>
+                <input onChange={(e) => setTable_UUID(e.target.value)} style={{ color: "black", textAlign: 'center' }}></input>
             </div>
 
             <div>
                 <label>Start Time:</label>
-                <input onChange={(e) => setTimeStart(e.target.value)}></input>
+                <input onChange={(e) => setTimeStart(e.target.value)} style={{ color: "black", textAlign: 'center' }}></input>
             </div>
 
             <div>
                 <label>Number of Guests:</label>
-                <input onChange={(e) => setNumGuests(e.target.value)}></input>
+                <input onChange={(e) => setNumGuests(e.target.value)} style={{ color: "black", textAlign: 'center' }}></input>
             </div>
 
             <button style={{ background: "green", padding: 2 }} onClick={(e) => apiCall()}>Submit</button>

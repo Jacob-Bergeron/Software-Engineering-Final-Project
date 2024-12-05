@@ -108,21 +108,21 @@ export default function SearchRestaurants() {
         <div>
 
             <div>
-                <h1>Search Restaurants</h1>
+                <h1><u>Search Restaurants</u></h1>
             </div>
 
             <div>
-                <label>Date</label>
+                <label style={{ paddingRight: 3 }} >Date YYYY-MM-DD</label>
                 <input onChange={(e) => setDateInput(e.target.value)} placeholder="Input date" style={{ color: "black" }} />
             </div>
 
             <div>
-                <label>Time</label>
+                <label style={{ paddingRight: 3 }}>Time</label>
                 <input onChange={(e) => setTimeInput(e.target.value)} placeholder="Input time" style={{ color: "black" }} />
             </div>
 
             <div>
-                <label>Number of People</label>
+                <label style={{ paddingRight: 3 }}>Number of People</label>
                 <input onChange={(e) => setPeopleInput(e.target.value)} placeholder="Input number of people" style={{ color: "black" }} />
             </div>
 
@@ -133,7 +133,7 @@ export default function SearchRestaurants() {
                 <h1>Available Restaurants</h1>
                 <ul>
                     {restaurants.map((restaurant) => (
-                        <li key={restaurant.table_UUID}>
+                        <li key={restaurant.table_UUID} style={{ backgroundColor: 'blue', marginBottom: 8, padding: 3 }} >
                             <h3>Restaurant Name: {restaurant.restaurantName}</h3>
                             <p>Table ID: {restaurant.table_UUID}</p>
                             <p>Date: {(restaurant.date)}</p>
