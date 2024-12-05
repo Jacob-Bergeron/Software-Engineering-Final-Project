@@ -16,6 +16,7 @@ const instance = axios.create({
   baseURL: 'https://q3l4c6o0hh.execute-api.us-east-2.amazonaws.com/initial/'
 });
 
+
 export default function managerHomePage() {
   const [redraw, forceRedraw] = React.useState(0)
 
@@ -35,6 +36,8 @@ export default function managerHomePage() {
   const [numSeatsInput, setNumSeats] = React.useState("");
   const [username, setUsername] = useState("")
   const [obj, setObj] = useState<any[]>([]);
+  const [isPopupVisible, setisPopupVisible] = React.useState(false)
+  const [tableInfo, settableInfo] = React.useState("")
   const router = useRouter();
 
 
@@ -113,6 +116,7 @@ export default function managerHomePage() {
         "res_UUID": res_UUID, "tableNumber" : tableNumberInput, "numSeats" : numSeatsInput, "table_UUID" : uuidv4()
       });
       alert("Successfuly Created Table")
+      retrieveTables()
       andRefreshDisplay()
     }
     catch (error) {
@@ -166,7 +170,6 @@ export default function managerHomePage() {
         "res_UUID": res_UUID,
       }).then(function (response) {
         const status = response.data.statusCode;
-        console.log("Full API Response:", response);
         if (status === 200) {
           setObj(response.data.body)          
         } else {
@@ -184,15 +187,57 @@ export default function managerHomePage() {
 }
 
   function editTable(table_UUID : any){
-    sessionStorage.setItem('tableData', JSON.stringify(table_UUID));
-    router.push('/pages/manager/edit-table');
+    modelInstance.setTable(table_UUID,res_UUID);
+    setisPopupVisible(true)
   }
 
+  function closePopup() {
+    setisPopupVisible(false);
+  }
 
-  // Refreshes display anytime there is a change in [obj]
-  useEffect(() => {
-    andRefreshDisplay();
-  }, [obj]);
+  const renderPopup = () => {
+    if (!isPopupVisible) return null; 
+    return (
+      <div className="edit-tablePopup">
+        <div>
+          <button className = "close-edit-tablePopup-Button" onClick={closePopup}>Close</button>
+        </div>
+
+        <div>
+        <input className="edit-tableInput" type="text"
+              value={tableInfo} onChange={(e) => settableInfo(e.target.value)} placeholder="Enter New Number of Tables" />
+        <button className = "edit-tableInputButton" onClick={submitEditTable}>Submit</button>
+        </div>
+      </div>
+    );
+  };
+
+  function submitEditTable(){
+    let table_UUID = modelInstance.getTable()?.table_UUID;
+    if (parseInt(tableInfo,10) > 9 || parseInt(tableInfo,10) < 1){
+      alert("Invalid seat number. (1-8) Required")
+    }
+    else{
+    instance.post('/restaurant/editTable', {
+      "table_UUID" : table_UUID, "numSeats" : tableInfo
+    }).then(function (response) {
+      const status = response.data.statusCode;
+      if (status === 200) {
+        andRefreshDisplay()
+        closePopup()
+        retrieveTables()
+        alert("Successfully Edited Table")
+      } else {
+        alert("Failed to retrieve table.");
+      }
+
+    }).catch(function (error) {
+      alert("Error retrieving table.");
+      console.error(error);
+    });
+  }
+  }
+
 
   // HTML
   if (isActive) {
@@ -279,6 +324,11 @@ export default function managerHomePage() {
                 </ul>
             
           </div>
+          {/*Edit Table*/}
+          {renderPopup()}
+
+
+
         </div>
       </div >
     );
