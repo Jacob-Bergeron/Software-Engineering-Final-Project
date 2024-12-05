@@ -56,7 +56,7 @@ export default function managerHomePage() {
     setres_UUID(response.data.result.body[0].res_UUID || "null")
 
     // get restaurant data from the All_Restaurants table
-    instance.post('/managerGetRestaurantData', {
+    instance.post('/managerGetRestaurantData', { 
       "res_UUID": res_UUID
     }).then(function (response) {
       let status = response.data.statusCode

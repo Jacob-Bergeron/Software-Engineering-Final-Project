@@ -13,7 +13,7 @@ const instance = axios.create({
     baseURL: 'https://q3l4c6o0hh.execute-api.us-east-2.amazonaws.com/initial/'
 });
 
-export default function loginpage() {
+export default function res_infoPage() {
     const [redraw, forceRedraw] = React.useState(0)
     
 
@@ -46,7 +46,6 @@ export default function loginpage() {
     instance.post('/getConsumerData', {
         "email" : email
     }).then(function (response){
-        setcons_UUID(response.data.result.body[0].cons_UUID || "null")      
         
         let status = response.data.statusCode
 
@@ -60,7 +59,30 @@ export default function loginpage() {
             console.log(error)
         })
 
-       
+
+    const cancelReservation = async () => { // lambda function works but not on page implementation
+        try{
+            const response = await instance.post('/cancelReservation', {
+                email : "email"
+            });
+            if (response.status == 200){
+                alert("Reservation Canceled");
+                router.push('/pages/find-reservation');
+            }
+            else{
+                alert("Cancelation failed");
+                andRefreshDisplay()
+            }
+        } catch (err){
+            if (axios.isAxiosError(err)) {
+                console.error("Axios Error:", err.message);
+                console.error("Error Response:", err.response);
+                console.error("Error Request:", err.request);
+            } else {
+                console.error("Unexpected Error:", err);
+            }
+        }
+    }
 
 
     //Html Elements
@@ -68,11 +90,16 @@ export default function loginpage() {
         <Suspense fallback={<div>Loading...</div>}>
         <div>
             <div className="restaurant-info">
+            <label className="name">Email: {email}</label>
             <label className="name">Restaurant Name: {resName}</label>
-            <label className="date">Date: {date}</label>
-            <label className="time">Time: {bookingTime}</label>
-            <label className="numberGuests">Number of Guests: {numGuests}</label>
-          </div>
+            <label className="name">Date: {date}</label>
+            <label className="name">Time: {bookingTime}</label>
+            <label className="name">Number of Guests: {numGuests}</label>
+            </div>
+
+            <div className="cancel-reservation">
+                <button className="cancel-button" onClick={cancelReservation}>Cancel Reservation?</button>
+            </div>
         </div>
         </Suspense>
 
