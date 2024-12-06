@@ -2,11 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.active-restaurant {
-  display: flex;
-  background-color: white;
-  min-height: 100vh;
-}
 
 .inactive-restaurant {
   display: flex;
