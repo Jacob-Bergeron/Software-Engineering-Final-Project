@@ -241,26 +241,9 @@ export default function managerHomePage() {
 
   // HTML
   if (isActive) {
-    return (
-      <div>
-        <div className="active-restaurant">
-          <label className="active-sign">ACTIVE</label>
-          <div className="restaurant-info">
-            <label className="restaurant-name">Restaurant Name: {restaurantName}</label>
-            <label className="restaurant-address">Address: {address}</label>
-            <label className="restaurant-opentime">Opens at: {startTime}</label>
-            <label className="restaurant-closetime">Closes at: {closeTime}</label>
-          </div>
-        </div>
-
-
-
-
-
-      </div >
-    );
+    sessionStorage.setItem('managerID', JSON.stringify(res_UUID));
+    router.push('/pages/manager/active-homepage')
   }
-
   else {
     return (
       <div>
