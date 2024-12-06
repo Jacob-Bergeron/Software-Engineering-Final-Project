@@ -22,14 +22,26 @@
 
 .left-column {
     background-color: #FAF9F6;
+    color: #000;
+    /*config for header text*/
+    text-align: center;
+    font-size: 24px;
 }
 
 .middle-column {
     background-color: #A3C1DA;
+    color: #000;
+    /*config for header text*/
+    text-align: center;
+    font-size: 24px;
 }
 
 .right-column {
     background-color: #FAF9F6;
+    color: #000;
+    /*config for header text*/
+    text-align: center;
+    font-size: 24px;
 }
 
 .reserved {

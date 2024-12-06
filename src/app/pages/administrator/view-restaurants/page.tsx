@@ -93,41 +93,43 @@ export default function adminViewRestaurants() {
         }
     }
 
-    //function to generate availability report.
-    const generateReport = async (res_UUID: string) => {
-        try {const response = await instance.get('/adminGetAvailability');
-            console.log(response.data);
+    // //function to generate availability report.
+    // const generateReport = async (res_UUID: string) => {
+    //     try {const response = await instance.get('/adminGetAvailability');
+    //         console.log(response.data);
                 
-            // Check if there is a body and parse it if necessary
-            let resultData;
-            if (response.status === 200 && response.data.body) {
-                const body = JSON.parse(response.data.body); // Parse the body if it's a string
-                resultData = body.result;
-            } else {
-                resultData = response.data.result; // Fallback if the structure is different
-            }
+    //         // Check if there is a body and parse it if necessary
+    //         let resultData;
+    //         if (response.status === 200 && response.data.body) {
+    //             const body = JSON.parse(response.data.body); // Parse the body if it's a string
+    //             resultData = body.result;
+    //         } else {
+    //             resultData = response.data.result; // Fallback if the structure is different
+    //         }
     
-            if (resultData && resultData.length > 0) {
-                setRestaurants(resultData); // Store the restaurant data in state
-            } else {
-                setError('No Tables at this location.');
-            }
-        } catch (err) {
-            // Handle and log network errors
-            if (axios.isAxiosError(err)) {
-                setError(`Axios error: ${err.message}`);
-                console.error("Axios Error:", err.message);
-                console.error("Error Response:", err.response);
-                console.error("Error Request:", err.request);
-            } else {
-                setError('Unexpected error occurred');
-                console.error("Unexpected Error:", err);
-            }
-        }        
-    }
+    //         if (resultData && resultData.length > 0) {
+    //             setRestaurants(resultData); // Store the restaurant data in state
+    //         } else {
+    //             setError('No tables at this location.');
+    //         }
+    //     } catch (err) {
+    //         // Handle and log network errors
+    //         if (axios.isAxiosError(err)) {
+    //             setError(`Axios error: ${err.message}`);
+    //             console.error("Axios Error:", err.message);
+    //             console.error("Error Response:", err.response);
+    //             console.error("Error Request:", err.request);
+    //         } else {
+    //             setError('Unexpected error occurred');
+    //             console.error("Unexpected Error:", err);
+    //         }
+    //     }        
+    // }
 
+    //TODO: Pass ID of selected restaurant to view-restaurants/availability page.
     const handleClick = async (res_UUID: string) => { 
-        await generateReport(res_UUID); 
+        //migrating report generation to the view-restaurants/availabilty page.
+        //await generateReport(res_UUID); 
         window.location.href = '/pages/administrator/view-restaurants/availability'; // Navigate to the desired page
     }
 
@@ -141,7 +143,6 @@ export default function adminViewRestaurants() {
                     <Link href="/pages/administrator/homepage" className="back-button">Back</Link>
             </div>
             <div className="browserestaurants">
-            
                 <div className="listAll">
                 <div className="adminHeader">Restaurants</div>
                     {error && <p>{error}</p>} {/* Show error message if there was an issue */}

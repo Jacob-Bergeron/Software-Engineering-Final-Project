@@ -1,6 +1,6 @@
 'use client'; // This is necessary to use React hooks in Next.js 13 (for client-side rendering)
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import './styles.css';
@@ -29,23 +29,37 @@ export default function AdminReportUtil() {
     const [selectedTable, setSelectedTable] = useState<Reservation | null>(null);
     const [error, setError] = useState<string>('');  // State to hold any error messages
 
-    const fetchReservations = async () => {
+    // Function to generate availability report
+    const generateReport = async (res_UUID: string) => {
         try {
-            const response = await instance.post('/adminDeleteReservation');
-            const resultData = response.data.result || [];
-            setAvailability(resultData);
+            const response = await instance.get(`/adminGetAvailability/${res_UUID}`);
+            console.log(response.data);
+            
+            let resultData;
+            if (response.status === 200 && response.data.body) {
+                const body = JSON.parse(response.data.body); // Parse the body if it's a string
+                resultData = body.result;
+            } else {
+                resultData = response.data.result; // Fallback if the structure is different
+            }
+
+            if (resultData && resultData.length > 0) {
+                setAvailability(resultData); // Store the restaurant data in state
+            } else {
+                setError('No tables at this location.');
+            }
         } catch (err) {
             if (axios.isAxiosError(err)) {
                 setError(`Axios error: ${err.message}`);
+                console.error("Axios Error:", err.message);
+                console.error("Error Response:", err.response);
+                console.error("Error Request:", err.request);
             } else {
                 setError('Unexpected error occurred');
+                console.error("Unexpected Error:", err);
             }
-        }
+        }        
     };
-
-    useEffect(() => {
-        fetchReservations();
-    }, []);
 
     const handleDelete = async (reservationId: string) => {
         // Handle delete reservation logic here
@@ -54,13 +68,14 @@ export default function AdminReportUtil() {
     return (
         <div className="admin-report-util">
             <div className="back-button-format">
-                <Link href="/pages/administrator/homepage" className="back-button">Back</Link>
+                <Link href="/pages/administrator/view-restaurants" className="back-button">Back</Link>
             </div>
             <div className="admin-container">
                 {/* Left Sector */}
                 <div className="left-column">
                     <h2>Restaurants</h2>
                     <div className="restaurant-list">
+                        <button onClick={() => generateReport('restaurantUUID')}>Generate Report</button>
                         {error && <p>{error}</p>}
                         {availability.length > 0 ? (
                             availability.map((table) => (
@@ -70,7 +85,7 @@ export default function AdminReportUtil() {
                                 </div>
                             ))
                         ) : (
-                            <p>No restaurants available.</p>
+                            <p>No tables available.</p>
                         )}
                     </div>
                 </div>
@@ -81,7 +96,6 @@ export default function AdminReportUtil() {
                         <div>
                             <h2>Schedule for Table {selectedTable.tableNumber}</h2>
                             <ul>
-                                {/* Time blocs should be generated dynamically */}
                                 {[5, 6, 7, 8, 9].map((time) => (
                                     <li key={time} className={selectedTable.isReserved ? 'reserved' : 'available'}>
                                         {time}:00
