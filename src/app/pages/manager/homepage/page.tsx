@@ -247,28 +247,6 @@ export default function managerHomePage() {
 
   // HTML
   if (isActive) {
-    return (
-      <div>
-        <div className="active-restaurant">
-          <label className="active-sign">ACTIVE</label>
-          <div className="restaurant-info">
-            <label className="restaurant-name">Restaurant Name: {restaurantName}</label>
-            <label className="restaurant-address">Address: {address}</label>
-            <label className="restaurant-opentime">Opens at: {startTime}</label>
-            <label className="restaurant-closetime">Closes at: {closeTime}</label>
-          </div>
-          {/* Delete Restaurant */}
-          <div className="delete-restaurant">
-            <button className="delete-button" onClick={deleteRestaurant}>Delete Restaurant?</button>
-          </div>
-        </div>
-
-
-
-
-
-      </div >
-    );
     sessionStorage.setItem('managerID', JSON.stringify(res_UUID));
     router.push('/pages/manager/active-homepage')
   }
