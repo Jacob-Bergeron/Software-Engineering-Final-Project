@@ -269,8 +269,9 @@ export default function managerHomePage() {
 
       </div >
     );
+    sessionStorage.setItem('managerID', JSON.stringify(res_UUID));
+    router.push('/pages/manager/active-homepage')
   }
-
   else {
     return (
       <div>
