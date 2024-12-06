@@ -50,7 +50,6 @@ export default function managerHomePage() {
       }
     }, []);
 
-
   // get the res_UUID from the manager database
   instance.post('/getCorrespondingRestaurant', {
     "username": username
@@ -79,6 +78,9 @@ export default function managerHomePage() {
         }
         else if (activity == 1){
           setisActive(true)
+          console.log(res_UUID)
+          localStorage.setItem('managerID', JSON.stringify(res_UUID));
+          router.push('/pages/manager/active-homepage')
         }
       }
 
@@ -244,13 +246,8 @@ export default function managerHomePage() {
   }
   }
 
-
   // HTML
-  if (isActive) {
-    sessionStorage.setItem('managerID', JSON.stringify(res_UUID));
-    router.push('/pages/manager/active-homepage')
-  }
-  else {
+  
     return (
       <div>
         <div className="inactive-restaurant">
@@ -322,5 +319,4 @@ export default function managerHomePage() {
       </div >
     );
   }
-}
 

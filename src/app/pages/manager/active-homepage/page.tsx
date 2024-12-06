@@ -27,34 +27,34 @@ export default function managerHomePage() {
     const [closeTime, setcloseTime] = React.useState("")
     const [res_UUID, setres_UUID] = React.useState("")
 
+    //Get res_UUID
     useEffect(() => {
-        const storedManagerID   
-    = sessionStorage.getItem('managerID');
+        const storedManagerID   = localStorage.getItem('managerID');
         if (storedManagerID) {
-          
-          setres_UUID(storedManagerID);
+          const currentManager = JSON.parse(storedManagerID);
+          setres_UUID(currentManager);
         }
       }, []);
 
 
-
+    console.log(res_UUID)
     instance.post('/managerGetRestaurantData', {
         "res_UUID": res_UUID
       }).then(function (response) {
-        let status = response.data.statusCode
+      let status = response.data.statusCode
   
   
-        if (status == 200) {  
-          setrestaurantName(response.data.result.body[0].restaurantName || "No Name")
-          setAddress(response.data.result.body[0].address || "No Address")
-          setstartTime(response.data.result.body[0].openTime || "null")
-          setcloseTime(response.data.result.body[0].closeTime || "null")
-            alert("test");
-        }
+      if (status == 200) {  
+
+        setrestaurantName(response.data.result.body[0].restaurantName || "No Name")
+        setAddress(response.data.result.body[0].address || "No Address")
+        setstartTime(response.data.result.body[0].openTime || "null")
+        setcloseTime(response.data.result.body[0].closeTime || "null")
+      }
   
-      }).catch(function (error) {
-        console.log(error)
-      })
+    }).catch(function (error) {
+      console.log(error)
+    })
 
 
     return(
