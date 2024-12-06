@@ -13,13 +13,13 @@
     background-color: white;
 }
 
-.login-page .Username{
+.login-page .email{
     font-weight: bold;
     margin: 8px;
     color: black;
 }
 
-.login-page .Password{  
+.login-page .sixDigitCode{  
     font-weight: bold;
     margin: 8px;
     color: black;
@@ -51,55 +51,4 @@
     border-radius: 1px; 
     padding: 10px;
     color: black;
-}
-
-.back-button-login{
-    transform: translateY(-98vh);
-}
-
-.login-page .register{
-    color: black;
-}
-
-.login-page .register-button{
-    color: blue;
-    text-decoration: underline;
-}   
-
-
-.login-page .switch {
-    position: relative;
-    width: 200px;
-    height: 40px;
-    background-color: #ccc;
-    border-radius: 20px;
-    transition: background-color 0.3s;
-}
-
-.login-page .switch input {
-    display: none;
-}
-
-.login-page .slider {
-    position: absolute;
-    width: 100px;
-    height: 36px;
-    background-color: white;
-    border-radius: 18px;
-    top: 2px;
-    left: 2px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 14px;
-    font-weight: bold;
-    color: #333;
-    transition: transform 0.3s;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.login-page input:checked + .slider {
-    transform: translateX(100px);
-    background-color: white;
-    color: #333;
 }
