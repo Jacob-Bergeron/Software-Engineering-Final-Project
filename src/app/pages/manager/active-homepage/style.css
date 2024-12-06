@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.active-restaurant {
+  display: flex;
+  background-color: white;
+  min-height: 100vh;
+}
+
+.restaurant-info {
+    background-color: lightgray;
+    min-height: 100vh;
+    min-width: 80vh;
+  }
+  
+  .restaurant-name {
+    position: absolute;
+    color: black;
+    font-size: 32px;
+    transform: translateX(0vh) translateY(0vh);
+  }
+  
+  .restaurant-address {
+    position: absolute;
+    transform: translateX(0vh) translateY(6vh);
+    color: black;
+    font-size: 20px;
+  }
+  
+  .restaurant-opentime {
+    position: absolute;
+    transform: translateX(0vh) translateY(10vh);
+    color: black;
+    font-size: 20px;
+  }
+  
+  .restaurant-closetime {
+    position: absolute;
+    transform: translateX(0vh) translateY(14vh);
+    color: black;
+    font-size: 20px;
+  }
