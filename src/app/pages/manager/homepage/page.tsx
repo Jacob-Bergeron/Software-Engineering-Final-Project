@@ -113,6 +113,8 @@ export default function managerHomePage() {
   }
 
   async function createTable() {
+    if(Number(numSeatsInput) > 8){ alert("Invalid seat number. (1-8) Required"); andRefreshDisplay();}
+    if(!getTableNumbers(Number(tableNumberInput))){ alert("Table number already exists"); andRefreshDisplay();}
     try {
       const response = await instance.post('/restaurant/createTable', {
         "res_UUID": res_UUID, "tableNumber" : tableNumberInput, "numSeats" : numSeatsInput, "table_UUID" : uuidv4()
@@ -125,6 +127,27 @@ export default function managerHomePage() {
       console.log(error)
     }
 
+  }
+
+function getTableNumbers(num : Number){
+  instance.post('/restaurant/getTableNumbers',{
+    "res_UUID" : res_UUID
+  })
+
+  .then(function (response){
+    let status = response.data.statusCode;
+
+    if (status == 200){
+      console.log(response.data.body);
+      if(response.data.result.body[0] != num){ 
+        return true;
+      }
+      else {return false;}
+    }
+    else { return false;}
+  }); return false;
+
+  
   }
 
   async function ActiveRestaurant() {
