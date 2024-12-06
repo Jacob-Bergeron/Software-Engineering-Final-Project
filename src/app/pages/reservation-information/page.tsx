@@ -28,7 +28,8 @@ export default function res_infoPage() {
     const [numGuests, setNumGuests] = React.useState(null)
     const [date, setDate] = React.useState(null)
 
-    const [email, setEmail] = useState("")
+    const [email, setEmail] = useState(null)
+    const [sixDigitCode, setCode] = useState(null)
     const router = useRouter()
 
 
@@ -54,16 +55,18 @@ export default function res_infoPage() {
             setBookingTime(response.data.result.body[0].bookingTime || "No Time")
             setDate(response.data.result.body[0].date || "No Date")
             setNumGuests(response.data.result.body[0].numGuests || 0)
+            setCode(response.data.result.body[0].sixDigitCode || null)
+            
         }            
         }).catch(function (error) {
             console.log(error)
         })
 
 
-    const cancelReservation = async () => { // lambda function works but not on page implementation
+    const cancelReservation = async () => {
         try{
             const response = await instance.post('/cancelReservation', {
-                email : "email"
+               "email" : email, "sixDigitCode" : sixDigitCode
             });
             if (response.status == 200){
                 alert("Reservation Canceled");
