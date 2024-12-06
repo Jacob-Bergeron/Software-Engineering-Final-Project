@@ -54,7 +54,7 @@ export default function AdminReportUtil() {
     return (
         <div className="admin-report-util">
             <div className="back-button-format">
-                <Link href="/pages/administrator/homepage" className="back-button">Back</Link>
+                <Link href="/pages/administrator/homepage/view-restaurants" className="back-button">Back</Link>
             </div>
             <div className="admin-container">
                 {/* Left Sector */}
