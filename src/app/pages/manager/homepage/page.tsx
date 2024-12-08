@@ -40,6 +40,8 @@ export default function managerHomePage() {
   const [tableInfo, settableInfo] = React.useState("")
   const router = useRouter();
 
+  const [allTableNumbers, setAllTableNumbers] = React.useState("")
+
 
   useEffect(() => {
       const storedManagerData   
@@ -113,8 +115,11 @@ export default function managerHomePage() {
   }
 
   async function createTable() {
-    if(Number(numSeatsInput) > 8){ alert("Invalid seat number. (1-8) Required"); andRefreshDisplay();}
-    if(!getTableNumbers(Number(tableNumberInput))){ alert("Table number already exists"); andRefreshDisplay();}
+    if(Number(numSeatsInput) > 8 || Number(numSeatsInput) < 1){ alert("Invalid seat number. (1-8) Required"); andRefreshDisplay(); return; }
+    // function to check if entered table number is correct
+    if(!checkTableNumbers()){ 
+      alert("Table number already exists"); andRefreshDisplay(); return; } 
+
     try {
       const response = await instance.post('/restaurant/createTable', {
         "res_UUID": res_UUID, "tableNumber" : tableNumberInput, "numSeats" : numSeatsInput, "table_UUID" : uuidv4()
@@ -129,26 +134,49 @@ export default function managerHomePage() {
 
   }
 
-function getTableNumbers(num : Number){
-  instance.post('/restaurant/getTableNumbers',{
-    "res_UUID" : res_UUID
-  })
-
-  .then(function (response){
-    let status = response.data.statusCode;
-
-    if (status == 200){
-      console.log(response.data.body);
-      if(response.data.result.body[0] != num){ 
-        return true;
+  async function checkTableNumbers() {
+    // Fetch table numbers before checking
+    await getTableNumbers(); // Wait for table numbers to be fetched
+    alert(allTableNumbers);
+    let num = tableNumberInput;
+    if (allTableNumbers.length !== 0) {
+      // Check if the entered table number exists in the allTableNumbers array
+      if (allTableNumbers.includes(num)) {
+        alert("Table number already exists");
+        andRefreshDisplay(); // Refresh the display
+        return false; // Return false if the table number already exists
       }
-      else {return false;}
     }
-    else { return false;}
-  }); return false;
-
   
+    return true; // Return true if the table number does not exist
   }
+  
+
+  const getTableNumbers = async () => { // DOES NOT ADD TABLE NUMBERS TO VARIABLE...
+    try {
+      const response = await instance.post('/restaurant/getTableNumbers', {
+        "res_UUID": res_UUID
+      });
+      let resultData;
+      if (response.status === 200) {
+        const body = JSON.parse(response.data.body);
+        resultData = body.result; alert("success 200");
+      } else {
+        resultData = response.data.result;
+      }
+        setAllTableNumbers(resultData); // Update state with fetched table numbers
+      
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        console.error("Axios Error:", err.message);
+        console.error("Error Response:", err.response);
+        console.error("Error Request:", err.request);
+      } else {
+        console.error("Unexpected Error:", err);
+      }
+    }
+  };
+  
 
   async function ActiveRestaurant() {
 
@@ -202,7 +230,8 @@ function getTableNumbers(num : Number){
       }).then(function (response) {
         const status = response.data.statusCode;
         if (status === 200) {
-          setObj(response.data.body)          
+          setObj(response.data.body)    
+          //alert("Loading Tables ...");   
         } else {
           alert("Failed to retrieve tables.");
         }
