@@ -39,7 +39,7 @@ export default function managerHomePage() {
   const [isPopupVisible, setisPopupVisible] = React.useState(false)
   const [tableInfo, settableInfo] = React.useState("")
   const router = useRouter();
-const [closedDates, setClosedDates] = React.useState<any[]>([]);
+  const [closedDates, setClosedDates] = React.useState<any[]>([]);
 
 
   useEffect(() => {
@@ -95,29 +95,29 @@ const [closedDates, setClosedDates] = React.useState<any[]>([]);
     console.log(error)
   })
 
-  useEffect(() => {
-    const fetchClosedDates = async () => {
-      try {
-        const response = await instance.post('/restaurant/getClosedDates', {
-          "res_UUID": res_UUID,
-        });
+ 
 
-        if (response.status === 200) {
-          setClosedDates(response.data);  // Save closed dates to state
-         // alert(closedDates);
-        } else {
-          console.log("Error fetching closed dates");
-        }
-      } catch (error) {
-        console.error("Error fetching closed dates:", error);
+ function getClosedDates(){
+      instance.post('/restaurant/getClosedDates', {
+        "res_UUID": res_UUID,
+      }).then(function (response){
+      if (response.status === 200) {
+        console.log(response.data.body)
+        setClosedDates(response.data.body);
+        
+        console.log("Closed dates data:", closedDates)
+        
+      } else {
+        
+        console.log("Error fetching closed dates");
       }
-    };
+    }).catch (function(error) {
+      
+      console.error("Error fetching closed dates:", error);
+    });
+  };
+  
 
-    if (res_UUID) {
-      fetchClosedDates();  // Fetch closed dates when res_UUID is available
-      andRefreshDisplay();
-    }
-  }, [res_UUID]);
 
   // REACT COMPONENTS
   async function EditRestaurantTime() {
@@ -206,6 +206,7 @@ const [closedDates, setClosedDates] = React.useState<any[]>([]);
       }).then(function (response) {
         const status = response.data.statusCode;
         if (status === 200) {
+          console.log(response.data.body)
           setObj(response.data.body)    
           //alert("Loading Tables ...");   
         } else {
@@ -324,17 +325,15 @@ const [closedDates, setClosedDates] = React.useState<any[]>([]);
           </div>
 
           <div className="closed-dates">
+            <button onClick={getClosedDates}>Get Closed Dates</button>
           <h2>Closed Dates:</h2>
           <ul>
-            {closedDates.length > 0 ? (
-              closedDates.map((date, index) => (
-                <li key={index}>
-                  {new Date(date.closedDate).toLocaleDateString()} 
+            {closedDates.map((closedDates) => (
+                <li key={closedDates.date}>
+                  <p>{closedDates.date}</p>
                 </li>
               ))
-            ) : (
-              <li>No closed dates found</li>
-            )}
+             }
           </ul>
         </div>
 

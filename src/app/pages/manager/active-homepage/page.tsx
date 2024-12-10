@@ -99,6 +99,7 @@ export default function managerHomePage() {
             <div className="delete-restaurant">
               <button className="delete-button" onClick={deleteRestaurant}>Delete Restaurant?</button>
             </div>
+            
 
 
         </div>
