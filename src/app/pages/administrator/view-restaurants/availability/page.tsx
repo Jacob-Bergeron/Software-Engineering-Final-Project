@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useRouter } from 'next/router';
+import { useSearchParams } from 'next/navigation'; // Correct way to parse query params in Next.js
 import Link from 'next/link';
 import './styles.css';
 
@@ -23,15 +23,19 @@ interface Reservation {
 }
 
 export default function AdminReportUtil() {
-    const router = useRouter();
-    const { res_UUID } = router.query; //extract restaurant UUID from URL params
+    const searchParams = useSearchParams();
+    const res_UUID = searchParams.get('res_UUID'); // Extract restaurant UUID from URL params
     
     const [availability, setAvailability] = useState<Reservation[]>([]);  // State to hold restaurant/table data
     const [selectedTable, setSelectedTable] = useState<Reservation | null>(null);
     const [error, setError] = useState<string>('');  // State to hold any error messages
 
     // Function to generate availability report with res_UUID
-    const generateReport = async (res_UUID: string) => {
+    const generateReport = async () => {
+        if (!res_UUID) {
+            setError('Restaurant UUID is missing');
+            return;
+        }
         try {
             const response = await instance.get(`/adminGetAvailability/${res_UUID}`);
             console.log(response.data);
@@ -67,9 +71,7 @@ export default function AdminReportUtil() {
     };
 
     useEffect(() => {
-        if (res_UUID) {
-            generateReport(res_UUID as string); 
-        } 
+        generateReport();
     }, [res_UUID]);
 
     const handleDelete = async (reservationId: string) => { 
@@ -86,7 +88,6 @@ export default function AdminReportUtil() {
                 <div className="left-column">
                     <h2>Restaurants</h2>
                     <div className="restaurant-list">
-                        <button className="genbutton" onClick={() => generateReport('restaurantUUID')}>Generate Report</button>
                         {error && <p>{error}</p>}
                         {availability.length > 0 ? (
                             availability.map((table) => (
