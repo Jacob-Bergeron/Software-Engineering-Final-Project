@@ -20,7 +20,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.browseRestaurants{
+.browseRestaurants {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -30,8 +30,7 @@ body {
   min-height: 100vh;
 }
 
-
-.browseRestaurants-button{
+.browseRestaurants-button {
   width: 300px;
   height: 150px;
   background-color: #b9babd;
@@ -41,7 +40,19 @@ body {
   font-size: 25px;
 }
 
-.signIn{
+.searchRestaurants-button {
+  position: relative;
+  top: 60px;
+  width: 300px;
+  height: 150px;
+  background-color: #b9babd;
+  padding: 20px;
+  border-radius: 25px;
+  color: black;
+  font-size: 25px;
+}
+
+.signIn {
   text-align: right;
   transform: translateY(-98vh);
 }
@@ -54,7 +65,7 @@ body {
 
 }
 
-.signIn-button{
+.signIn-button {
   width: 125px;
   height: 75px;
   background-color: #b9babd;
@@ -63,20 +74,18 @@ body {
   color: black;
 }
 
-.HomePage-Title{
+.HomePage-Title {
   text-align: center;
   font-size: 40px;
   color: black;
   margin: 12px;
 }
 
-.back-button{
+.back-button {
   width: 125px;
   height: 75px;
   background-color: #b9babd;
   padding: 20px;
   border-radius: 25px;
   color: black;
-  
 }
-

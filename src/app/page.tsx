@@ -14,6 +14,9 @@ export default function Home() {
           </div>
           <p>
               <Link href="/pages/browse-restaurants" className = "browseRestaurants-button">Browse Restaurants</Link>
+          </p> 
+          <p>
+            <Link href='/pages/search-restaurants' className="searchRestaurants-button">Search Restaurants</Link>
           </p>
         </div>
 
@@ -22,12 +25,7 @@ export default function Home() {
               <Link href="/pages/login-page" className = "signIn-button">Sign In</Link>
           </p>
         </div>
-
-        <div className = "consumerSignIn">
-          <p>
-              <Link href="/pages/find-reservation" className = "signIn-button">Find an Existing Reservation</Link>
-          </p>
-        </div>
+        
     </div>
   );
 }
