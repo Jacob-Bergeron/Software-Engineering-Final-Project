@@ -29,7 +29,7 @@ export default function AdminReportUtil() {
     useEffect(() => {
         // Retrieve the restaurant UUID from local storage when the component mounts
         const storedRes_UUID = localStorage.getItem('res_UUID');
-        if (storedRes_UUID) {
+        if (storedRes_UUID) {   //need this statement to get around an error in line 34.
             setRes_UUID(storedRes_UUID);
             generateReport(storedRes_UUID);
         } else {
