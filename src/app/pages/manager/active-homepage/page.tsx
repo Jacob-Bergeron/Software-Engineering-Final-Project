@@ -96,9 +96,9 @@ export default function managerHomePage() {
                   <label className="restaurant-closetime">Closes at: {closeTime}</label>
               </div>
               {/* Delete Table */}
-              <div className="delete-restaurant">
-                <button className="delete-button" onClick={deleteRestaurant}>Delete Restaurant?</button>
-              </div>
+            <div className="delete-restaurant">
+              <button className="delete-button" onClick={deleteRestaurant}>Delete Restaurant?</button>
+            </div>
 
 
         </div>
