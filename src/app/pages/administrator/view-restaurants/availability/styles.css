@@ -47,6 +47,19 @@
     font-weight: bold;
 }
 
+.genbutton{
+    display: relative;
+    width: 230px;
+    height: 50px;
+    border-radius: 2px;
+    padding: 10px;
+    background-color: #5FCE81;
+    vertical-align: auto;
+    font-size: 18px;
+    font-weight: bold;
+    color: #f9f9f9;
+}
+
 .reserved {
     color: red;
 }
