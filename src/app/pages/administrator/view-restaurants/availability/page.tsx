@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useSearchParams } from 'next/navigation'; // Correct way to parse query params in Next.js
 import Link from 'next/link';
 import './styles.css';
 
@@ -22,19 +21,24 @@ interface Reservation {
 }
 
 export default function AdminReportUtil() {
-    const searchParams = useSearchParams();
-    const res_UUID = searchParams.get('res_UUID'); // Extract restaurant UUID from URL params
-    
+    const [res_UUID, setRes_UUID] = useState<string | null>(null); // State to hold restaurant UUID
     const [availability, setAvailability] = useState<Reservation[]>([]);  // State to hold restaurant/table data
     const [selectedTable, setSelectedTable] = useState<Reservation | null>(null);
     const [error, setError] = useState<string>('');  // State to hold any error messages
 
-    // Function to generate availability report with res_UUID
-    const generateReport = async () => {
-        if (!res_UUID) {
+    useEffect(() => {
+        // Retrieve the restaurant UUID from local storage when the component mounts
+        const storedRes_UUID = localStorage.getItem('res_UUID');
+        if (storedRes_UUID) {
+            setRes_UUID(storedRes_UUID);
+            generateReport(storedRes_UUID);
+        } else {
             setError('Restaurant UUID is missing');
-            return;
         }
+    }, []);
+
+    // Function to generate availability report with res_UUID
+    const generateReport = async (res_UUID: string) => {
         try {
             const response = await instance.get(`/adminGetAvailability/${res_UUID}`);
             console.log(response.data);
@@ -69,10 +73,6 @@ export default function AdminReportUtil() {
         }
     };
 
-    useEffect(() => {
-        generateReport();
-    }, [res_UUID]);
-
     const handleDelete = async (reservationId: string) => { 
         // Handle delete reservation logic here 
     };
@@ -87,7 +87,7 @@ export default function AdminReportUtil() {
                 <div className="left-column">
                     <h2>Restaurants</h2>
                     <div className="restaurant-list">
-                    <button className="genbutton" onClick={() => generateReport()}>Generate Report</button>
+                    <button className="genbutton" onClick={() => res_UUID && generateReport(res_UUID)}>Generate Report</button>
                         {error && <p>{error}</p>}
                         {availability.length > 0 ? (
                             availability.map((table) => (
