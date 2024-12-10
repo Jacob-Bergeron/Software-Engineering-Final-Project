@@ -17,21 +17,19 @@ const instance = axios.create({
 export default function adminViewRestaurants() {
     const [restaurants, setRestaurants] = useState<any[]>([]);  // State to hold restaurant data
     const [error, setError] = useState<string>('');  // State to hold any error messages
-    const [redraw, forceRedraw] = React.useState(0)
-
+    const [redraw, forceRedraw] = React.useState(0);
 
     const andRefreshDisplay = () => {
-        forceRedraw(redraw + 1)
-    }
+        forceRedraw(redraw + 1);
+    };
 
     const adminUsername = 'admin';
     const adminPassword = 'password';
 
     // Function to fetch active restaurants
-    const listAll = async () => { //deleted async so I can try something
+    const listAll = async () => {
         try {
             // Send a GET request to the API to fetch active restaurants
-            
             const response = await instance.get('/adminListRestaurants');
             console.log(response.data);
                 
@@ -73,8 +71,8 @@ export default function adminViewRestaurants() {
                 setRestaurants((prevRestaurants) =>
                     prevRestaurants.filter(restaurant => restaurant.res_UUID !== res_UUID)
                 );
-                alert("Restaurant deleted.")
-                andRefreshDisplay()
+                alert("Restaurant deleted.");
+                andRefreshDisplay();
             } else {
                 setError("Restaurant deletion failed!");
                 alert("Restaurant deletion failed!");
@@ -91,27 +89,26 @@ export default function adminViewRestaurants() {
                 console.error("Unexpected Error:", err);
             }
         }
-    }
+    };
 
-    //TODO: Pass ID of selected restaurant to view-restaurants/availability page.
-    const handleClick = async (res_UUID: string) => { 
-        //migrating report generation to the view-restaurants/availabilty page.
-        //await generateReport(res_UUID); 
-        window.location.href = '/pages/administrator/view-restaurants/availability'; // Navigate to the desired page
-    }
+    // Function to handle navigation to availability page with restaurant UUID
+    const handleClick = async (res_UUID: string) => {
+        window.location.href = `/pages/administrator/view-restaurants/availability?res_UUID=${res_UUID}`; // Navigate to the desired page with restaurant UUID as a query parameter
+    };
 
     // Use useEffect to fetch data when the component mounts
     useEffect(() => {
         listAll();
     }, []);  // Empty dependency array means this runs only once after the first render
+
     return (
         <div>
-            <div className = "back-button-format">
-                    <Link href="/pages/administrator/homepage" className="back-button">Back</Link>
+            <div className="back-button-format">
+                <Link href="/pages/administrator/homepage" className="back-button">Back</Link>
             </div>
             <div className="browserestaurants">
                 <div className="listAll">
-                <div className="adminHeader">Restaurants</div>
+                    <div className="adminHeader">Restaurants</div>
                     {error && <p>{error}</p>} {/* Show error message if there was an issue */}
                     {restaurants.length > 0 ? (
                         <ul>
@@ -122,12 +119,12 @@ export default function adminViewRestaurants() {
                                     <p><strong>Open Time:</strong> {restaurant.openTime}</p>
                                     <p><strong>Close Time:</strong> {restaurant.closeTime}</p>
                                     <p><strong>Active?:</strong> {restaurant.isActive}</p>
-                                    {restaurant.isActive ? ( <button className="generate-button" onClick={() => 
-                                        handleClick(restaurant.res_UUID)}> Show Availability </button> ) 
-                                        : null}
+                                    {restaurant.isActive ? (
+                                        <button className="generate-button" onClick={() => handleClick(restaurant.res_UUID)}>Show Availability</button>
+                                    ) : null}
                                     <button className="delete-button" onClick={() =>
                                         deleteRestaurant(restaurant.res_UUID)}>Delete this restaurant?
-                                        </button>
+                                    </button>
                                 </li>
                             ))}
                         </ul>

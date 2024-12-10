@@ -66,8 +66,14 @@ export default function AdminReportUtil() {
         }
     };
 
-    const handleDelete = async (reservationId: string) => {
-        // Handle delete reservation logic here
+    useEffect(() => {
+        if (res_UUID) {
+            generateReport(res_UUID as string); 
+        } 
+    }, [res_UUID]);
+
+    const handleDelete = async (reservationId: string) => { 
+        // Handle delete reservation logic here 
     };
 
     return (
