@@ -7,7 +7,11 @@ import './styles.css';
 
 // Axios instance for API requests
 const instance = axios.create({
-    baseURL: 'https://q3l4c6o0hh.execute-api.us-east-2.amazonaws.com/initial/'
+    baseURL: 'https://q3l4c6o0hh.execute-api.us-east-2.amazonaws.com/initial/',
+    timeout: 5000, //optional: establish a timeout for requests.
+    //headers: {
+    //    'x_api_key:' : 'XZERw16yF64AQcuycqQlP3VjcKgmRJpe4QOVjbvH'
+    //}
 });
 
 interface Reservation {
@@ -40,7 +44,7 @@ export default function AdminReportUtil() {
     // Function to generate availability report with res_UUID
     const generateReport = async (res_UUID: string) => {
         try {
-            const response = await instance.get(`/adminGetAvailability/${res_UUID}`);
+            const response = await instance.post(`/adminGetAvailability/${res_UUID}`);
             console.log(response.data);
 
             let resultData;
