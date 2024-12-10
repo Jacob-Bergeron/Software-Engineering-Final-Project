@@ -20,6 +20,9 @@
 'use client'                     // NEED THIS to be able to embed HTML in TSX file
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
+import { modelInstance } from '../../../model';
+import {useRouter} from 'next/navigation'
+
 
 const instance = axios.create({
     baseURL: 'https://q3l4c6o0hh.execute-api.us-east-2.amazonaws.com/initial/'
@@ -37,6 +40,8 @@ export default function SearchTimes() {
     // state variables
     const [dateInput, setDateInput] = React.useState("")
     const [resName, setResName] = React.useState("")
+    const router = useRouter();
+
 
     // state to hold the returned data
     const [obj, setObj] = useState<any[]>([]);
@@ -62,7 +67,11 @@ export default function SearchTimes() {
 
     }
 
-
+    function MakeReservation(table_UUID:any,numSeats:any,timeStart:any){
+        modelInstance.setReservationInfo(table_UUID,dateInput,numSeats,timeStart,resName);
+        localStorage.setItem('reservationInfo', JSON.stringify(modelInstance.getReservationInfo()))
+        router.push('/pages/make-reservation');
+    }
 
     return (
         <div >
@@ -91,6 +100,7 @@ export default function SearchTimes() {
                             <p>Table ID: {obj.table_UUID}</p>
                             <p>Number of Seats: {obj.numSeats}</p>
                             <p>Time Available: {obj.timeStart}</p>
+                            <button onClick={(e) => MakeReservation(obj.table_UUID,obj.numSeats,obj.timeStart)}>MakeReservation</button>
                         </li>
                     ))}
                 </ul>

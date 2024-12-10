@@ -25,6 +25,11 @@
 'use client'                     // NEED THIS to be able to embed HTML in TSX file
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
+import { modelInstance } from '../../../model';
+import MakeReservation from '../make-reservation/page';
+import { table } from 'console';
+import { Router } from 'react-router-dom';
+import {useRouter} from 'next/navigation'
 
 const instance = axios.create({
     baseURL: 'https://q3l4c6o0hh.execute-api.us-east-2.amazonaws.com/initial/'
@@ -57,6 +62,7 @@ export default function SearchRestaurants() {
 
     // get the current date when the code is called
     const [currentDate, setCurrentDate] = React.useState(new Date())
+    const router = useRouter();
 
     /*
     function: searchAvailable()
@@ -98,6 +104,14 @@ export default function SearchRestaurants() {
         })
     }
 
+    function MakeReservation(resName : String, table_UUID : String, date : Date){
+        modelInstance.setReservationInfo(table_UUID,date,peopleInput,timeInput,resName);
+        localStorage.setItem('reservationInfo', JSON.stringify(modelInstance.getReservationInfo()))
+        router.push('/pages/make-reservation');
+    }
+
+
+
     // Refreshes display anytime there is a change in [restaurants]
     useEffect(() => {
         andRefreshDisplay();
@@ -137,6 +151,7 @@ export default function SearchRestaurants() {
                             <h3>Restaurant Name: {restaurant.restaurantName}</h3>
                             <p>Table ID: {restaurant.table_UUID}</p>
                             <p>Date: {(restaurant.date)}</p>
+                            <button onClick={(e) => MakeReservation(restaurant.restaurantName,restaurant.table_UUID,restaurant.date)}>MakeReservation</button>
                         </li>
                     ))}
                 </ul>

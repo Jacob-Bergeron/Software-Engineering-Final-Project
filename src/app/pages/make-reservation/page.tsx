@@ -48,6 +48,18 @@ export default function MakeReservation() {
     const [timeStart, setTimeStart] = useState("")
     const [numGuests, setNumGuests] = useState("")
 
+    useEffect(() => {
+        const storedreservationData = localStorage.getItem('reservationInfo');
+        if (storedreservationData){
+            const reservationData = JSON.parse(storedreservationData);
+            setResName(reservationData.resName)
+            setDate(reservationData.date)
+            setTable_UUID(reservationData.table_UUID)
+            setTimeStart(reservationData.startTime)
+            setNumGuests(reservationData.numPeople)
+        }
+    })
+
 
 
 
@@ -93,27 +105,27 @@ export default function MakeReservation() {
             </div>
 
             <div>
-                <label>Restaurant Name:</label>
+                <label>Restaurant Name: {resName}</label>
                 <input onChange={(e) => setResName(e.target.value)} style={{ color: "black", textAlign: 'center' }}></input>
             </div>
 
             <div>
-                <label>Date:</label>
+                <label>Date:{date}</label>
                 <input onChange={(e) => setDate(e.target.value)} style={{ color: "black", textAlign: 'center' }} ></input>
             </div>
 
             <div>
-                <label>Table ID:</label>
+                <label>Table ID:{table_UUID}</label>
                 <input onChange={(e) => setTable_UUID(e.target.value)} style={{ color: "black", textAlign: 'center' }}></input>
             </div>
 
             <div>
-                <label>Start Time:</label>
+                <label>Start Time:{timeStart}</label>
                 <input onChange={(e) => setTimeStart(e.target.value)} style={{ color: "black", textAlign: 'center' }}></input>
             </div>
 
             <div>
-                <label>Number of Guests:</label>
+                <label>Number of Guests:{numGuests}</label>
                 <input onChange={(e) => setNumGuests(e.target.value)} style={{ color: "black", textAlign: 'center' }}></input>
             </div>
 

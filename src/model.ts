@@ -37,18 +37,36 @@ export class Table{
     }
 }
 
+export class ReservationInfo{
+    table_UUID : String
+    date : Date
+    numPeople : Number
+    startTime : String
+    resName : String
+
+    constructor(table_uuid:string,datetemp:Date,numpeople:Number,starttime:String,resname:String){
+        this.table_UUID = table_uuid;
+        this.date = datetemp;
+        this.numPeople = numpeople;
+        this.startTime = starttime;
+        this.resName = resname;
+    }
+}
+
 
     export class Model{ 
         managers : Array<Manager>
         manager : Manager | null
         consumer : Consumer | null
         table : Table | null
+        reservationinfo : ReservationInfo | null
 
         constructor(){
             this.managers = []
             this.manager = null;
             this.consumer = null;
             this.table = null;
+            this.reservationinfo = null;
         }
 
         setManager(username : string, password : string){
@@ -73,6 +91,14 @@ export class Table{
 
         getTable(){
             return this.table;
+        }
+
+        setReservationInfo(table:any,date:any,people:any,start:any,name:any){
+            this.reservationinfo = new ReservationInfo(table,date,people,start,name);
+        }
+
+        getReservationInfo(){
+            return this.reservationinfo;
         }
 
         
