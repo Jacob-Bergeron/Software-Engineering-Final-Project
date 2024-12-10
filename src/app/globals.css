@@ -66,6 +66,13 @@ body {
   color: black;
 }
 
+.consumerSignIn{
+  display: flex;
+  align-items: center;
+  text-align: center;
+  transform: translateY(-98vh);
+}
+
 .HomePage-Title {
   text-align: center;
   font-size: 40px;
