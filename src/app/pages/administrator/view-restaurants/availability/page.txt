@@ -1,14 +1,17 @@
 'use client'; // This is necessary to use React hooks in Next.js 13 (for client-side rendering)
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
-import { useSearchParams } from 'next/navigation'; // Correct way to parse query params in Next.js
 import Link from 'next/link';
 import './styles.css';
 
 // Axios instance for API requests
 const instance = axios.create({
-    baseURL: 'https://q3l4c6o0hh.execute-api.us-east-2.amazonaws.com/initial/'
+    baseURL: 'https://q3l4c6o0hh.execute-api.us-east-2.amazonaws.com/initial/',
+    timeout: 5000, // optional: establish a timeout for requests.
+    // headers: {
+    //    'x_api_key:' : 'XZERw16yF64AQcuycqQlP3VjcKgmRJpe4QOVjbvH'
+    // }
 });
 
 interface Reservation {
@@ -22,23 +25,16 @@ interface Reservation {
 }
 
 export default function AdminReportUtil() {
-    const searchParams = useSearchParams();
-    const res_UUID = searchParams.get('res_UUID'); // Extract restaurant UUID from URL params
-    
     const [availability, setAvailability] = useState<Reservation[]>([]);  // State to hold restaurant/table data
     const [selectedTable, setSelectedTable] = useState<Reservation | null>(null);
     const [error, setError] = useState<string>('');  // State to hold any error messages
 
-    // Function to generate availability report with res_UUID
-    const generateReport = async () => {
-        if (!res_UUID) {
-            setError('Restaurant UUID is missing');
-            return;
-        }
+    // Function to generate availability report
+    const generateReport = async (res_UUID: string) => {
         try {
             const response = await instance.get(`/adminGetAvailability/${res_UUID}`);
             console.log(response.data);
-
+            
             let resultData;
             if (response.status === 200 && response.data.body) {
                 const body = JSON.parse(response.data.body); // Parse the body if it's a string
@@ -54,11 +50,7 @@ export default function AdminReportUtil() {
             }
         } catch (err) {
             if (axios.isAxiosError(err)) {
-                if (err.response?.status === 403) {
-                    setError('Access denied. Please check your API key or permissions.');
-                } else {
-                    setError(`Axios error: ${err.message}`);
-                }
+                setError(`Axios error: ${err.message}`);
                 console.error("Axios Error:", err.message);
                 console.error("Error Response:", err.response);
                 console.error("Error Request:", err.request);
@@ -66,15 +58,11 @@ export default function AdminReportUtil() {
                 setError('Unexpected error occurred');
                 console.error("Unexpected Error:", err);
             }
-        }
+        }        
     };
 
-    useEffect(() => {
-        generateReport();
-    }, [res_UUID]);
-
-    const handleDelete = async (reservationId: string) => { 
-        // Handle delete reservation logic here 
+    const handleDelete = async (reservationId: string) => {
+        // Handle delete reservation logic here
     };
 
     return (
@@ -87,7 +75,7 @@ export default function AdminReportUtil() {
                 <div className="left-column">
                     <h2>Restaurants</h2>
                     <div className="restaurant-list">
-                    <button className="genbutton" onClick={() => generateReport()}>Generate Report</button>
+                        <button className="genbutton" onClick={() => generateReport('restaurantUUID')}>Generate Report</button>
                         {error && <p>{error}</p>}
                         {availability.length > 0 ? (
                             availability.map((table) => (
