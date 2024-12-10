@@ -26,7 +26,10 @@ export default function managerHomePage() {
     const [startTime, setstartTime] = React.useState("")
     const [closeTime, setcloseTime] = React.useState("")
     const [res_UUID, setres_UUID] = React.useState("")
+    const [closedDates, setClosedDates] = React.useState<any[]>([]);
+    const [closeDate, setCloseDate] = useState("")
     const router = useRouter();
+    
 
 
     //Get res_UUID
@@ -83,6 +86,80 @@ export default function managerHomePage() {
       }
     }
 
+    function getClosedDates(){
+      instance.post('/restaurant/getClosedDates', {
+        "res_UUID": res_UUID,
+      }).then(function (response){
+      if (response.status === 200) {
+        console.log(response.data.body)
+        setClosedDates(response.data.body);
+        
+        console.log("Closed dates data:", closedDates)
+        
+      } else {
+        
+        console.log("Error fetching closed dates");
+      }
+    }).catch (function(error) {
+      
+      console.error("Error fetching closed dates:", error);
+    });
+  };
+
+    function reopenDate(dateInput : Date){
+      const currentDate = new Date()
+      if (currentDate <= new Date(dateInput)) {
+
+        instance.post('/managerOpenDay', {
+            "res_UUID" : res_UUID, "date" : dateInput
+        }).then(function (response) {
+            let status = response.data.statusCode
+
+            //if successful in reaching database AND there is something in the payload coming to client
+            if (status == 200 && response.data.result) {
+                alert("Sucessfully opened day")
+                getClosedDates()
+            }
+            else {
+                alert("400 or invalid response")
+            }
+
+        }).catch(function (error) {
+            console.log(error)
+        })
+    } else {
+        alert("Cannot input current or past day")
+    }
+    }
+
+    function closeFutureDate(){
+      let dateInput = closeDate
+      // if the dateInput is tomorrow or future 
+      const currentDate = new Date()
+      if (currentDate <= new Date(dateInput)) {
+
+          instance.post('./managerCloseDay', {
+              "res_UUID" : res_UUID, "date" : dateInput
+          }).then(function (response) {
+              let status = response.data.statusCode
+
+              //if successful in reaching database AND there is something in the payload coming to client
+              if (status == 200 && response.data.result) {
+                  alert("Sucessfully closed day")
+                  getClosedDates()
+              }
+              else {
+                  alert("400 or invalid response")
+              }
+
+          }).catch(function (error) {
+              console.log(error)
+          })
+      } else {
+          alert("Cannot input current or past day")
+      }
+    }
+
 
 
     return(
@@ -99,7 +176,27 @@ export default function managerHomePage() {
             <div className="delete-restaurant">
               <button className="delete-button" onClick={deleteRestaurant}>Delete Restaurant?</button>
             </div>
-            
+
+          {/*Closed Days*/}
+          <div className="closed-dates-active">
+            <button className = "closedDatesButton" onClick={getClosedDates}>Get Closed Dates</button>
+            <h2>Closed Dates:</h2>
+            <ul>
+              {closedDates.map((closedDates) => (
+                  <li key={closedDates.date} className = "closed-date-item">
+                    <p>{closedDates.date}</p>
+                    <button className = "reopen-button" onClick={(e) => reopenDate(closedDates.date)}>Reopen</button>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+          <div className = "close-date">
+              <p className = "close-dateLabel">Close Future Date</p>
+              <input className = "close-dateInput" onChange={(e) => setCloseDate(e.target.value)} 
+              style={{ color: "black", textAlign: 'center' }} placeholder="Enter Date (yyyy-mm-dd)"></input>
+              <button className = "close-dateButton" onClick={closeFutureDate}>Submit</button>
+          </div>
 
 
         </div>

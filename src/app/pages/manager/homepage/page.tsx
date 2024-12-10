@@ -324,19 +324,20 @@ export default function managerHomePage() {
             <button className="view-tables" onClick={retrieveTables}>Click Here To View Tables</button>
           </div>
 
-          <div className="closed-dates">
-            <button onClick={getClosedDates}>Get Closed Dates</button>
-          <h2>Closed Dates:</h2>
-          <ul>
-            {closedDates.map((closedDates) => (
-                <li key={closedDates.date}>
-                  <p>{closedDates.date}</p>
-                </li>
-              ))
-             }
-          </ul>
-        </div>
-
+          
+            <div className="closed-dates">
+              <button className = "closedDatesButton" onClick={getClosedDates}>Get Closed Dates</button>
+            <h2>Closed Dates:</h2>
+            <ul>
+              {closedDates.map((closedDates) => (
+                  <li key={closedDates.date}>
+                    <p>{closedDates.date}</p>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        
           <div className="table-info"> 
           <h1>Available Tables:</h1>
                 <ul>
