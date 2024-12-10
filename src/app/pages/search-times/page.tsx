@@ -21,7 +21,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import { modelInstance } from '../../../model';
-import {useRouter} from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 
 const instance = axios.create({
@@ -46,6 +46,16 @@ export default function SearchTimes() {
     // state to hold the returned data
     const [obj, setObj] = useState<any[]>([]);
 
+
+
+    useEffect(() => {
+        const storedSearchData = localStorage.getItem('searchTimeInfo');
+        if (storedSearchData) {
+            const searchData = JSON.parse(storedSearchData);
+            setResName(searchData.resName)
+        }
+    })
+
     function apiCall() {
         instance.post('/consumerSearchTimes', {
             "restaurantName": resName, "date": dateInput
@@ -67,8 +77,8 @@ export default function SearchTimes() {
 
     }
 
-    function MakeReservation(table_UUID:any,numSeats:any,timeStart:any){
-        modelInstance.setReservationInfo(table_UUID,dateInput,numSeats,timeStart,resName);
+    function MakeReservation(table_UUID: any, numSeats: any, timeStart: any) {
+        modelInstance.setReservationInfo(table_UUID, dateInput, numSeats, timeStart, resName);
         localStorage.setItem('reservationInfo', JSON.stringify(modelInstance.getReservationInfo()))
         router.push('/pages/make-reservation');
     }
@@ -80,9 +90,12 @@ export default function SearchTimes() {
                 <h1><u>Search Times</u></h1>
             </div>
 
-            <div>
-                <label style={{ paddingRight: 3 }}>Restaurant Name</label>
-                <input onChange={(e) => setResName(e.target.value)} placeholder="input restaurant name" style={{ color: "black", textAlign: 'center' }} />
+            <div style={{ display: 'flex' }}>
+                <label style={{ paddingRight: 3 }}>Restaurant Name:</label>
+                {resName == "" ? (
+                    <input onChange={(e) => setResName(e.target.value)} placeholder="input restaurant name" style={{ color: "black", textAlign: 'center' }} />
+                ) : <p>{resName}</p>}
+
             </div>
 
             <div>
@@ -100,7 +113,7 @@ export default function SearchTimes() {
                             <p>Table ID: {obj.table_UUID}</p>
                             <p>Number of Seats: {obj.numSeats}</p>
                             <p>Time Available: {obj.timeStart}</p>
-                            <button onClick={(e) => MakeReservation(obj.table_UUID,obj.numSeats,obj.timeStart)}>MakeReservation</button>
+                            <button onClick={(e) => MakeReservation(obj.table_UUID, obj.numSeats, obj.timeStart)}>MakeReservation</button>
                         </li>
                     ))}
                 </ul>
