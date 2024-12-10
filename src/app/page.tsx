@@ -8,24 +8,27 @@ export default function Home() {
 
   return (
     <div>
-        <div className = "browseRestaurants">
-          <div className = "HomePage-Title">
-              <p>Tables4U</p>
-          </div>
-          <p>
-              <Link href="/pages/browse-restaurants" className = "browseRestaurants-button">Browse Restaurants</Link>
-          </p> 
-          <p>
-            <Link href='/pages/search-restaurants' className="searchRestaurants-button">Search Restaurants</Link>
-          </p>
+      <div className="browseRestaurants">
+        <div className="HomePage-Title">
+          <p>Tables4U</p>
         </div>
+        <p>
+          <Link href="/pages/browse-restaurants" className="browseRestaurants-button">Browse Restaurants</Link>
+        </p> <p>
+          <Link href='/pages/search-restaurants' className="searchRestaurants-button">Search Restaurants</Link>
+        </p>
+      </div>
 
-        <div className = "signIn">
+      <div className="signIn">
+        <p>
+          <Link href="/pages/login-page" className="signIn-button">Sign In</Link>
+        </p>
+      </div>
+      <div className = "consumerSignIn">
           <p>
-              <Link href="/pages/login-page" className = "signIn-button">Sign In</Link>
+              <Link href="/pages/find-reservation" className = "signIn-button">Find an Existing Reservation</Link>
           </p>
         </div>
-        
     </div>
   );
 }
