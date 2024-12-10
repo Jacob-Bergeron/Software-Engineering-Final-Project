@@ -8,8 +8,7 @@ import './styles.css';
 
 // Axios instance for API requests
 const instance = axios.create({
-    baseURL: 'https://q3l4c6o0hh.execute-api.us-east-2.amazonaws.com/initial/',
-    timeout: 5000, // Optional: establish a timeout for requests.
+    baseURL: 'https://q3l4c6o0hh.execute-api.us-east-2.amazonaws.com/initial/'
 });
 
 interface Reservation {
@@ -88,6 +87,7 @@ export default function AdminReportUtil() {
                 <div className="left-column">
                     <h2>Restaurants</h2>
                     <div className="restaurant-list">
+                    <button className="genbutton" onClick={() => generateReport()}>Generate Report</button>
                         {error && <p>{error}</p>}
                         {availability.length > 0 ? (
                             availability.map((table) => (
