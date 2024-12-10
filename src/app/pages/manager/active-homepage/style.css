@@ -59,3 +59,64 @@
     font-weight: bold;
     color: black;
   }
+
+  .closed-dates-active {
+    position: absolute;
+    transform: translateX(0vh) translateY(30vh);
+  }
+  
+  .closed-dates-active h2 {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .closed-dates-active ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .closed-dates-active li {
+    font-size: 18px;
+    margin: 5px 0;
+  }
+  
+  .closedDatesButton{
+    color: black;
+    font-weight: bold;
+    padding: 2px;
+    border: 2px solid;
+    border-color: #000 ;
+  }
+
+  .closed-date-item{
+    display: flex;
+    align-items: center; 
+    gap: 10px;
+  }
+
+  .reopen-button{
+    color: black;
+    border: 2px solid;
+    border-color: black;
+  }
+
+  .close-date{
+    transform: translateX(0vh) translateY(30vh);
+  }
+
+
+  .close-dateLabel{
+    color: black;
+    font-weight: bold;
+    font-size: 20px;
+  }
+  .close-dateInput{
+    color: black;
+    border: 2px solid;
+    border-color: black;
+  }
+  .close-dateButton{
+    color: black;
+    border: 2px solid;
+    border-color: black;
+  }
