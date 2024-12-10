@@ -158,7 +158,7 @@
 .view-tables{
   width:150px;
   height:50px;
-  background-color: lightblue; 
+  background-color: teal; 
 }
 
 .delete-restaurant {
@@ -221,4 +221,27 @@
   color: white;
   width: 60px;
   height: 25px;
+}
+
+.closed-dates {
+  position: absolute;
+  transform: translateX(130vh) translateY(40vh);
+  background-color: violet;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.closed-dates h2 {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.closed-dates ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.closed-dates li {
+  font-size: 18px;
+  margin: 5px 0;
 }

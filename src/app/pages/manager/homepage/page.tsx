@@ -39,8 +39,7 @@ export default function managerHomePage() {
   const [isPopupVisible, setisPopupVisible] = React.useState(false)
   const [tableInfo, settableInfo] = React.useState("")
   const router = useRouter();
-
-  const [allTableNumbers, setAllTableNumbers] = React.useState("")
+const [closedDates, setClosedDates] = React.useState<any[]>([]);
 
 
   useEffect(() => {
@@ -51,6 +50,8 @@ export default function managerHomePage() {
         setUsername(currentManager.username);
       }
     }, []);
+
+    
 
   // get the res_UUID from the manager database
   instance.post('/getCorrespondingRestaurant', {
@@ -94,7 +95,29 @@ export default function managerHomePage() {
     console.log(error)
   })
 
+  useEffect(() => {
+    const fetchClosedDates = async () => {
+      try {
+        const response = await instance.post('/restaurant/getClosedDates', {
+          "res_UUID": res_UUID,
+        });
 
+        if (response.status === 200) {
+          setClosedDates(response.data);  // Save closed dates to state
+         // alert(closedDates);
+        } else {
+          console.log("Error fetching closed dates");
+        }
+      } catch (error) {
+        console.error("Error fetching closed dates:", error);
+      }
+    };
+
+    if (res_UUID) {
+      fetchClosedDates();  // Fetch closed dates when res_UUID is available
+      andRefreshDisplay();
+    }
+  }, [res_UUID]);
 
   // REACT COMPONENTS
   async function EditRestaurantTime() {
@@ -116,10 +139,7 @@ export default function managerHomePage() {
 
   async function createTable() {
     if(Number(numSeatsInput) > 8 || Number(numSeatsInput) < 1){ alert("Invalid seat number. (1-8) Required"); andRefreshDisplay(); return; }
-    // function to check if entered table number is correct
-    if(!checkTableNumbers()){ 
-      alert("Table number already exists"); andRefreshDisplay(); return; } 
-
+    
     try {
       const response = await instance.post('/restaurant/createTable', {
         "res_UUID": res_UUID, "tableNumber" : tableNumberInput, "numSeats" : numSeatsInput, "table_UUID" : uuidv4()
@@ -133,50 +153,6 @@ export default function managerHomePage() {
     }
 
   }
-
-  async function checkTableNumbers() {
-    // Fetch table numbers before checking
-    await getTableNumbers(); // Wait for table numbers to be fetched
-    alert(allTableNumbers);
-    let num = tableNumberInput;
-    if (allTableNumbers.length !== 0) {
-      // Check if the entered table number exists in the allTableNumbers array
-      if (allTableNumbers.includes(num)) {
-        alert("Table number already exists");
-        andRefreshDisplay(); // Refresh the display
-        return false; // Return false if the table number already exists
-      }
-    }
-  
-    return true; // Return true if the table number does not exist
-  }
-  
-
-  const getTableNumbers = async () => { // DOES NOT ADD TABLE NUMBERS TO VARIABLE...
-    try {
-      const response = await instance.post('/restaurant/getTableNumbers', {
-        "res_UUID": res_UUID
-      });
-      let resultData;
-      if (response.status === 200) {
-        const body = JSON.parse(response.data.body);
-        resultData = body.result; alert("success 200");
-      } else {
-        resultData = response.data.result;
-      }
-        setAllTableNumbers(resultData); // Update state with fetched table numbers
-      
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        console.error("Axios Error:", err.message);
-        console.error("Error Response:", err.response);
-        console.error("Error Request:", err.request);
-      } else {
-        console.error("Unexpected Error:", err);
-      }
-    }
-  };
-  
 
   async function ActiveRestaurant() {
 
@@ -347,6 +323,20 @@ export default function managerHomePage() {
             <button className="view-tables" onClick={retrieveTables}>Click Here To View Tables</button>
           </div>
 
+          <div className="closed-dates">
+          <h2>Closed Dates:</h2>
+          <ul>
+            {closedDates.length > 0 ? (
+              closedDates.map((date, index) => (
+                <li key={index}>
+                  {new Date(date.closedDate).toLocaleDateString()} 
+                </li>
+              ))
+            ) : (
+              <li>No closed dates found</li>
+            )}
+          </ul>
+        </div>
 
           <div className="table-info"> 
           <h1>Available Tables:</h1>
@@ -364,9 +354,6 @@ export default function managerHomePage() {
           </div>
           {/*Edit Table*/}
           {renderPopup()}
-
-
-
         </div>
       </div >
     );
