@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import './styles.css';
 
@@ -9,9 +10,6 @@ import './styles.css';
 const instance = axios.create({
     baseURL: 'https://q3l4c6o0hh.execute-api.us-east-2.amazonaws.com/initial/',
     timeout: 5000, // Optional: establish a timeout for requests.
-    // headers: {
-    //    'x_api_key:' : 'XZERw16yF64AQcuycqQlP3VjcKgmRJpe4QOVjbvH'
-    // }
 });
 
 interface Reservation {
@@ -25,45 +23,12 @@ interface Reservation {
 }
 
 export default function AdminReportUtil() {
+    const router = useRouter();
+    const { res_UUID } = router.query; //extract restaurant UUID from URL params
+    
     const [availability, setAvailability] = useState<Reservation[]>([]);  // State to hold restaurant/table data
     const [selectedTable, setSelectedTable] = useState<Reservation | null>(null);
     const [error, setError] = useState<string>('');  // State to hold any error messages
-
-    // Function to fetch data from TableInfo
-    const fetchData = async () => {
-        try {
-            const response = await instance.get(`/adminGetTableInfo`);
-            console.log(response.data);
-
-            let resultData;
-            if (response.status === 200 && response.data.body) {
-                const body = JSON.parse(response.data.body); // Parse the body if it's a string
-                resultData = body.result;
-            } else {
-                resultData = response.data.result; // Fallback if the structure is different
-            }
-
-            if (resultData && resultData.length > 0) {
-                setAvailability(resultData); // Store the table data in state
-            } else {
-                setError('No tables available.');
-            }
-        } catch (err) {
-            if (axios.isAxiosError(err)) {
-                if (err.response?.status === 403) {
-                    setError('Access denied. Please check your API key or permissions.');
-                } else {
-                    setError(`Axios error: ${err.message}`);
-                }
-                console.error("Axios Error:", err.message);
-                console.error("Error Response:", err.response);
-                console.error("Error Request:", err.request);
-            } else {
-                setError('Unexpected error occurred');
-                console.error("Unexpected Error:", err);
-            }
-        }
-    };
 
     // Function to generate availability report with res_UUID
     const generateReport = async (res_UUID: string) => {
@@ -100,10 +65,6 @@ export default function AdminReportUtil() {
             }
         }
     };
-
-    useEffect(() => {
-        fetchData();
-    }, []);
 
     const handleDelete = async (reservationId: string) => {
         // Handle delete reservation logic here
