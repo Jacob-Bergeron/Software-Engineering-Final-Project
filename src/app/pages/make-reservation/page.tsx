@@ -50,7 +50,7 @@ export default function MakeReservation() {
 
     useEffect(() => {
         const storedreservationData = localStorage.getItem('reservationInfo');
-        if (storedreservationData){
+        if (storedreservationData) {
             const reservationData = JSON.parse(storedreservationData);
             setResName(reservationData.resName)
             setDate(reservationData.date)
@@ -104,29 +104,40 @@ export default function MakeReservation() {
                 <input onChange={(e) => setEmail(e.target.value)} style={{ color: "black", textAlign: 'center' }}></input>
             </div>
 
-            <div>
-                <label>Restaurant Name: {resName}</label>
-                <input onChange={(e) => setResName(e.target.value)} style={{ color: "black", textAlign: 'center' }}></input>
+            <div style={{ display: 'flex' }}>
+                <label>Restaurant Name: </label>
+                {resName == "" ? (
+                    <input onChange={(e) => setResName(e.target.value)} style={{ color: "black", textAlign: 'center' }}></input>
+                ) : <p> {resName}</p>}
             </div>
 
-            <div>
-                <label>Date:{date}</label>
-                <input onChange={(e) => setDate(e.target.value)} style={{ color: "black", textAlign: 'center' }} ></input>
+            <div style={{ display: 'flex' }}>
+                <label>Date:</label>
+                {date == "" ? (<input onChange={(e) => setDate(e.target.value)} style={{ color: "black", textAlign: 'center' }} ></input>
+                ) : <p>{date} </p>}
+
             </div>
 
-            <div>
-                <label>Table ID:{table_UUID}</label>
-                <input onChange={(e) => setTable_UUID(e.target.value)} style={{ color: "black", textAlign: 'center' }}></input>
+            <div style={{ display: 'flex' }}>
+                <label>Table ID:</label>
+                {table_UUID == "" ? (<input onChange={(e) => setTable_UUID(e.target.value)} style={{ color: "black", textAlign: 'center' }}></input>
+                ) : <p>{table_UUID} </p>}
+
             </div>
 
-            <div>
-                <label>Start Time:{timeStart}</label>
-                <input onChange={(e) => setTimeStart(e.target.value)} style={{ color: "black", textAlign: 'center' }}></input>
+            <div style={{ display: 'flex' }}>
+                <label>Start Time:</label>
+                {timeStart == "" ? (<input onChange={(e) => setTimeStart(e.target.value)} style={{ color: "black", textAlign: 'center' }}></input>
+                ) : <p>{timeStart}</p>}
+
             </div>
 
-            <div>
-                <label>Number of Guests:{numGuests}</label>
-                <input onChange={(e) => setNumGuests(e.target.value)} style={{ color: "black", textAlign: 'center' }}></input>
+            <div style={{ display: 'flex' }}>
+                <label>Number of Guests:</label>
+                {numGuests == "" ? (
+                    <input onChange={(e) => setNumGuests(e.target.value)} style={{ color: "black", textAlign: 'center' }}></input>
+                ) : <p>{numGuests}</p>}
+
             </div>
 
             <button style={{ background: "green", padding: 2 }} onClick={(e) => apiCall()}>Submit</button>
