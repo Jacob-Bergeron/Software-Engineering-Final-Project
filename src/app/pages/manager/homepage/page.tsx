@@ -275,6 +275,23 @@ export default function managerHomePage() {
   }
   }
 
+  function deleteTable(table_UUID : any){
+    instance.post('/restaurant/deleteTable', {
+      "table_UUID" : table_UUID
+    }).then(function (response){
+      const status = response.data.statusCode;
+      if (status === 200) {
+        alert("Successfully Deleted Table")
+        retrieveTables()
+      } else{
+        alert("Failed to delete table")
+      }
+    }).catch(function (error) {
+      alert("Error retrieving table.");
+      console.error(error)
+    })
+  }
+
   // HTML
   
     return (
@@ -346,6 +363,7 @@ export default function managerHomePage() {
                             <p>Table: {obj.tableNumber}</p>
                             <p>Number of Seats: {obj.numSeats}</p>
                             <button className = "edit-tableButton" onClick={() => editTable(obj.table_UUID)}>Edit Table</button>
+                            <button className = "delete-tableButton" onClick={() => deleteTable(obj.table_UUID)}>Delete</button>
                         </li>
                     ))}
 

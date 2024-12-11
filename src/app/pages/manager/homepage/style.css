@@ -253,4 +253,12 @@
   border-color: #000 ;
 }
 
+.delete-tableButton{
+  color: black;
+  width: 50px;
+  height: 25px;
+  background-color: red;
+  transform: translateX(60vh) translateY(0vh);
+}
+
 
