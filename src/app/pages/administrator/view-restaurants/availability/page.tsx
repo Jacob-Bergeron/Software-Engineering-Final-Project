@@ -2,13 +2,16 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useSearchParams } from 'next/navigation'; // Correct way to parse query params in Next.js
 import Link from 'next/link';
 import './styles.css';
 
 // Axios instance for API requests
 const instance = axios.create({
-    baseURL: 'https://q3l4c6o0hh.execute-api.us-east-2.amazonaws.com/initial/'
+    baseURL: 'https://q3l4c6o0hh.execute-api.us-east-2.amazonaws.com/initial/',
+    timeout: 5000, //optional: establish a timeout for requests.
+    //headers: {
+    //    'x_api_key:' : 'XZERw16yF64AQcuycqQlP3VjcKgmRJpe4QOVjbvH'
+    //}
 });
 
 interface Reservation {
@@ -22,58 +25,54 @@ interface Reservation {
 }
 
 export default function AdminReportUtil() {
-    const searchParams = useSearchParams();
-    const res_UUID = searchParams.get('res_UUID'); // Extract restaurant UUID from URL params
-    
+    const [res_UUID, setRes_UUID] = useState(""); // State to hold restaurant UUID
     const [availability, setAvailability] = useState<Reservation[]>([]);  // State to hold restaurant/table data
     const [selectedTable, setSelectedTable] = useState<Reservation | null>(null);
     const [error, setError] = useState<string>('');  // State to hold any error messages
 
-    // Function to generate availability report with res_UUID
-    const generateReport = async () => {
-        if (!res_UUID) {
+    useEffect(() => {
+        // Retrieve the restaurant UUID from local storage when the component mounts
+        const storedRes_UUID = localStorage.getItem('res_UUID');
+        if (storedRes_UUID) {   //need this statement to get around an error in line 34.
+            setRes_UUID(storedRes_UUID);
+        } else {
             setError('Restaurant UUID is missing');
-            return;
         }
-        try {
-            const response = await instance.get(`/adminGetAvailability/${res_UUID}`);
-            console.log(response.data);
+    }, []);
 
-            let resultData;
-            if (response.status === 200 && response.data.body) {
-                const body = JSON.parse(response.data.body); // Parse the body if it's a string
-                resultData = body.result;
+    // Function to generate availability report with res_UUID
+    const generateReport = (res_UUID: string) => {
+
+        instance.post('/adminGetAvailability/', {
+            "res_UUID": res_UUID
+        }).then(function (response) {
+            let status = response.data.statusCode
+            
+            if (status == 200 && response.data.body) {
+                setAvailability(response.data.body)
             } else {
-                resultData = response.data.result; // Fallback if the structure is different
+                alert("returned 400 OR returned nothing")
             }
 
-            if (resultData && resultData.length > 0) {
-                setAvailability(resultData); // Store the restaurant data in state
-            } else {
-                setError('No tables at this location.');
-            }
-        } catch (err) {
-            if (axios.isAxiosError(err)) {
-                if (err.response?.status === 403) {
+        }).catch(function(error) {
+            if (axios.isAxiosError(error)) {
+                if (error.response?.status === 403) {
                     setError('Access denied. Please check your API key or permissions.');
                 } else {
-                    setError(`Axios error: ${err.message}`);
+                    setError(`Axios error: ${error.message}`);
                 }
-                console.error("Axios Error:", err.message);
-                console.error("Error Response:", err.response);
-                console.error("Error Request:", err.request);
+                console.error("Axios Error:", error.message);
+                console.error("Error Response:", error.response);
+                console.error("Error Request:", error.request);
             } else {
                 setError('Unexpected error occurred');
-                console.error("Unexpected Error:", err);
+                console.error("Unexpected Error:", error);
             }
-        }
+        })
+ 
     };
 
-    useEffect(() => {
-        generateReport();
-    }, [res_UUID]);
-
-    const handleDelete = async (reservationId: string) => { 
+    const handleDelete = async (reservationId: string) => {
         // Handle delete reservation logic here 
     };
 
@@ -87,18 +86,20 @@ export default function AdminReportUtil() {
                 <div className="left-column">
                     <h2>Restaurants</h2>
                     <div className="restaurant-list">
-                    <button className="genbutton" onClick={() => generateReport()}>Generate Report</button>
+                        <button className="genbutton" onClick={() => generateReport(res_UUID)}>Generate Report</button>
                         {error && <p>{error}</p>}
+                        <ul>
                         {availability.length > 0 ? (
-                            availability.map((table) => (
-                                <div key={table.res_UUID} onClick={() => setSelectedTable(table)}>
+                            availability.map((table, index) => (
+                                <li key={index} onClick={() => setSelectedTable(table)}>
                                     <h3>{table.res_UUID}</h3>
                                     <p>Table {table.tableNumber}</p>
-                                </div>
+                                </li>
                             ))
                         ) : (
                             <p>No tables available.</p>
                         )}
+                        </ul>
                     </div>
                 </div>
 

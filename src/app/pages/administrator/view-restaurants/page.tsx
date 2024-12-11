@@ -93,7 +93,8 @@ export default function adminViewRestaurants() {
 
     // Function to handle navigation to availability page with restaurant UUID
     const handleClick = async (res_UUID: string) => {
-        window.location.href = `/pages/administrator/view-restaurants/availability?res_UUID=${res_UUID}`; // Navigate to the desired page with restaurant UUID as a query parameter
+        localStorage.setItem('res_UUID', res_UUID); // Save the restaurant UUID to local storage
+        window.location.href = '/pages/administrator/view-restaurants/availability'; // Navigate to the desired page
     };
 
     // Use useEffect to fetch data when the component mounts
