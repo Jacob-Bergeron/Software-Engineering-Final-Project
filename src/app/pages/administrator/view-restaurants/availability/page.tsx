@@ -84,8 +84,8 @@ export default function AdminReportUtil() {
             <div className="admin-container">
                 {/* Left Sector */}
                 <div className="left-column">
-                    <h2>Restaurants</h2>
-                    <div className="restaurant-list">
+                    <h2>Tables at Restaurant</h2>
+                    <div className="table-list">
                         <button className="genbutton" onClick={() => generateReport(res_UUID)}>Generate Report</button>
                         {error && <p>{error}</p>}
                         <ul>
@@ -111,8 +111,8 @@ export default function AdminReportUtil() {
                         <div>
                             <h2>Schedule for Table {selectedTable.tableNumber}</h2>
                             <ul>
-                                {[5, 6, 7, 8, 9].map((time) => (
-                                    <li key={time} className={selectedTable.isReserved ? 'reserved' : 'available'}>
+                                {[5, 6, 7, 8, 9].map((timeStart) => (
+                                    <li key={timeStart} className={selectedTable.isReserved ? 'reserved' : 'available'}>
                                         {time}:00
                                     </li>
                                 ))}
