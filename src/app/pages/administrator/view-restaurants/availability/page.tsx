@@ -27,6 +27,7 @@ interface Reservation {
 
 export default function AdminReportUtil() {
     const [res_UUID, setRes_UUID] = useState(""); // State to hold restaurant UUID
+    const [restaurantName, setRestaurantName] = useState("");
     const [availability, setAvailability] = useState<Reservation[]>([]);  // State to hold restaurant/table data
     const [selectedTable, setSelectedTable] = useState<Reservation | null>(null);
     const [error, setError] = useState<string>('');  // State to hold any error messages
@@ -35,10 +36,12 @@ export default function AdminReportUtil() {
     useEffect(() => {
         // Retrieve the restaurant UUID from local storage when the component mounts
         const storedRes_UUID = localStorage.getItem('res_UUID');
-        if (storedRes_UUID) {   // need this statement to get around an error in line 34.
+        const storedRestaurantName = localStorage.getItem('restaurantName');
+        if (storedRes_UUID && storedRestaurantName) {   // need this statement to get around an error in line 40, since the UUID cannot technically be null.
             setRes_UUID(storedRes_UUID);
+            setRestaurantName(storedRestaurantName);
         } else {
-            setError('Restaurant UUID is missing');
+            setError('Navigate to the previous page and select a restaurant.');
         }
     }, []);
 
@@ -94,7 +97,7 @@ export default function AdminReportUtil() {
             <div className="admin-container">
                 {/* Left Sector */}
                 <div className="left-column">
-                    <h2>Tables at Restaurant</h2>
+                    <h2>Tables at {restaurantName}</h2>
                     <div className="table-list">
                         <input 
                             type="text" 
