@@ -39,12 +39,18 @@ export default function AdminReportUtil() {
         if (storedRes_UUID) {   // need this statement to get around an error in line 34.
             setRes_UUID(storedRes_UUID);
         } else {
-            setError('Please navigate to the previous page and select a restaurant.');
+            setError('Navigate to the previous page and select a restaurant.');
         }
     }, []);
 
     // Function to generate availability report with res_UUID
     const generateReport = (res_UUID: string) => {
+        if (!date) {
+            alert('Please enter a date');
+            setError("Enter a date");
+            return;
+        }
+
         instance.post('/adminGetAvailability/', {
             "res_UUID": res_UUID
         }).then(function (response) {
@@ -113,7 +119,13 @@ export default function AdminReportUtil() {
                             value={date} 
                             onChange={(e) => setDate(e.target.value)} 
                         />
-                        <button className="genbutton" onClick={() => generateReport(res_UUID)}>Generate Report</button>
+                        <button 
+                            className="genbutton" 
+                            onClick={() => generateReport(res_UUID)} 
+                            disabled={!date}  // Disable button if date is not entered
+                        >
+                            Generate Report
+                        </button>
                         {error && <p>{error}</p>}
                         <ul>
                             {availability.length > 0 ? (
