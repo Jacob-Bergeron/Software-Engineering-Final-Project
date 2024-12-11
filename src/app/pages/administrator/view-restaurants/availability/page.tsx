@@ -22,6 +22,7 @@ interface Reservation {
     seats: number;
     numReservees: number;
     email: string;
+    date: string;
 }
 
 export default function AdminReportUtil() {
@@ -107,13 +108,17 @@ export default function AdminReportUtil() {
 
                 {/* Middle Sector */}
                 <div className="middle-column">
+                    <h2>What day do you want to view?</h2>
                     {selectedTable ? (
                         <div>
                             <h2>Schedule for Table {selectedTable.tableNumber}</h2>
                             <ul>
-                                {[5, 6, 7, 8, 9].map((timeStart) => (
+                                {availability.map((table, timeStart, date) => (
                                     <li key={timeStart} className={selectedTable.isReserved ? 'reserved' : 'available'}>
-                                        {time}:00
+                                        <div className="timebloc">
+                                            <h3>Date: {table.date}</h3>
+                                            <h3>Time: {table.timeStart}</h3>
+                                        </div>
                                     </li>
                                 ))}
                             </ul>
