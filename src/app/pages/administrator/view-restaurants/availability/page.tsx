@@ -8,10 +8,10 @@ import './styles.css';
 // Axios instance for API requests
 const instance = axios.create({
     baseURL: 'https://q3l4c6o0hh.execute-api.us-east-2.amazonaws.com/initial/',
-    timeout: 5000, //optional: establish a timeout for requests.
-    //headers: {
+    timeout: 5000, // optional: establish a timeout for requests.
+    // headers: {
     //    'x_api_key:' : 'XZERw16yF64AQcuycqQlP3VjcKgmRJpe4QOVjbvH'
-    //}
+    // }
 });
 
 interface Reservation {
@@ -29,21 +29,22 @@ export default function AdminReportUtil() {
     const [res_UUID, setRes_UUID] = useState(""); // State to hold restaurant UUID
     const [availability, setAvailability] = useState<Reservation[]>([]);  // State to hold restaurant/table data
     const [selectedTable, setSelectedTable] = useState<Reservation | null>(null);
+    const [schedule, setSchedule] = useState<Reservation[]>([]);  // State to hold the fetched schedule
     const [error, setError] = useState<string>('');  // State to hold any error messages
+    const [date, setDate] = useState<string>('');  // State to hold the selected date
 
     useEffect(() => {
         // Retrieve the restaurant UUID from local storage when the component mounts
         const storedRes_UUID = localStorage.getItem('res_UUID');
-        if (storedRes_UUID) {   //need this statement to get around an error in line 34.
+        if (storedRes_UUID) {   // need this statement to get around an error in line 34.
             setRes_UUID(storedRes_UUID);
         } else {
-            setError('Restaurant UUID is missing');
+            setError('Please navigate to the previous page and select a restaurant.');
         }
     }, []);
 
     // Function to generate availability report with res_UUID
     const generateReport = (res_UUID: string) => {
-
         instance.post('/adminGetAvailability/', {
             "res_UUID": res_UUID
         }).then(function (response) {
@@ -55,10 +56,10 @@ export default function AdminReportUtil() {
                 alert("returned 400 OR returned nothing")
             }
 
-        }).catch(function(error) {
+        }).catch(function (error) {
             if (axios.isAxiosError(error)) {
                 if (error.response?.status === 403) {
-                    setError('Erorr 403');
+                    setError('Error 403');
                 } else {
                     setError(`Axios error: ${error.message}`);
                 }
@@ -70,7 +71,26 @@ export default function AdminReportUtil() {
                 console.error("Unexpected exception:", error);
             }
         })
- 
+    };
+
+    // Function to fetch schedule for the selected date
+    const fetchScheduleByDate = async (selectedDate: string, tableNumber: number) => {
+        try {
+            const response = await instance.post('/getScheduleByDate/', {
+                date: selectedDate,
+                tableNumber: tableNumber,
+                res_UUID: res_UUID
+            });
+            setSchedule(response.data);
+        } catch (error) {
+            console.error('Error fetching schedule:', error);
+            setSchedule([]);
+        }
+    };
+
+    const handleTableClick = (table: Reservation) => {
+        setSelectedTable(table);
+        fetchScheduleByDate(date, table.tableNumber);
     };
 
     const handleDelete = async (reservationId: string) => {
@@ -87,37 +107,42 @@ export default function AdminReportUtil() {
                 <div className="left-column">
                     <h2>Tables at Restaurant</h2>
                     <div className="table-list">
+                        <input 
+                            type="text" 
+                            placeholder="YYYY/MM/DD" 
+                            value={date} 
+                            onChange={(e) => setDate(e.target.value)} 
+                        />
                         <button className="genbutton" onClick={() => generateReport(res_UUID)}>Generate Report</button>
                         {error && <p>{error}</p>}
                         <ul>
-                        {availability.length > 0 ? (
-                            availability.map((table, index) => (
-                                <li key={index} onClick={() => setSelectedTable(table)}>
-                                    <div className="tableBox">
-                                        <h3>Table #{table.tableNumber}</h3>
-                                        <button className="selectTableButton">View Schedule</button>
-                                    </div>
-                                </li>
-                            ))
-                        ) : (
-                            <p>No tables available.</p>
-                        )}
+                            {availability.length > 0 ? (
+                                availability.map((table, index) => (
+                                    <li key={index} onClick={() => handleTableClick(table)}>
+                                        <div className="tableBox">
+                                            <h3>Table #{table.tableNumber}</h3>
+                                            <button className="selectTableButton">View Schedule</button>
+                                        </div>
+                                    </li>
+                                ))
+                            ) : (
+                                <p>No tables available.</p>
+                            )}
                         </ul>
                     </div>
                 </div>
 
                 {/* Middle Sector */}
                 <div className="middle-column">
-                    <h2>What day do you want to view?</h2>
-                    {selectedTable ? (
+                    {selectedTable && schedule.length > 0 ? (
                         <div>
-                            <h2>Schedule for Table {selectedTable.tableNumber}</h2>
+                            <h3>Reservations for Table {selectedTable.tableNumber} on {date}</h3>
                             <ul>
-                                {availability.map((table, timeStart, date) => (
-                                    <li key={timeStart} className={selectedTable.isReserved ? 'reserved' : 'available'}>
+                                {schedule.map((res, index) => (
+                                    <li key={index}>
                                         <div className="timebloc">
-                                            <h3>Date: {table.date}</h3>
-                                            <h3>Time: {table.timeStart}</h3>
+                                            <h3>Date: {res.date}</h3>
+                                            <h3>Time: {res.timeStart}</h3>
                                         </div>
                                     </li>
                                 ))}
