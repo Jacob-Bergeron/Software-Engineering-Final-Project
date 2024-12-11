@@ -57,7 +57,7 @@ export default function AdminReportUtil() {
         }).catch(function(error) {
             if (axios.isAxiosError(error)) {
                 if (error.response?.status === 403) {
-                    setError('Access denied. Please check your API key or permissions.');
+                    setError('Erorr 403');
                 } else {
                     setError(`Axios error: ${error.message}`);
                 }
@@ -66,7 +66,7 @@ export default function AdminReportUtil() {
                 console.error("Error Request:", error.request);
             } else {
                 setError('Unexpected error occurred');
-                console.error("Unexpected Error:", error);
+                console.error("Unexpected exception:", error);
             }
         })
  
@@ -92,8 +92,10 @@ export default function AdminReportUtil() {
                         {availability.length > 0 ? (
                             availability.map((table, index) => (
                                 <li key={index} onClick={() => setSelectedTable(table)}>
-                                    <h3>{table.res_UUID}</h3>
-                                    <p>Table {table.tableNumber}</p>
+                                    <div className="tableBox">
+                                        <h3>Table #{table.tableNumber}</h3>
+                                        <button className="selectTableButton">View Schedule</button>
+                                    </div>
                                 </li>
                             ))
                         ) : (
