@@ -1,4 +1,4 @@
-'use client'; // This is necessary to use React hooks in Next.js 13 (for client-side rendering)
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -8,12 +8,13 @@ import './styles.css';
 // Axios instance for API requests
 const instance = axios.create({
     baseURL: 'https://q3l4c6o0hh.execute-api.us-east-2.amazonaws.com/initial/',
-    timeout: 5000, // optional: establish a timeout for requests.
+    timeout: 5000, //optional: establish a timeout for requests.
     // headers: {
     //    'x_api_key:' : 'XZERw16yF64AQcuycqQlP3VjcKgmRJpe4QOVjbvH'
     // }
 });
 
+//interface struct to store data returned by the lambda function and enforce data conformity
 interface Reservation {
     res_UUID: string;
     tableNumber: number;
@@ -23,70 +24,102 @@ interface Reservation {
     numReservees: number;
     email: string;
     date: string;
+    table_UUID: string
 }
 
 export default function AdminReportUtil() {
-    const [res_UUID, setRes_UUID] = useState(""); // State to hold restaurant UUID
+    const [res_UUID, setRes_UUID] = useState(""); 
     const [restaurantName, setRestaurantName] = useState("");
-    const [availability, setAvailability] = useState<Reservation[]>([]);  // State to hold restaurant/table data
+    const [availability, setAvailability] = useState<Reservation[]>([]); 
     const [selectedTable, setSelectedTable] = useState<Reservation | null>(null);
-    const [error, setError] = useState<string>('');  // State to hold any error messages
-    const [date, setDate] = useState<string>('');  // State to hold the selected date
+    const [error, setError] = useState<string | null>(null);
+    const [date, setDate] = useState<string>('');
+    const [openTime, setOpenTime] = useState("") 
+    const [closeTime, setCloseTime] = useState("") 
+    const [times, setTimes] = useState<number[]>([]);
+    const [availableTimes, setAvailableTimes] = useState<number[]>([]);
 
     useEffect(() => {
-        // Retrieve the restaurant UUID from local storage when the component mounts
+        //retrieve the restaurant UUID from local storage
         const storedRes_UUID = localStorage.getItem('res_UUID');
         const storedRestaurantName = localStorage.getItem('restaurantName');
-        if (storedRes_UUID && storedRestaurantName) {   // need this statement to get around an error in line 40, since the UUID cannot technically be null.
-            setRes_UUID(storedRes_UUID);
-            setRestaurantName(storedRestaurantName);
+        if (storedRes_UUID && storedRestaurantName) {   //need this statement to get around an error in line 40, 
+            setRes_UUID(storedRes_UUID);                //since the UUID cannot technically be null in order to 
+            setRestaurantName(storedRestaurantName);    //be consistent with inputs of functions.
         } else {
-            setError('Navigate to the previous page and select a restaurant.');
+            setError('Navigate to the previous page and select a restaurant.'); //no res_UUID stored b/c user navigated here by pasting URL.
         }
     }, []);
 
-    // Function to generate availability report with res_UUID and date
-    const generateReport = (res_UUID: string, date: string) => {
-        if (!date) {
-            setError('Please enter a date');
-            return;
-        }
-
-        instance.post('/adminGetAvailability/', {
-            res_UUID: res_UUID,
-            date: date  // Passing the date to the lambda function
+    //function to generate availability report from res_UUID and date
+    const generateReport = (res_UUID: string) => {
+        instance.post('/adminGetAvailability', {
+            "res_UUID": res_UUID,
         }).then(function (response) {
-            let status = response.data.statusCode
-            
-            if (status === 200 && response.data.body) {
-                setAvailability(response.data.body);
+            const status = response.data.statusCode;
+            if (status === 200) {
+              setAvailability(response.data.body.tableInfo)    
             } else {
-                alert("returned 400 OR returned nothing");
+              alert("Failed to retrieve tables.");
             }
-
         }).catch(function (error) {
-            if (axios.isAxiosError(error)) {
-                if (error.response?.status === 403) {
-                    setError('Error 403');
-                } else {
-                    setError(`Axios error: ${error.message}`);
-                }
-                console.error("Axios Error:", error.message);
-                console.error("Error Response:", error.response);
-                console.error("Error Request:", error.request);
-            } else {
-                setError('Unexpected error occurred');
-                console.error("Unexpected exception:", error);
-            }
+            alert("Error retrieving tables.");
+            console.error(error);
         });
     };
 
-    const handleTableClick = (table: Reservation) => {
-        setSelectedTable(table);
-    };
+    const timeblocs = (open:string, closed:string) => {
+        let arr = [];
+        for (let i = parseInt(open, 10); i < parseInt(closed, 10); i+=100){
+            arr.push(i)
+        }
+        setTimes(arr)
+        setAvailableTimes(arr)
+        return arr;
+    }
+    
+    //handleClick functions used to give buttons multiple functionalities.
+    const handleTableClick = (table_UUID: any) => {
+        instance.post('/getRestaurantTimes', {
+            "res_UUID": res_UUID,
+        }).then(function (response) {
+            const status = response.data.statusCode;
+            if (status === 200) {
+                
+              setCloseTime(response.data.data[0].closeTime)  
+              setOpenTime(response.data.data[0].openTime)  
+            } else {
+              alert("Failed to retrieve tables.");
+            }
+    
+        }).catch(function (error) {
+            alert("Error retrieving tables.");
+            console.error(error);
+        });
 
+        timeblocs(openTime, closeTime);
+
+        instance.post('/getReservationData', {
+            "table_UUID": table_UUID, "resName" : res_UUID, "date" : date
+        }).then(function (response) {
+            const status = response.data.statusCode;
+            if (status === 200) {
+                console.log(response.data.data.bookingTime)
+                
+            } else {
+              alert("Failed to retrieve tables.");
+            }
+    
+        }).catch(function (error) {
+            alert("Error retrieving tables.");
+            console.error(error);
+        });
+        setSelectedTable(table_UUID);
+    };
+    
+    //TODO: call the adminDeleteReservation lambda function in ordr to expunge chosen reservation from database
     const handleDelete = async (reservationId: string) => {
-        // Handle delete reservation logic here 
+        
     };
 
     return (
@@ -107,8 +140,7 @@ export default function AdminReportUtil() {
                         />
                         <button 
                             className="genbutton" 
-                            onClick={() => generateReport(res_UUID, date)} 
-                            disabled={!date}  // Disable button if date is not entered
+                            onClick={() => generateReport(res_UUID)}
                         >
                             Generate Report
                         </button>
@@ -116,7 +148,7 @@ export default function AdminReportUtil() {
                         <ul>
                             {availability.length > 0 ? (
                                 availability.map((table, index) => (
-                                    <li key={index} onClick={() => handleTableClick(table)}>
+                                    <li key={index} onClick={() => handleTableClick(table.table_UUID)}>
                                         <div className="tableBox">
                                             <h3>Table #{table.tableNumber}</h3>
                                             <button className="selectTableButton">View Schedule</button>
@@ -134,18 +166,18 @@ export default function AdminReportUtil() {
                 <div className="middle-column">
                     {selectedTable ? (
                         <div>
-                            <h3>Reservations for Table {selectedTable.tableNumber} on {date}</h3>
+                            <h3>Reservations for Table {selectedTable.tableNumber}<br></br> on {date}</h3>
                             <ul>
-                                {availability
-                                    .filter(res => res.tableNumber === selectedTable.tableNumber && res.date === date)
-                                    .map((res, index) => (
-                                        <li key={index}>
-                                            <div className="timebloc">
-                                                <h3>Date: {res.date}</h3>
-                                                <h3>Time: {res.timeStart}</h3>
-                                            </div>
+                                {availableTimes.map((time, index) => { 
+                                     
+                                    return ( 
+                                        <li key={index}> 
+                                            <div> 
+                                                <h3>Time: {time}</h3> 
+                                            </div> 
                                         </li>
-                                    ))}
+                                    );
+                                })} 
                             </ul>
                         </div>
                     ) : (

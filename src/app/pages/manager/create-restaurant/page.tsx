@@ -40,6 +40,7 @@ export default function Home() {
         alert("Restaurant Successfully Created")
         router.push('/pages/login-page');
         
+        alert("Manager credentials set.\tThank you for choosing Tables4U.")
         andRefreshDisplay()
       })
       .catch(function (error) {

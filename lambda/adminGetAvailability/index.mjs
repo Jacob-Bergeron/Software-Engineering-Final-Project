@@ -8,15 +8,32 @@ export const handler = async (event) => {
         database: "Tables4u"
     });
 
-    const adminGetAvailability = (res_id) => {
-        return new Promise((resolve, reject) => {
-            pool.query("SELECT * FROM TableInfo WHERE res_UUID = ?", [res_id], (error, rows) => {
-                if (error) {
-                    return reject(error);
-                }
-                return resolve(rows);
+    const adminGetAvailability = async (res_UUID) => {
+        try {
+            // First query
+            const tableInfo = await new Promise((resolve, reject) => {
+                pool.query("SELECT * FROM TableInfo WHERE res_UUID = ?", [res_UUID], (error, rows) => {
+                    if (error) {
+                        return reject(error);
+                    }
+                    resolve(rows);
+                });
             });
-        });
+
+            // Second query
+            const calendarInfo = await new Promise((resolve, reject) => {
+                pool.query("SELECT date FROM Restaurant_Calendar WHERE res_UUID = ?", [res_UUID], (error, rows) => {
+                    if (error) {
+                        return reject(error);
+                    }
+                    resolve(rows);
+                });
+            });
+
+            return { tableInfo, calendarInfo };
+        } catch (error) {
+            throw error;
+        }
     };
 
     try {

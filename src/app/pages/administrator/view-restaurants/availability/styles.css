@@ -60,12 +60,16 @@
     color: #f9f9f9;
 }
 
-.reserved {
-    color: red;
+.timebloc {
+
 }
 
-.available {
-    color: green;
+.timebloc.reserved {
+    color: #ca5d5d;
+}
+
+.timebloc.available {
+    color: #5FCE81;
 }
 
 .table-list div {
