@@ -126,12 +126,12 @@ export default function SearchTimes() {
                 <h1>Available Tables:</h1>
                 <ul>
                     {tables.map((table, index) => (
-                        <li style={{ backgroundColor: 'blue', marginBottom: 8, padding: 3 }} key={index}>
+                        <li style={{ backgroundColor: 'lightblue', marginBottom: 8, padding: 3, color: 'black'}} key={index}>
                             <p>Table Number: {table.tableNumber}</p>
                             <p>Table ID: {table.table_UUID}</p>
                             <p>Number of Seats: {table.numSeats}</p>
                             <p>Available?: {isAvailable(table.table_UUID)}</p>
-                            {isAvailable(table.table_UUID) == "Yes" ? <button onClick={(e) => MakeReservation(table.table_UUID, table.numSeats)} style={{background:"green"}}>Make a reservation</button> : <p>Already Reserved</p> }
+                            {isAvailable(table.table_UUID) == "Yes" ? <button onClick={(e) => MakeReservation(table.table_UUID, table.numSeats)} style={{background:"green"}}>Make a reservation</button> : <p> Already Reserved </p>}
                         </li>
                     ))}
                 </ul>
