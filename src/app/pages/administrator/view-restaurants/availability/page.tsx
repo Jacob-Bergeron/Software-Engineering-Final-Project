@@ -24,6 +24,7 @@ interface Reservation {
     numReservees: number;
     email: string;
     date: string;
+    table_UUID: string
 }
 
 export default function AdminReportUtil() {
@@ -35,7 +36,8 @@ export default function AdminReportUtil() {
     const [date, setDate] = useState<string>('');
     const [openTime, setOpenTime] = useState("") 
     const [closeTime, setCloseTime] = useState("") 
-    const [times, setTimes] = useState([]);
+    const [times, setTimes] = useState<number[]>([]);
+    const [availableTimes, setAvailableTimes] = useState<number[]>([]);
 
     useEffect(() => {
         //retrieve the restaurant UUID from local storage
@@ -66,8 +68,18 @@ export default function AdminReportUtil() {
         });
     };
 
+    const timeblocs = (open:string, closed:string) => {
+        let arr = [];
+        for (let i = parseInt(open, 10); i < parseInt(closed, 10); i+=100){
+            arr.push(i)
+        }
+        setTimes(arr)
+        setAvailableTimes(arr)
+        return arr;
+    }
+    
     //handleClick functions used to give buttons multiple functionalities.
-    const handleTableClick = (table: Reservation) => {
+    const handleTableClick = (table_UUID: any) => {
         instance.post('/getRestaurantTimes', {
             "res_UUID": res_UUID,
         }).then(function (response) {
@@ -85,12 +97,23 @@ export default function AdminReportUtil() {
             console.error(error);
         });
 
-        let arr = [];
-        for (let i = openTime; i < closeTime; i+=100){
-            arr.push(i)
-        }
-        setTimes(arr)
+        timeblocs(openTime, closeTime);
 
+        instance.post('/getReservationData', {
+            "table_UUID": table_UUID, "resName" : restaurantName, "date" : date
+        }).then(function (response) {
+            const status = response.data.statusCode;
+            if (status === 200) {
+                console.log(response)
+                
+            } else {
+              alert("Failed to retrieve tables.");
+            }
+    
+        }).catch(function (error) {
+            alert("Error retrieving tables.");
+            console.error(error);
+        });
 
     };
     
@@ -125,7 +148,7 @@ export default function AdminReportUtil() {
                         <ul>
                             {availability.length > 0 ? (
                                 availability.map((table, index) => (
-                                    <li key={index} onClick={() => handleTableClick(table)}>
+                                    <li key={index} onClick={() => handleTableClick(table.table_UUID)}>
                                         <div className="tableBox">
                                             <h3>Table #{table.tableNumber}</h3>
                                             <button className="selectTableButton">View Schedule</button>
@@ -145,17 +168,14 @@ export default function AdminReportUtil() {
                         <div>
                             <h3>Reservations for Table {selectedTable.tableNumber}<br></br> on {date}</h3>
                             <ul>
-                            {availability
-                                .filter(res => res.tableNumber === selectedTable.tableNumber && res.date === date)
-                                .map((res, index) => (
-                                    <li key={index}>
-                                        <div className={`timebloc ${res.isReserved ? 'reserved' : 'available'}`}>
-                                            <h3>Date: {res.date}</h3>
-                                            <h3>Time: {res.timeStart}</h3>
-                                        </div>
-                                    </li>
-                                ))
-                            }
+                                {timeblocs(openTime, closeTime).map((time, index) => { 
+                                    const isReserved = availability.some(res => 
+                                    res.tableNumber === selectedTable.tableNumber && res.date === date && +res.timeStart === time ); 
+                                    return ( <li key={index}> 
+                                    <div className={`timebloc ${isReserved ? 'reserved' : 'available'}`}> 
+                                        <h3>Time: {time}</h3> 
+                                    </div> 
+                                </li>);})} 
                             </ul>
                         </div>
                     ) : (
