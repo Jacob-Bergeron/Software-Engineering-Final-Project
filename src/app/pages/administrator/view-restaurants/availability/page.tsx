@@ -14,31 +14,12 @@ const instance = axios.create({
     // }
 });
 
-//interface struct to store data returned by the lambda function and enforce data conformity
 
-interface Reservation {
-    tableNumber: number;
-    timeStart: string;
-    isReserved: true;
-    numReservees: number;
-    email: string;
-    date: string; 
-}
-
-interface TableStruct{
-    res_UUID: string;
-    openTime: string;
-    isReserved: boolean;
-    seats: number;
-    table_UUID: string;
-    tableNumber: number;
-}
 
 export default function AdminReportUtil() {
     const [res_UUID, setRes_UUID] = useState(""); 
     const [restaurantName, setRestaurantName] = useState("");
-    const [availability, setAvailability] = useState<Reservation[]>([]); 
-    const [selectedTable, setSelectedTable] = useState<TableStruct | null>(null);
+    const [obj, setObj] = useState<any[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [date, setDate] = useState<string>('');
     const [openTime, setOpenTime] = useState("") 
@@ -46,6 +27,12 @@ export default function AdminReportUtil() {
     const [times, setTimes] = useState<number[]>([]);
     const [availableTimes, setAvailableTimes] = useState<number[]>([]);
     const [reservationTime, setReservationTime] = useState("")
+    const [selectedTable_UUID, setSelectedTable_UUID] = useState("")
+    const [selectedTable, setSelectedTable] = useState(false)
+    const [isReserved, setIsReserved] = useState(false)
+    const [seatsFilled, setSeatsFilled] = useState("")
+    const [numSeats, setNumSeats] = useState("")
+    const [tableNumber, setTableNumber] = useState("")
 
     useEffect(() => {
         //retrieve the restaurant UUID from local storage
@@ -73,7 +60,7 @@ export default function AdminReportUtil() {
         }).then(function (response) {
             const status = response.data.statusCode;
             if (status === 200) {
-              setAvailability(response.data.body.tableInfo)    
+              setObj(response.data.body.tableInfo)    
             } else {
               alert("Failed to retrieve tables.");
             }
@@ -85,7 +72,11 @@ export default function AdminReportUtil() {
 
     
     //handleClick functions used to give buttons multiple functionalities.
-    const handleTableClick = (table_UUID: any) => {
+    const handleTableClick = (table_UUID: any, tableNumber: any, numSeats : any) => {
+        setSelectedTable_UUID(table_UUID)
+        setNumSeats(numSeats)
+        setTableNumber(tableNumber)
+
         instance.post('/getRestaurantTimes', {
             "res_UUID": res_UUID,
         }).then(function (response) {
@@ -108,10 +99,8 @@ export default function AdminReportUtil() {
         }
         setTimes(arr)
         setAvailableTimes(arr)
-
-        
-        setSelectedTable(table_UUID);
-        
+        setSelectedTable(true)
+    
     };
     
     //TODO: call the adminDeleteReservation lambda function in ordr to expunge chosen reservation from database
@@ -119,13 +108,14 @@ export default function AdminReportUtil() {
         
     };
 
-    const viewReservation = async (table_UUID : any, time: number) => {
+    const viewReservation = async (time: number) => {
         instance.post('/getReservationData', {
-            "table_UUID": table_UUID, "resName" : res_UUID, "date" : date
+            "table_UUID": selectedTable_UUID, "resName" : res_UUID, "date" : date
         }).then(function (response) {
             const status = response.data.statusCode;
             if (status === 200) {
                 setReservationTime(response.data.data[0].bookingTime)
+                setSeatsFilled(response.data.data[0].numGuests)
             } else {
               alert("Failed to retrieve tables.");
             }
@@ -136,15 +126,7 @@ export default function AdminReportUtil() {
         });
 
         if (parseInt(reservationTime,10) == time){
-            
-            if(selectedTable !== null){
-                const updatedTable = {
-                    ...selectedTable,
-                    isReserved: true, 
-                };
-                setSelectedTable(updatedTable);
-            }
-            alert(selectedTable?.isReserved)
+            setIsReserved(true)
         }
     }
 
@@ -168,18 +150,14 @@ export default function AdminReportUtil() {
                             className="genbutton" onClick={() => generateReport(res_UUID)}>Generate Report
                         </button>{error && <p>{error}</p>}
                         <ul>
-                            {availability.length > 0 ? (
-                                availability.map((table, index) => (
-                                    <li key={index} onClick={() => handleTableClick(table.table_UUID)}>
-                                        <div className="tableBox">
-                                            <h3>Table #{table.tableNumber}</h3>
-                                            <button className="selectTableButton">View Schedule</button>
-                                        </div>
-                                    </li>
-                                ))
-                            ) : (
-                                <p>No tables available.</p>
-                            )}
+                            {obj.map((obj) => (
+                                <li style={{ backgroundColor: 'lightgray', marginBottom: 8, padding: 3 }} key={obj.table_UUID}>
+                                    <div className="tableBox">
+                                            <h3>Table #{obj.tableNumber}</h3>
+                                            <button className="selectTableButton" onClick={() => handleTableClick(obj.table_UUID, obj.tableNumber, obj.numSeats)}>View Schedule</button>
+                                    </div>
+                                </li>
+                            ))}
                         </ul>
                     </div>
                 </div>
@@ -188,13 +166,13 @@ export default function AdminReportUtil() {
                 <div className="middle-column">
                     {selectedTable ? (
                         <div>
-                            <h3> Schedule on {date}</h3>
+                            <h3> Schedule for table #{tableNumber} <br></br>on {date}</h3>
                             <ul>
                                 {availableTimes.map((time, index) => { 
                                     return ( 
                                         <li key={index}> 
                                             <button className="selectTimeblocButton" 
-                                            onClick={() => viewReservation(selectedTable, time)}>
+                                            onClick={() => viewReservation(time)}>
                                                 <h3>Time: {time}</h3>
                                             </button>
                                         </li>
@@ -209,13 +187,12 @@ export default function AdminReportUtil() {
 
                 {/* Right Sector */}
                 <div className="right-column">
-                    {selectedTable && selectedTable.isReserved ? (
+                    {selectedTable && isReserved ? (
                         <div>
                             <h2>Reservation Details</h2>
-                            <p><strong>Seats:</strong> {selectedTable.seats}</p>
-                            <p><strong>Email:</strong> {selectedTable.email}</p>
-                            <p><strong>Seats Filled:</strong> {(selectedTable.numReservees / selectedTable.seats) * 100}%</p>
-                            <button onClick={() => handleDelete(selectedTable.res_UUID)}>Delete this reservation?</button>
+                            <p><strong>Seats:</strong> {numSeats}</p>
+                            <p><strong>Seats Filled:</strong> {seatsFilled}</p>
+                            <button onClick={() => handleDelete(res_UUID)}>Delete this reservation?</button>
                         </div>
                     ) : (
                         <p>No reservation details to display</p>
