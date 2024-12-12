@@ -35,7 +35,7 @@ export default function AdminReportUtil() {
     const [date, setDate] = useState<string>('');
     const [openTime, setOpenTime] = useState("") 
     const [closeTime, setCloseTime] = useState("") 
-    const [times, setTimes] = useState<string[]>([]);
+    const [times, setTimes] = useState([]);
 
     useEffect(() => {
         //retrieve the restaurant UUID from local storage
@@ -60,7 +60,6 @@ export default function AdminReportUtil() {
             } else {
               alert("Failed to retrieve tables.");
             }
-    
         }).catch(function (error) {
             alert("Error retrieving tables.");
             console.error(error);
@@ -74,8 +73,9 @@ export default function AdminReportUtil() {
         }).then(function (response) {
             const status = response.data.statusCode;
             if (status === 200) {
-              setCloseTime(response.data.closeTime)  
-              setOpenTime(response.data.openTime)  
+                
+              setCloseTime(response.data.data[0].closeTime)  
+              setOpenTime(response.data.data[0].openTime)  
             } else {
               alert("Failed to retrieve tables.");
             }
@@ -84,12 +84,14 @@ export default function AdminReportUtil() {
             alert("Error retrieving tables.");
             console.error(error);
         });
+
         let arr = [];
-        for (let i = closeTime; i < openTime; i+=100){
+        for (let i = openTime; i < closeTime; i+=100){
             arr.push(i)
         }
         setTimes(arr)
-        console.log(arr);
+
+
     };
     
     //TODO: call the adminDeleteReservation lambda function in ordr to expunge chosen reservation from database
@@ -143,16 +145,17 @@ export default function AdminReportUtil() {
                         <div>
                             <h3>Reservations for Table {selectedTable.tableNumber}<br></br> on {date}</h3>
                             <ul>
-                                {availability
-                                    .filter(res => res.tableNumber === selectedTable.tableNumber && res.date === date)
-                                    .map((res, index) => (
-                                        <li key={index}>
-                                            <div className="timebloc">
-                                                <h3>Date: {res.date}</h3>
-                                                <h3>Time: {res.timeStart}</h3>
-                                            </div>
-                                        </li>
-                                    ))}
+                            {availability
+                                .filter(res => res.tableNumber === selectedTable.tableNumber && res.date === date)
+                                .map((res, index) => (
+                                    <li key={index}>
+                                        <div className={`timebloc ${res.isReserved ? 'reserved' : 'available'}`}>
+                                            <h3>Date: {res.date}</h3>
+                                            <h3>Time: {res.timeStart}</h3>
+                                        </div>
+                                    </li>
+                                ))
+                            }
                             </ul>
                         </div>
                     ) : (
