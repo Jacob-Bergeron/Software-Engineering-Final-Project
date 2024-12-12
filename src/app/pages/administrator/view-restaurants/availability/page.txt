@@ -168,11 +168,12 @@ export default function AdminReportUtil() {
                         <div>
                             <h3>Reservations for Table {selectedTable.tableNumber}<br></br> on {date}</h3>
                             <ul>
-                                {availableTimes.map((time, index) => { 
-                                     
+                                {timeblocs(openTime, closeTime).map((time, index) => { 
+                                    const isReserved = availability.some(res => 
+                                    res.tableNumber === selectedTable.tableNumber && res.date === date && +res.timeStart === time ); 
                                     return ( 
                                         <li key={index}> 
-                                            <div> 
+                                            <div className={`timebloc ${isReserved ? 'reserved' : 'available'}`}> 
                                                 <h3>Time: {time}</h3> 
                                             </div> 
                                         </li>
