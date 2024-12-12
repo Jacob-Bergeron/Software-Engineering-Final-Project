@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import './styles.css';
+import { useRouter } from 'next/navigation';
+
 
 // Axios instance for API requests
 const instance = axios.create({
@@ -18,6 +20,7 @@ export default function adminViewRestaurants() {
     const [restaurants, setRestaurants] = useState<any[]>([]);  // State to hold restaurant data
     const [error, setError] = useState<string>('');  // State to hold any error messages
     const [redraw, forceRedraw] = React.useState(0);
+    const router = useRouter();
 
     const andRefreshDisplay = () => {
         forceRedraw(redraw + 1);
@@ -95,7 +98,7 @@ export default function adminViewRestaurants() {
     const handleClick = (res_UUID: string, restaurantName: string) => { 
         localStorage.setItem('res_UUID', res_UUID);             // save the restaurant UUID for use on the next page. 
         localStorage.setItem('restaurantName', restaurantName); // save the restaurant name for use on the next page (purely cosmetic). 
-        window.location.href = '/pages/administrator/view-restaurants/availability';    //navigate 
+        router.push('/pages/administrator/view-restaurants/availability');    //navigate 
     };
 
     // Use useEffect to fetch data when the component mounts
