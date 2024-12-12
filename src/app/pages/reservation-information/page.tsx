@@ -53,7 +53,7 @@ export default function res_infoPage() {
         if (status == 200){
             setRestaurantName(response.data.result.body[0].resName || "No Name")
             setBookingTime(response.data.result.body[0].bookingTime || "No Time")
-            setDate(response.data.result.body[0].date || "No Date")
+            setDate( response.data.result.body[0].date || "no date")
             setNumGuests(response.data.result.body[0].numGuests || 0)
             setCode(response.data.result.body[0].sixDigitCode || null)
             
