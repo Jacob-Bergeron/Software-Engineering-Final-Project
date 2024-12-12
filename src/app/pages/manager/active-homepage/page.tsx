@@ -93,7 +93,6 @@ export default function managerHomePage() {
       if (response.status === 200) {
         console.log(response.data.body)
         setClosedDates(response.data.body);
-        
         console.log("Closed dates data:", closedDates)
         
       } else {
@@ -117,7 +116,7 @@ export default function managerHomePage() {
 
             //if successful in reaching database AND there is something in the payload coming to client
             if (status == 200 && response.data.result) {
-                alert("Sucessfully opened day")
+                alert("Sucessfully re-opened day")
                 getClosedDates()
             }
             else {
