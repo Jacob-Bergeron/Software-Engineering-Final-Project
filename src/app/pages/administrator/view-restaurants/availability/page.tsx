@@ -89,6 +89,7 @@ export default function AdminReportUtil() {
             arr.push(i)
         }
         setTimes(arr)
+        console.log(arr);
     };
     
     //TODO: call the adminDeleteReservation lambda function in ordr to expunge chosen reservation from database
