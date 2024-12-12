@@ -32,7 +32,9 @@ export default function AdminReportUtil() {
     const [availability, setAvailability] = useState<Reservation[]>([]); 
     const [selectedTable, setSelectedTable] = useState<Reservation | null>(null);
     const [error, setError] = useState<string | null>(null);
-    const [date, setDate] = useState<string>('');  
+    const [date, setDate] = useState<string>('');
+    const [openTime, setOpenTime] = useState("") 
+    const [closeTime, setCloseTime] = useState("") 
 
     useEffect(() => {
         //retrieve the restaurant UUID from local storage
@@ -71,7 +73,7 @@ export default function AdminReportUtil() {
         }).then(function (response) {
             const status = response.data.statusCode;
             if (status === 200) {
-              setAvailability(response.data.body)    
+              //setAvailability(response.data.body)    
             } else {
               alert("Failed to retrieve tables.");
             }
@@ -80,7 +82,8 @@ export default function AdminReportUtil() {
             alert("Error retrieving tables.");
             console.error(error);
         });
-        setSelectedTable(table);
+
+
     };
     
     //TODO: call the adminDeleteReservation lambda function in ordr to expunge chosen reservation from database
