@@ -40,6 +40,7 @@ export default function Home() {
         resName.value = ''
         resAddress.value = '';
         
+        alert("Manager credentials set.\tThank you for choosing Tables4U.")
         andRefreshDisplay()
       })
       .catch(function (error) {

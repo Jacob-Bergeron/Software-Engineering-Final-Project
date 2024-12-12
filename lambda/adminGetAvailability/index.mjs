@@ -17,23 +17,31 @@ export const handler = async (event) => {
                 return resolve(rows);
             });
         });
-    };
+        return new Promise((resolve, reject) => {
+            pool.query("SELECT date FROM Restaurant_Calendar WHERE res_UUID = ?", [res_UUID], (error, rows) => {
+            if(error) {    
+                reject(error)
+            }
+            return resolve(rows);
+            });
+        });
 
-    try {
-        const availabilityData = await adminGetAvailability(event.res_UUID);
-        const response = {
-            statusCode: 200,
-            body: availabilityData
-        };
-        return response;
-    } catch (error) {
-        const response = {
-            statusCode: 400,
-            message: "Internal Error",
-            error: error.message
-        };
-        return response;
-    } finally {
-        pool.end();
-    }
-};
+        try {
+            const availabilityData = await adminGetAvailability(event.res_UUID);
+            const response = {
+                statusCode: 200,
+                body: availabilityData
+            };
+            return response;
+        } catch (error) {
+            const response = {
+                statusCode: 400,
+                message: "Internal Error",
+                error: error.message
+            };
+            return response;
+        } finally {
+            pool.end();
+        }
+    };
+}

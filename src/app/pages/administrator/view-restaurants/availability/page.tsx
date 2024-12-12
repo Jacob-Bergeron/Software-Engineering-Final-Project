@@ -58,15 +58,28 @@ export default function AdminReportUtil() {
               alert("Failed to retrieve tables.");
             }
     
-          }).catch(function (error) {
+        }).catch(function (error) {
             alert("Error retrieving tables.");
             console.error(error);
-          });
-
+        });
     };
 
     //handleClick functions used to give buttons multiple functionalities.
     const handleTableClick = (table: Reservation) => {
+        instance.post('/', {
+            "res_UUID": res_UUID,
+        }).then(function (response) {
+            const status = response.data.statusCode;
+            if (status === 200) {
+              setAvailability(response.data.body)    
+            } else {
+              alert("Failed to retrieve tables.");
+            }
+    
+        }).catch(function (error) {
+            alert("Error retrieving tables.");
+            console.error(error);
+        });
         setSelectedTable(table);
     };
     
@@ -119,7 +132,7 @@ export default function AdminReportUtil() {
                 <div className="middle-column">
                     {selectedTable ? (
                         <div>
-                            <h3>Reservations for Table {selectedTable.tableNumber} on {date}</h3>
+                            <h3>Reservations for Table {selectedTable.tableNumber}<br></br> on {date}</h3>
                             <ul>
                                 {availability
                                     .filter(res => res.tableNumber === selectedTable.tableNumber && res.date === date)
