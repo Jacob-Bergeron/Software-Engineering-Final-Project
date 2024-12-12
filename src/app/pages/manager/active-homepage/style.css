@@ -120,3 +120,20 @@
     border: 2px solid;
     border-color: black;
   }
+
+
+  .avalButton{
+
+    position: absolute;
+    transform: translateX(125vh) translateY(75vh);
+
+    display: relative;
+    width: 200px;
+    height: 50px;
+    border-radius: 2px;
+    background-color: lightseagreen;
+    vertical-align: auto;
+    font-size: 18px;
+    font-weight: bold;
+    color: black;
+  }

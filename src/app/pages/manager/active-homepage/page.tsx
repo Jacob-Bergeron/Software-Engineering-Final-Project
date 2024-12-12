@@ -159,6 +159,12 @@ export default function managerHomePage() {
       }
     }
 
+    const goToAvailabilityPage = (res_UUID : string, restaurantName : string) => {
+      localStorage.setItem('res_UUID', res_UUID);
+      localStorage.setItem('restaurantName', restaurantName);
+      router.push('/pages/administrator/view-restaurants/availability');    //navigate 
+    }
+
 
 
     return(
@@ -196,6 +202,8 @@ export default function managerHomePage() {
               style={{ color: "black", textAlign: 'center' }} placeholder="Enter Date (yyyy-mm-dd)"></input>
               <button className = "close-dateButton" onClick={closeFutureDate}>Submit</button>
           </div>
+
+            <button className = "avalButton" onClick={ () => goToAvailabilityPage(res_UUID, restaurantName)}>Generate Availability Report</button>
 
 
         </div>
