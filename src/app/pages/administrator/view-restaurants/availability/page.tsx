@@ -35,6 +35,7 @@ export default function AdminReportUtil() {
     const [date, setDate] = useState<string>('');
     const [openTime, setOpenTime] = useState("") 
     const [closeTime, setCloseTime] = useState("") 
+    const [times, setTimes] = useState<string[]>([]);
 
     useEffect(() => {
         //retrieve the restaurant UUID from local storage
@@ -55,7 +56,7 @@ export default function AdminReportUtil() {
         }).then(function (response) {
             const status = response.data.statusCode;
             if (status === 200) {
-              setAvailability(response.data.body)    
+              setAvailability(response.data.body.tableInfo)    
             } else {
               alert("Failed to retrieve tables.");
             }
@@ -68,12 +69,13 @@ export default function AdminReportUtil() {
 
     //handleClick functions used to give buttons multiple functionalities.
     const handleTableClick = (table: Reservation) => {
-        instance.post('/', {
+        instance.post('/getRestaurantTimes', {
             "res_UUID": res_UUID,
         }).then(function (response) {
             const status = response.data.statusCode;
             if (status === 200) {
-              //setAvailability(response.data.body)    
+              setCloseTime(response.data.closeTime)  
+              setOpenTime(response.data.openTime)  
             } else {
               alert("Failed to retrieve tables.");
             }
@@ -82,13 +84,16 @@ export default function AdminReportUtil() {
             alert("Error retrieving tables.");
             console.error(error);
         });
-
-
+        let arr = [];
+        for (let i = closeTime; i < openTime; i+=100){
+            arr.push(i)
+        }
+        setTimes(arr)
     };
     
     //TODO: call the adminDeleteReservation lambda function in ordr to expunge chosen reservation from database
     const handleDelete = async (reservationId: string) => {
-        // Handle delete reservation logic here 
+        
     };
 
     return (
