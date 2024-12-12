@@ -25,6 +25,7 @@ Assumptions:
 
 //! 12/4 
 //! Barely any testing done to this
+//! Need to ensure that the number of guests that is being reserved is less than or equal to the number of seats at
 
 
 'use client'                     // NEED THIS to be able to embed HTML in TSX file
@@ -46,6 +47,7 @@ export default function MakeReservation() {
     const [date, setDate] = useState("")
     const [table_UUID, setTable_UUID] = useState("")
     const [timeStart, setTimeStart] = useState("")
+    const [numSeats, setNumSeats] = useState(0)
     const [numGuests, setNumGuests] = useState("")
 
     useEffect(() => {
@@ -54,13 +56,11 @@ export default function MakeReservation() {
             const reservationData = JSON.parse(storedreservationData);
             setResName(reservationData.resName)
             setDate(reservationData.date)
+            setNumSeats(reservationData.numSeats)
             setTable_UUID(reservationData.table_UUID)
             setTimeStart(reservationData.startTime)
-            setNumGuests(reservationData.numPeople)
         }
-    })
-
-
+    }, [])
 
 
     function apiCall() {
@@ -68,33 +68,35 @@ export default function MakeReservation() {
         // if the date that the consumer wants to search for is at least todays date
         // then they can try to make a reservation
         if (new Date(date) >= currentDate) {
-            instance.post('/makeReservation', {
-                "email": email, "resName": resName, "date": date, "table_UUID": table_UUID, "timeStart": timeStart, "numGuests": numGuests
-            }).then(function (response) {
-                let status = response.data.statusCode
+            // If the number of guests is less than or equal to the number of seats
+            if (parseInt(numGuests) <= numSeats) {
+                instance.post('/makeReservation', {
+                    "email": email, "resName": resName, "date": date, "table_UUID": table_UUID, "timeStart": timeStart, "numGuests": numGuests
+                }).then(function (response) {
+                    let status = response.data.statusCode
 
-                //if successful in reaching database AND there is something in the payload coming to client
-                if (status == 200 && response.data.result) {
-                    alert("Confirmation code is" + response.data.result.body)
-                }
-                else {
-                    alert("400 or invalid response")
-                }
-
-            }).catch(function (error) {
-                console.log(error)
-            })
+                    //if successful in reaching database AND there is something in the payload coming to client
+                    if (status == 200 && response.data.result) {
+                        alert("Confirmation code is" + response.data.result.body)
+                    }
+                    else {
+                        alert("400 or invalid response")
+                    }
+                }).catch(function (error) {
+                    console.log(error)
+                })
+            } else {
+                alert("Number of guests exceeds table size")
+            }
         } else {
             alert("cannot make reservation for past day")
         }
-
     }
 
 
 
     return (
         <div>
-
             <div>
                 <h1><u>Make Reservation</u></h1>
             </div>
@@ -106,38 +108,28 @@ export default function MakeReservation() {
 
             <div style={{ display: 'flex' }}>
                 <label>Restaurant Name: </label>
-                {resName == "" ? (
-                    <input onChange={(e) => setResName(e.target.value)} style={{ color: "black", textAlign: 'center' }}></input>
-                ) : <p> {resName}</p>}
+                <input onChange={(e) => setResName(e.target.value)} style={{ color: "black", textAlign: 'center' }}></input>
+
             </div>
 
             <div style={{ display: 'flex' }}>
                 <label>Date:</label>
-                {date == "" ? (<input onChange={(e) => setDate(e.target.value)} style={{ color: "black", textAlign: 'center' }} ></input>
-                ) : <p>{date} </p>}
-
+                <input onChange={(e) => setDate(e.target.value)} style={{ color: "black", textAlign: 'center' }} ></input>
             </div>
 
             <div style={{ display: 'flex' }}>
                 <label>Table ID:</label>
-                {table_UUID == "" ? (<input onChange={(e) => setTable_UUID(e.target.value)} style={{ color: "black", textAlign: 'center' }}></input>
-                ) : <p>{table_UUID} </p>}
-
+                <input onChange={(e) => setTable_UUID(e.target.value)} style={{ color: "black", textAlign: 'center' }}></input>
             </div>
 
             <div style={{ display: 'flex' }}>
                 <label>Start Time:</label>
-                {timeStart == "" ? (<input onChange={(e) => setTimeStart(e.target.value)} style={{ color: "black", textAlign: 'center' }}></input>
-                ) : <p>{timeStart}</p>}
-
+                <input onChange={(e) => setTimeStart(e.target.value)} style={{ color: "black", textAlign: 'center' }}></input>
             </div>
 
             <div style={{ display: 'flex' }}>
                 <label>Number of Guests:</label>
-                {numGuests == "" ? (
-                    <input onChange={(e) => setNumGuests(e.target.value)} style={{ color: "black", textAlign: 'center' }}></input>
-                ) : <p>{numGuests}</p>}
-
+                <input onChange={(e) => setNumGuests(e.target.value)} style={{ color: "black", textAlign: 'center' }}></input>
             </div>
 
             <button style={{ background: "green", padding: 2 }} onClick={(e) => apiCall()}>Submit</button>

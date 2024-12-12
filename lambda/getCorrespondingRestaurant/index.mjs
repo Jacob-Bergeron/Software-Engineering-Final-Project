@@ -6,14 +6,13 @@ export const handler = async (event) => {
     user: "cs3733",
     password: "database720$",
     database: "Tables4u",
-    dateStrings : true
   });
 
-  let getCorrespondingRestaurant = (username) => {
+  let getConsumerData = (email) => {
     return new Promise((resolve, reject) => {
       pool.query(
-        "SELECT res_UUID FROM Manager_Accounts WHERE username = ?",
-        [username],
+        "SELECT * FROM Consumer_Accounts WHERE email = ?",
+        [email],
         (error, rows) => {
           if (error) {
             return reject(error);
@@ -23,18 +22,25 @@ export const handler = async (event) => {
       );
     });
   };
-
-  const ans = await getCorrespondingRestaurant(event.username);
-
-  // this is what is returned to client
-  const response = {
-    statusCode: 200,
-    result: {
-      body: ans 
-    },
+  
+  let response;
+  try {
+    const ans = await getConsumerData(event.email)
+    response = {
+      statusCode: 200,
+      result: {
+          body : ans
+      },
+    };
+  } catch(error)  {
+    response = {
+      statusCode: 400,
+      message:"Could not retieve contents",
+    }
+  }
+  
+  
+    pool.end(); // close DB connections
+  
+    return response;
   };
-
-  pool.end(); // close DB connections
-
-  return response;
-};

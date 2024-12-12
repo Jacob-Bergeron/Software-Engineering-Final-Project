@@ -4,6 +4,7 @@ import axios from "axios";
 import Link from 'next/link';
 import { v4 as uuidv4 } from 'uuid';
 import './style.css';
+import { useRouter } from 'next/navigation';
 
 // all WEB traffic using this API instance. You should replace this endpoint with whatever
 // you developed for the tutorial and adjust resources as necessary.
@@ -14,6 +15,8 @@ const instance = axios.create({
 
 export default function Home() {
   const [redraw, forceRedraw] = React.useState(0)       // used to conveniently request redraw after model change
+  const router = useRouter();
+
 
   // utility method (that can be passed around) for refreshing display in React
   const andRefreshDisplay = () => {
@@ -34,17 +37,17 @@ export default function Home() {
       "restaurantName": resName.value, "address": resAddress.value, "man_UUID" : man_UUID
     })
       .then(function (response) { // just copying from calc example, 
-
-        username.value = ''
-        password.value = ''
-        resName.value = ''
-        resAddress.value = '';
+        alert("Restaurant Successfully Created")
+        router.push('/pages/login-page');
         
         alert("Manager credentials set.\tThank you for choosing Tables4U.")
         andRefreshDisplay()
       })
       .catch(function (error) {
+        alert("Unable to Create Restaurnt")
         console.log(error)
+        andRefreshDisplay()
+
       })
   }
   

@@ -1,52 +1,63 @@
-import mysql from 'mysql'
+import mysql from "mysql";
 
 export const handler = async (event) => {
-    var pool = mysql.createPool({
-        host: "cs3733db.c5ia86k2epli.us-east-2.rds.amazonaws.com",
-        user: "cs3733",
-        password: "database720$",
-        database: "Tables4u"
+  var pool = mysql.createPool({
+    host: "cs3733db.c5ia86k2epli.us-east-2.rds.amazonaws.com",
+    user: "cs3733",
+    password: "database720$",
+    database: "Tables4u",
+  });
+
+
+  // Do we just delete the row when we reopen a specific day? 
+  let openDay = (res_UUID, date) => {
+    return new Promise((resolve, reject) => {
+      pool.query(
+        "DELETE FROM Restaurant_Calendar WHERE res_UUID = ? AND date = ? AND isClosed = 1",
+        [res_UUID, date],
+        (error, rows) => {
+          if (error) {
+            return reject(error);
+          }
+          return resolve(rows);
+        }
+      );
     });
+  };
 
-    let deleteRestaurant = (res_id) => {
-        return new Promise((resolve,reject) => {
-                pool.query("DELETE FROM All_Restaurants WHERE res_UUID = ?", 
-                [ res_id], (error, rows) => {
-                    if (error) { return reject(error); }
-                    return resolve(rows);
-                })
-        })
+
+  let response;
+
+  // this is what is returned to client
+  try{
+    const ans = await openDay(event.res_UUID, event.date);
+
+    // Potential Errors:
+    // Nothing for the query to delete when it tries
+    if (ans.affectedRows == 0){
+      response = {
+        statusCode: 400,
+        "message" : "Restaurant is not closed on given day"
+      }
     }
-
-    let deleteManager = (res_id) => {
-        return new Promise((resolve,reject) => {
-            pool.query("DELETE FROM Manager_Accounts WHERE res_UUID = ?",
-                [ res_id], (error,rows) => {
-                    if(error) {return reject(error);}
-                    return resolve(rows);
-                })
-        })
-    }
-
-    
-    // this is what is returned to client
-    try {
-        const ans = await deleteRestaurant(event.res_UUID)
-        const a = await deleteManager(event.res_UUID)
-        const response = {
+    else {
+      response = {
         statusCode: 200,
         result: {
-            "res_UUID" : event.res_UUID
-        }}
-        return response;
-    } catch (error) {
-        const response = {
-            statusCode: 400,
-            message: "Internal Error",
-            error: error.message
-        }
-        return response;
-    } finally {
-        pool.end()
+            body : ans
+        },
+      };
     }
-}
+  } 
+  
+  catch {
+    response = {
+      statusCode: 400, 
+      error: error.message
+    }
+  }
+
+  pool.end(); // close DB connections
+
+  return response;
+};
