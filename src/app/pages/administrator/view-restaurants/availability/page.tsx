@@ -15,29 +15,37 @@ const instance = axios.create({
 });
 
 //interface struct to store data returned by the lambda function and enforce data conformity
+
 interface Reservation {
-    res_UUID: string;
     tableNumber: number;
     timeStart: string;
-    isReserved: boolean;
-    seats: number;
+    isReserved: true;
     numReservees: number;
     email: string;
-    date: string;
-    table_UUID: string
+    date: string; 
+}
+
+interface TableStruct{
+    res_UUID: string;
+    openTime: string;
+    isReserved: boolean;
+    seats: number;
+    table_UUID: string;
+    tableNumber: number;
 }
 
 export default function AdminReportUtil() {
     const [res_UUID, setRes_UUID] = useState(""); 
     const [restaurantName, setRestaurantName] = useState("");
     const [availability, setAvailability] = useState<Reservation[]>([]); 
-    const [selectedTable, setSelectedTable] = useState<Reservation | null>(null);
+    const [selectedTable, setSelectedTable] = useState<TableStruct | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [date, setDate] = useState<string>('');
     const [openTime, setOpenTime] = useState("") 
     const [closeTime, setCloseTime] = useState("") 
     const [times, setTimes] = useState<number[]>([]);
     const [availableTimes, setAvailableTimes] = useState<number[]>([]);
+    const [reservationTime, setReservationTime] = useState("")
 
     useEffect(() => {
         //retrieve the restaurant UUID from local storage
@@ -49,6 +57,13 @@ export default function AdminReportUtil() {
         } else {
             setError('Navigate to the previous page and select a restaurant.'); //no res_UUID stored b/c user navigated here by pasting URL.
         }
+
+        let arr = [];
+        for (let i = parseInt(openTime, 10); i < parseInt(closeTime, 10); i+=100){
+            arr.push(i)
+        }
+        setTimes(arr)
+        setAvailableTimes(arr)
     }, []);
 
     //function to generate availability report from res_UUID and date
@@ -68,15 +83,6 @@ export default function AdminReportUtil() {
         });
     };
 
-    const timeblocs = (open:string, closed:string) => {
-        let arr = [];
-        for (let i = parseInt(open, 10); i < parseInt(closed, 10); i+=100){
-            arr.push(i)
-        }
-        setTimes(arr)
-        setAvailableTimes(arr)
-        return arr;
-    }
     
     //handleClick functions used to give buttons multiple functionalities.
     const handleTableClick = (table_UUID: any) => {
@@ -96,16 +102,30 @@ export default function AdminReportUtil() {
             alert("Error retrieving tables.");
             console.error(error);
         });
+        let arr = [];
+        for (let i = parseInt(openTime, 10); i < parseInt(closeTime, 10); i+=100){
+            arr.push(i)
+        }
+        setTimes(arr)
+        setAvailableTimes(arr)
 
-        timeblocs(openTime, closeTime);
+        
+        setSelectedTable(table_UUID);
+        
+    };
+    
+    //TODO: call the adminDeleteReservation lambda function in ordr to expunge chosen reservation from database
+    const handleDelete = async (reservationId: string) => {
+        
+    };
 
+    const viewReservation = async (table_UUID : any, time: number) => {
         instance.post('/getReservationData', {
             "table_UUID": table_UUID, "resName" : res_UUID, "date" : date
         }).then(function (response) {
             const status = response.data.statusCode;
             if (status === 200) {
-                console.log(response.data.data.bookingTime)
-                
+                setReservationTime(response.data.data[0].bookingTime)
             } else {
               alert("Failed to retrieve tables.");
             }
@@ -114,13 +134,19 @@ export default function AdminReportUtil() {
             alert("Error retrieving tables.");
             console.error(error);
         });
-        setSelectedTable(table_UUID);
-    };
-    
-    //TODO: call the adminDeleteReservation lambda function in ordr to expunge chosen reservation from database
-    const handleDelete = async (reservationId: string) => {
-        
-    };
+
+        if (parseInt(reservationTime,10) == time){
+            
+            if(selectedTable !== null){
+                const updatedTable = {
+                    ...selectedTable,
+                    isReserved: true, 
+                };
+                setSelectedTable(updatedTable);
+            }
+            alert(selectedTable?.isReserved)
+        }
+    }
 
     return (
         <div className="admin-report-util">
@@ -139,12 +165,8 @@ export default function AdminReportUtil() {
                             onChange={(e) => setDate(e.target.value)} 
                         />
                         <button 
-                            className="genbutton" 
-                            onClick={() => generateReport(res_UUID)}
-                        >
-                            Generate Report
-                        </button>
-                        {error && <p>{error}</p>}
+                            className="genbutton" onClick={() => generateReport(res_UUID)}>Generate Report
+                        </button>{error && <p>{error}</p>}
                         <ul>
                             {availability.length > 0 ? (
                                 availability.map((table, index) => (
@@ -166,15 +188,15 @@ export default function AdminReportUtil() {
                 <div className="middle-column">
                     {selectedTable ? (
                         <div>
-                            <h3>Reservations for Table {selectedTable.tableNumber}<br></br> on {date}</h3>
+                            <h3> Schedule on {date}</h3>
                             <ul>
                                 {availableTimes.map((time, index) => { 
-                                     
                                     return ( 
                                         <li key={index}> 
-                                            <div> 
-                                                <h3>Time: {time}</h3> 
-                                            </div> 
+                                            <button className="selectTimeblocButton" 
+                                            onClick={() => viewReservation(selectedTable, time)}>
+                                                <h3>Time: {time}</h3>
+                                            </button>
                                         </li>
                                     );
                                 })} 
