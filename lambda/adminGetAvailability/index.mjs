@@ -8,9 +8,9 @@ export const handler = async (event) => {
         database: "Tables4u"
     });
 
-    const adminGetAvailability = (res_id) => {
+    const adminGetAvailability = (res_UUID) => {
         return new Promise((resolve, reject) => {
-            pool.query("SELECT * FROM TableInfo WHERE res_UUID = ?", [res_id], (error, rows) => {
+            pool.query("SELECT * FROM TableInfo WHERE res_UUID = ?", [res_UUID], (error, rows) => {
                 if (error) {
                     return reject(error);
                 }
@@ -20,7 +20,7 @@ export const handler = async (event) => {
     };
 
     try {
-        const availabilityData = await adminGetAvailability(event.res_id);
+        const availabilityData = await adminGetAvailability(event.res_UUID);
         const response = {
             statusCode: 200,
             body: availabilityData

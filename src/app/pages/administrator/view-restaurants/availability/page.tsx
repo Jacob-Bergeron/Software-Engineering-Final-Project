@@ -47,39 +47,22 @@ export default function AdminReportUtil() {
     }, []);
 
     //function to generate availability report from res_UUID and date
-    const generateReport = (res_UUID: string, date: string) => {
-        if (!date) {
-            setError('Please enter a date');
-            return;
-        }
-        //lambda call, probably easier to do multiple lambdas instead of only 1.
-        instance.post('/adminGetAvailability/', {
-            res_UUID: res_UUID,
-            date: date
+    const generateReport = (res_UUID: string) => {
+        instance.post('/adminGetAvailability', {
+            "res_UUID": res_UUID,
         }).then(function (response) {
-            let status = response.data.statusCode
-            
-            if (status === 200 && response.data.body) {
-                setAvailability(response.data.body);
+            const status = response.data.statusCode;
+            if (status === 200) {
+              setAvailability(response.data.body)    
             } else {
-                alert("Generation failed!");
+              alert("Failed to retrieve tables.");
             }
+    
+          }).catch(function (error) {
+            alert("Error retrieving tables.");
+            console.error(error);
+          });
 
-        }).catch(function (error) {
-            if (axios.isAxiosError(error)) {
-                if (error.response?.status === 403) {
-                    setError('Error 403');
-                } else {
-                    setError(`Axios error: ${error.message}`);
-                }
-                console.error("Axios Error:", error.message);
-                console.error("Error Response:", error.response);
-                console.error("Error Request:", error.request);
-            } else {
-                setError('Unexpected error occurred');
-                console.error("Unexpected exception:", error);
-            }
-        });
     };
 
     //handleClick functions used to give buttons multiple functionalities.
@@ -110,8 +93,7 @@ export default function AdminReportUtil() {
                         />
                         <button 
                             className="genbutton" 
-                            onClick={() => generateReport(res_UUID, date)} 
-                            disabled={!date}  // Disable button if date is not entered
+                            onClick={() => generateReport(res_UUID)}
                         >
                             Generate Report
                         </button>
