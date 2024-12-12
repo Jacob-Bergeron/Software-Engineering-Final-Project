@@ -92,8 +92,10 @@ export default function adminViewRestaurants() {
     };
 
     // Function to handle navigation to availability page with restaurant UUID
-    const handleClick = async (res_UUID: string) => {
-        window.location.href = `/pages/administrator/view-restaurants/availability?res_UUID=${res_UUID}`; // Navigate to the desired page with restaurant UUID as a query parameter
+    const handleClick = (res_UUID: string, restaurantName: string) => { 
+        localStorage.setItem('res_UUID', res_UUID);             // save the restaurant UUID for use on the next page. 
+        localStorage.setItem('restaurantName', restaurantName); // save the restaurant name for use on the next page (purely cosmetic). 
+        window.location.href = '/pages/administrator/view-restaurants/availability';    //navigate 
     };
 
     // Use useEffect to fetch data when the component mounts
@@ -120,7 +122,7 @@ export default function adminViewRestaurants() {
                                     <p><strong>Close Time:</strong> {restaurant.closeTime}</p>
                                     <p><strong>Active?:</strong> {restaurant.isActive}</p>
                                     {restaurant.isActive ? (
-                                        <button className="generate-button" onClick={() => handleClick(restaurant.res_UUID)}>Show Availability</button>
+                                        <button className="generate-button" onClick={() => handleClick(restaurant.res_UUID, restaurant.restaurantName)}>Show Availability</button>
                                     ) : null}
                                     <button className="delete-button" onClick={() =>
                                         deleteRestaurant(restaurant.res_UUID)}>Delete this restaurant?

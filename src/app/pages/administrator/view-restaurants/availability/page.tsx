@@ -2,13 +2,16 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useSearchParams } from 'next/navigation'; // Correct way to parse query params in Next.js
 import Link from 'next/link';
 import './styles.css';
 
 // Axios instance for API requests
 const instance = axios.create({
-    baseURL: 'https://q3l4c6o0hh.execute-api.us-east-2.amazonaws.com/initial/'
+    baseURL: 'https://q3l4c6o0hh.execute-api.us-east-2.amazonaws.com/initial/',
+    timeout: 5000, // optional: establish a timeout for requests.
+    // headers: {
+    //    'x_api_key:' : 'XZERw16yF64AQcuycqQlP3VjcKgmRJpe4QOVjbvH'
+    // }
 });
 
 interface Reservation {
@@ -19,61 +22,70 @@ interface Reservation {
     seats: number;
     numReservees: number;
     email: string;
+    date: string;
 }
 
 export default function AdminReportUtil() {
-    const searchParams = useSearchParams();
-    const res_UUID = searchParams.get('res_UUID'); // Extract restaurant UUID from URL params
-    
+    const [res_UUID, setRes_UUID] = useState(""); // State to hold restaurant UUID
+    const [restaurantName, setRestaurantName] = useState("");
     const [availability, setAvailability] = useState<Reservation[]>([]);  // State to hold restaurant/table data
     const [selectedTable, setSelectedTable] = useState<Reservation | null>(null);
     const [error, setError] = useState<string>('');  // State to hold any error messages
-
-    // Function to generate availability report with res_UUID
-    const generateReport = async () => {
-        if (!res_UUID) {
-            setError('Restaurant UUID is missing');
-            return;
-        }
-        try {
-            const response = await instance.get(`/adminGetAvailability/${res_UUID}`);
-            console.log(response.data);
-
-            let resultData;
-            if (response.status === 200 && response.data.body) {
-                const body = JSON.parse(response.data.body); // Parse the body if it's a string
-                resultData = body.result;
-            } else {
-                resultData = response.data.result; // Fallback if the structure is different
-            }
-
-            if (resultData && resultData.length > 0) {
-                setAvailability(resultData); // Store the restaurant data in state
-            } else {
-                setError('No tables at this location.');
-            }
-        } catch (err) {
-            if (axios.isAxiosError(err)) {
-                if (err.response?.status === 403) {
-                    setError('Access denied. Please check your API key or permissions.');
-                } else {
-                    setError(`Axios error: ${err.message}`);
-                }
-                console.error("Axios Error:", err.message);
-                console.error("Error Response:", err.response);
-                console.error("Error Request:", err.request);
-            } else {
-                setError('Unexpected error occurred');
-                console.error("Unexpected Error:", err);
-            }
-        }
-    };
+    const [date, setDate] = useState<string>('');  // State to hold the selected date
 
     useEffect(() => {
-        generateReport();
-    }, [res_UUID]);
+        // Retrieve the restaurant UUID from local storage when the component mounts
+        const storedRes_UUID = localStorage.getItem('res_UUID');
+        const storedRestaurantName = localStorage.getItem('restaurantName');
+        if (storedRes_UUID && storedRestaurantName) {   // need this statement to get around an error in line 40, since the UUID cannot technically be null.
+            setRes_UUID(storedRes_UUID);
+            setRestaurantName(storedRestaurantName);
+        } else {
+            setError('Navigate to the previous page and select a restaurant.');
+        }
+    }, []);
 
-    const handleDelete = async (reservationId: string) => { 
+    // Function to generate availability report with res_UUID and date
+    const generateReport = (res_UUID: string, date: string) => {
+        if (!date) {
+            setError('Please enter a date');
+            return;
+        }
+
+        instance.post('/adminGetAvailability/', {
+            res_UUID: res_UUID,
+            date: date  // Passing the date to the lambda function
+        }).then(function (response) {
+            let status = response.data.statusCode
+            
+            if (status === 200 && response.data.body) {
+                setAvailability(response.data.body);
+            } else {
+                alert("returned 400 OR returned nothing");
+            }
+
+        }).catch(function (error) {
+            if (axios.isAxiosError(error)) {
+                if (error.response?.status === 403) {
+                    setError('Error 403');
+                } else {
+                    setError(`Axios error: ${error.message}`);
+                }
+                console.error("Axios Error:", error.message);
+                console.error("Error Response:", error.response);
+                console.error("Error Request:", error.request);
+            } else {
+                setError('Unexpected error occurred');
+                console.error("Unexpected exception:", error);
+            }
+        });
+    };
+
+    const handleTableClick = (table: Reservation) => {
+        setSelectedTable(table);
+    };
+
+    const handleDelete = async (reservationId: string) => {
         // Handle delete reservation logic here 
     };
 
@@ -85,20 +97,36 @@ export default function AdminReportUtil() {
             <div className="admin-container">
                 {/* Left Sector */}
                 <div className="left-column">
-                    <h2>Restaurants</h2>
-                    <div className="restaurant-list">
-                    <button className="genbutton" onClick={() => generateReport()}>Generate Report</button>
+                    <h2>Tables at {restaurantName}</h2>
+                    <div className="table-list">
+                        <input 
+                            type="text" 
+                            placeholder="YYYY/MM/DD" 
+                            value={date} 
+                            onChange={(e) => setDate(e.target.value)} 
+                        />
+                        <button 
+                            className="genbutton" 
+                            onClick={() => generateReport(res_UUID, date)} 
+                            disabled={!date}  // Disable button if date is not entered
+                        >
+                            Generate Report
+                        </button>
                         {error && <p>{error}</p>}
-                        {availability.length > 0 ? (
-                            availability.map((table) => (
-                                <div key={table.res_UUID} onClick={() => setSelectedTable(table)}>
-                                    <h3>{table.res_UUID}</h3>
-                                    <p>Table {table.tableNumber}</p>
-                                </div>
-                            ))
-                        ) : (
-                            <p>No tables available.</p>
-                        )}
+                        <ul>
+                            {availability.length > 0 ? (
+                                availability.map((table, index) => (
+                                    <li key={index} onClick={() => handleTableClick(table)}>
+                                        <div className="tableBox">
+                                            <h3>Table #{table.tableNumber}</h3>
+                                            <button className="selectTableButton">View Schedule</button>
+                                        </div>
+                                    </li>
+                                ))
+                            ) : (
+                                <p>No tables available.</p>
+                            )}
+                        </ul>
                     </div>
                 </div>
 
@@ -106,13 +134,18 @@ export default function AdminReportUtil() {
                 <div className="middle-column">
                     {selectedTable ? (
                         <div>
-                            <h2>Schedule for Table {selectedTable.tableNumber}</h2>
+                            <h3>Reservations for Table {selectedTable.tableNumber} on {date}</h3>
                             <ul>
-                                {[5, 6, 7, 8, 9].map((time) => (
-                                    <li key={time} className={selectedTable.isReserved ? 'reserved' : 'available'}>
-                                        {time}:00
-                                    </li>
-                                ))}
+                                {availability
+                                    .filter(res => res.tableNumber === selectedTable.tableNumber && res.date === date)
+                                    .map((res, index) => (
+                                        <li key={index}>
+                                            <div className="timebloc">
+                                                <h3>Date: {res.date}</h3>
+                                                <h3>Time: {res.timeStart}</h3>
+                                            </div>
+                                        </li>
+                                    ))}
                             </ul>
                         </div>
                     ) : (

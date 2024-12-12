@@ -6,6 +6,7 @@ export const handler = async (event) => {
     user: "cs3733",
     password: "database720$",
     database: "Tables4u",
+    dateStrings : true
   });
 
   let getCorrespondingRestaurant = (username) => {
