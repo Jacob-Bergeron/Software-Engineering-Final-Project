@@ -109,7 +109,7 @@ export default function SearchTimes() {
                 <h1>Available Times:</h1>
                 <ul>
                     {obj.map((obj, index) => (
-                        <li style={{ backgroundColor: 'blue', marginBottom: 8, padding: 3 }} key={index}>
+                        <li style={{ backgroundColor: 'lightblue', marginBottom: 8, padding: 3 }} key={index}>
                             <p>Table ID: {obj.table_UUID}</p>
                             <p>Number of Seats: {obj.numSeats}</p>
                             <p>Time Available: {obj.timeStart}</p>
