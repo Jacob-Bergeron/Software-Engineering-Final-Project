@@ -55,10 +55,11 @@ export default function SearchRestaurants() {
     // State Variables
     const [dateInput, setDateInput] = React.useState("")
     const [timeInput, setTimeInput] = React.useState("")
-    const [peopleInput, setPeopleInput] = React.useState('')
 
     // State to hold restaurant data
     const [restaurants, setRestaurants] = useState<any[]>([]);
+    const [reservations, setReservations] = useState<any[]>([]);
+
 
     // get the current date when the code is called
     const [currentDate, setCurrentDate] = React.useState(new Date())
@@ -71,7 +72,7 @@ export default function SearchRestaurants() {
         
         // AWS API Call
         instance.post('/consumerSearchRestaurants', {
-            "date": dateInput, "time": timeInput, "numPeople": peopleInput
+            "date": dateInput, "time": timeInput
         }).then(function (response) {
             let status = response.data.statusCode
 
@@ -88,9 +89,8 @@ export default function SearchRestaurants() {
                     }
                     // else set the Restaurants into state
                     else {
-                        //! 12/3 Verify that this works.
-                        //! May need to use JSON.parse()
                         setRestaurants(response.data.result.body)   
+                        setReservations(response.data.result.reservations)   
                     }
                 }
             }
@@ -104,8 +104,10 @@ export default function SearchRestaurants() {
         })
     }
 
+
+
     function MakeReservation(resName : String, table_UUID : String, date : Date){
-        modelInstance.setReservationInfo(table_UUID,date,peopleInput,timeInput,resName);
+        modelInstance.setReservationInfo(table_UUID,date, 0,timeInput,resName);
         localStorage.setItem('reservationInfo', JSON.stringify(modelInstance.getReservationInfo()))
         router.push('/pages/make-reservation');
     }
@@ -135,24 +137,18 @@ export default function SearchRestaurants() {
                 <input onChange={(e) => setTimeInput(e.target.value)} placeholder="Input time" style={{ color: "black" }} />
             </div>
 
-            <div>
-                <label style={{ paddingRight: 3 }}>Number of People</label>
-                <input onChange={(e) => setPeopleInput(e.target.value)} placeholder="Input number of people" style={{ color: "black" }} />
-            </div>
-
             <button onClick={(e) => searchAvailable()}>Submit</button>
-
 
             <div>
                 <h1>Available Restaurants</h1>
                 <ul>
-                    {restaurants.map((restaurant) => (
-                        <li key={restaurant.table_UUID} style={{ backgroundColor: 'blue', marginBottom: 8, padding: 3 }} >
+                    {restaurants.map((restaurant) => ( 
+                        <li key={restaurant.restaurantName} style={{ backgroundColor: 'blue', marginBottom: 8, padding: 3 }} >
                             <h3>Restaurant Name: {restaurant.restaurantName}</h3>
-                            <p>Table ID: {restaurant.table_UUID}</p>
-                            <p>Date: {(restaurant.date)}</p>
-                            <button onClick={(e) => MakeReservation(restaurant.restaurantName,restaurant.table_UUID,restaurant.date)}>MakeReservation</button>
+                            <h4>Address: {restaurant.address}</h4>
+                            <button onClick={(e) => MakeReservation(restaurant.restaurantName,restaurant.table_UUID,restaurant.date)}>Make a reservation</button>
                         </li>
+
                     ))}
                 </ul>
             </div>

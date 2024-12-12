@@ -39,12 +39,15 @@ export default function SearchTimes() {
 
     // state variables
     const [dateInput, setDateInput] = React.useState("")
+    const [timeInput, setTimeInput] = React.useState("")
     const [resName, setResName] = React.useState("")
     const router = useRouter();
 
 
     // state to hold the returned data
-    const [obj, setObj] = useState<any[]>([]);
+    const [tables, setTables] = useState<any[]>([]);
+    const [reservations, setReservations] = useState<any[]>([]);
+
 
 
 
@@ -58,14 +61,15 @@ export default function SearchTimes() {
 
     function apiCall() {
         instance.post('/consumerSearchTimes', {
-            "restaurantName": resName, "date": dateInput
+            "resName": resName, "date": dateInput, "time": timeInput
         }).then(function (response) {
             let status = response.data.statusCode
 
             //if successful in reaching database AND there is something in the payload coming to client
             if (status == 200 && response.data.result) {
                 // set the objects into state
-                setObj(response.data.result.body)
+                setTables(response.data.result.returnedTables)
+                setReservations(response.data.result.returnedReservation)
             }
             else {
                 alert("Could not query")
@@ -74,11 +78,19 @@ export default function SearchTimes() {
         }).catch(function (error) {
             console.log(error)
         })
-
     }
 
-    function MakeReservation(table_UUID: any, numSeats: any, timeStart: any) {
-        modelInstance.setReservationInfo(table_UUID, dateInput, numSeats, timeStart, resName);
+    function isAvailable(table_UUID: String) {
+        for (let i = 0; i < reservations.length; i++) {
+            if (reservations[i].table_UUID == table_UUID) {
+                return "No";
+            }
+        }
+        return "Yes";
+    }
+
+    function MakeReservation(table_UUID: any, numSeats: any,) {
+        modelInstance.setReservationInfo(table_UUID, dateInput, numSeats, timeInput, resName);
         localStorage.setItem('reservationInfo', JSON.stringify(modelInstance.getReservationInfo()))
         router.push('/pages/make-reservation');
     }
@@ -87,7 +99,7 @@ export default function SearchTimes() {
         <div >
 
             <div>
-                <h1><u>Search Times</u></h1>
+                <h1><u>Search Specific Restaurant</u></h1>
             </div>
 
             <div style={{ display: 'flex' }}>
@@ -103,17 +115,23 @@ export default function SearchTimes() {
                 <input onChange={(e) => setDateInput(e.target.value)} placeholder="input date" style={{ color: "black", textAlign: 'center' }} />
             </div>
 
+            <div>
+                <label style={{ paddingRight: 3 }}>Time</label>
+                <input onChange={(e) => setTimeInput(e.target.value)} placeholder="input time" style={{ color: "black", textAlign: 'center' }} />
+            </div>
+
             <button style={{ background: "green", padding: 2 }} onClick={(e) => apiCall()}>Submit</button>
 
             <div>
-                <h1>Available Times:</h1>
+                <h1>Available Tables:</h1>
                 <ul>
-                    {obj.map((obj, index) => (
+                    {tables.map((table, index) => (
                         <li style={{ backgroundColor: 'blue', marginBottom: 8, padding: 3 }} key={index}>
-                            <p>Table ID: {obj.table_UUID}</p>
-                            <p>Number of Seats: {obj.numSeats}</p>
-                            <p>Time Available: {obj.timeStart}</p>
-                            <button onClick={(e) => MakeReservation(obj.table_UUID, obj.numSeats, obj.timeStart)}>MakeReservation</button>
+                            <p>Table Number: {table.tableNumber}</p>
+                            <p>Table ID: {table.table_UUID}</p>
+                            <p>Number of Seats: {table.numSeats}</p>
+                            <p>Available?: {isAvailable(table.table_UUID)}</p>
+                            {isAvailable(table.table_UUID) == "Yes" ? <button onClick={(e) => MakeReservation(table.table_UUID, table.numSeats)} style={{background:"green"}}>Make a reservation</button> : <p>Already Reserved</p> }
                         </li>
                     ))}
                 </ul>
