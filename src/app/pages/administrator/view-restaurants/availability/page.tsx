@@ -100,11 +100,11 @@ export default function AdminReportUtil() {
         timeblocs(openTime, closeTime);
 
         instance.post('/getReservationData', {
-            "table_UUID": table_UUID, "resName" : restaurantName, "date" : date
+            "table_UUID": table_UUID, "resName" : res_UUID, "date" : date
         }).then(function (response) {
             const status = response.data.statusCode;
             if (status === 200) {
-                console.log(response)
+                console.log(response.data.data)
                 
             } else {
               alert("Failed to retrieve tables.");
@@ -114,7 +114,7 @@ export default function AdminReportUtil() {
             alert("Error retrieving tables.");
             console.error(error);
         });
-
+        setSelectedTable(table_UUID);
     };
     
     //TODO: call the adminDeleteReservation lambda function in ordr to expunge chosen reservation from database
@@ -171,11 +171,14 @@ export default function AdminReportUtil() {
                                 {timeblocs(openTime, closeTime).map((time, index) => { 
                                     const isReserved = availability.some(res => 
                                     res.tableNumber === selectedTable.tableNumber && res.date === date && +res.timeStart === time ); 
-                                    return ( <li key={index}> 
-                                    <div className={`timebloc ${isReserved ? 'reserved' : 'available'}`}> 
-                                        <h3>Time: {time}</h3> 
-                                    </div> 
-                                </li>);})} 
+                                    return ( 
+                                        <li key={index}> 
+                                            <div className={`timebloc ${isReserved ? 'reserved' : 'available'}`}> 
+                                                <h3>Time: {time}</h3> 
+                                            </div> 
+                                        </li>
+                                    );
+                                })} 
                             </ul>
                         </div>
                     ) : (
