@@ -1,54 +1,66 @@
-import mysql from 'mysql';
+import mysql from 'mysql'
 
 export const handler = async (event) => {
-    // Create a MySQL connection pool
-    const pool = mysql.createPool({
+    var pool = mysql.createPool({
         host: "cs3733db.c5ia86k2epli.us-east-2.rds.amazonaws.com",
         user: "cs3733",
         password: "database720$",
-        database: "Tables4u"
+        database: "Tables4u",
+        dateStrings: true
     });
 
-    // Function to fetch active restaurants
-    let getActiveRestaurants = () => {
+    // Problem description: For a specific day, a consumer can see which restaurants have an
+    // available table for a given time (day and time must be in future)
+
+    // Requirements: 
+    // Restaurant needs to be active
+    // Restaurant needs to have at least 1 open table for the given date and time
+
+    // Return:
+    // Return the name of the restaurant(s) with at least one available table at the given date and time 
+
+    let getActiveAndOpenRestaurants = (date) => {
         return new Promise((resolve, reject) => {
-            pool.query("SELECT * FROM All_Restaurants WHERE isActive=1", (error, rows) => {
-                if (error) {
-                    return reject(error); // Reject if there is a MySQL error
-                } else {
-                    return resolve(rows); // Resolve with the data from the query
-                }
+            pool.query("SELECT DISTINCT r.restaurantName, r.address FROM All_Restaurants r JOIN TableInfo t ON t.res_UUID = r.res_UUID LEFT JOIN Restaurant_Calendar c ON c.res_UUID = r.res_UUID AND c.date = ? WHERE c.date IS NULL AND r.isActive = 1 ",
+            [date],(error,rows) =>{
+                if(error) {return reject(error);}
+                else{return resolve(rows);}
             });
         });
     };
 
-    let response = {}; // Initialize response variable
-
-    try {
-        // Fetch the list of active restaurants from the database
-        const activeRestaurants = await getActiveRestaurants();
-        
-        // If we get results from the database, return them
-        response = {
-            statusCode: 200,
-            body: JSON.stringify({
-                result: activeRestaurants, // Send the results of the query
-            }),
-        };
-
-    } catch (error) {
-        // Handle errors if the query fails
-        response = {
-            statusCode: 400,
-            body: JSON.stringify({
-                message: "Failed to fetch active restaurants",
-                error: error.message, // Send the error message if something goes wrong
-            }),
-        };
+    let findPotentialReservation = (date,time)=>{
+        return new Promise((resolve, reject) => {
+            pool.query("SELECT a.consumer_UUID, a.email, a.resName, a.table_UUID, a.date, a.bookingTime, a.numGuests FROM Consumer_Accounts a LEFT JOIN All_Restaurants r ON r.restaurantName = a.resName WHERE date = ? AND bookingTime = ?",
+            [date,time],(error,rows) =>{
+                if(error) {return reject(error);}
+                else{return resolve(rows);}
+            });
+        });
     }
 
-    // Close the database connection pool
-    pool.end();
 
-    return response;  // Return the response object
-};
+    let response;
+
+    try{
+        const ans = await getActiveAndOpenRestaurants(event.date)
+        const res = await findPotentialReservation(event.date, event.time)
+        // this is what is returned to client
+        response = {
+            statusCode: 200,
+            result: {
+                body:ans,
+                reservations: res
+            }
+        }
+    } catch (error){
+        response = {
+            statusCode : 400,
+            error : error.message
+          };
+    }
+    pool.end()      // close DB connections
+
+    return response;
+    
+}
