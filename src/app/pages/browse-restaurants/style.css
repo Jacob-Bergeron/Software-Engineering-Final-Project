@@ -57,6 +57,15 @@ h3 {
     color: #333;                  /* Darker color for restaurant name */
 }
 
+h4 {
+    margin-top: 0;                /* Remove margin at the top */
+    font-size: 1.3rem;            /* Increase font size */
+    color: #333;                  /* Darker color */
+    border-radius: 4px;
+    background-color: rgb(117 190 218 / 50%);
+    max-width: 150px;
+}
+
 p {
     margin: 5px 0;                /* Add margin between details */
     color: #666;                  /* Lighter color for address, times, etc. */

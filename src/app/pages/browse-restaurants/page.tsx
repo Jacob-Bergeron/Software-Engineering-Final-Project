@@ -82,7 +82,7 @@ export default function BrowserRestaurantsPage() {
                                     <p><strong>Address:</strong> {restaurant.address}</p>
                                     <p><strong>Open Time:</strong> {restaurant.openTime}</p>
                                     <p><strong>Close Time:</strong> {restaurant.closeTime}</p>
-                                    <button onClick={(e) => SearchTimes(restaurant.restaurantName)} style={{color: 'black'}}>Search Times</button>
+                                    <h4><button onClick={(e) => SearchTimes(restaurant.restaurantName)} style={{color: 'black'}}>Search Times</button></h4>
                                 </li>
                             ))}
                         </ul>
