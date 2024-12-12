@@ -112,7 +112,11 @@ export default function SearchRestaurants() {
         router.push('/pages/make-reservation');
     }
 
-
+    function SearchTimes(resName:any){
+        modelInstance.setReservationInfo("","","","",resName)
+        localStorage.setItem('searchTimeInfo', JSON.stringify(modelInstance.getReservationInfo()))
+        router.push('/pages/search-times');
+    }
 
     // Refreshes display anytime there is a change in [restaurants]
     useEffect(() => {
@@ -137,16 +141,17 @@ export default function SearchRestaurants() {
                 <input onChange={(e) => setTimeInput(e.target.value)} placeholder="Input time" style={{ color: "black" }} />
             </div>
 
-            <button onClick={(e) => searchAvailable()}>Submit</button>
+            < button style={{ backgroundColor : 'green' }} onClick={(e) => searchAvailable()}>Submit</button>
 
             <div>
                 <h1>Available Restaurants</h1>
                 <ul>
                     {restaurants.map((restaurant) => ( 
-                        <li key={restaurant.restaurantName} style={{ backgroundColor: 'blue', marginBottom: 8, padding: 3 }} >
+                        <li key={restaurant.restaurantName} style={{ backgroundColor: 'lightblue', marginBottom: 8, padding: 3 }} >
                             <h3>Restaurant Name: {restaurant.restaurantName}</h3>
                             <h4>Address: {restaurant.address}</h4>
-                            <button onClick={(e) => MakeReservation(restaurant.restaurantName,restaurant.table_UUID,restaurant.date)}>Make a reservation</button>
+                            <button style={{ backgroundColor : 'green'}}onClick={(e) => MakeReservation(restaurant.restaurantName,restaurant.table_UUID,restaurant.date)}>Make a reservation</button>
+                            <button style={{ backgroundColor : 'red'}} onClick={(e) => SearchTimes(restaurant.restaurantName)}>Search Times</button>
                         </li>
 
                     ))}
