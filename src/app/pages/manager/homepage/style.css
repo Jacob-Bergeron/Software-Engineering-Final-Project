@@ -223,36 +223,6 @@
   height: 25px;
 }
 
-.closed-dates {
-  position: absolute;
-  transform: translateX(130vh) translateY(40vh);
-  background-color: violet;
-  padding: 20px;
-  border-radius: 5px;
-}
-.closed-dates h2 {
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.closed-dates ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.closed-dates li {
-  font-size: 18px;
-  margin: 5px 0;
-}
-
-.closedDatesButton{
-  color: black;
-  font-weight: bold;
-  padding: 2px;
-  border: 2px solid;
-  border-color: #000 ;
-}
-
 .delete-tableButton{
   color: black;
   width: 50px;

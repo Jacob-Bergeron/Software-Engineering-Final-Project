@@ -97,28 +97,6 @@ export default function managerHomePage() {
 
  
 
- function getClosedDates(){
-      instance.post('/restaurant/getClosedDates', {
-        "res_UUID": res_UUID,
-      }).then(function (response){
-      if (response.status === 200) {
-        console.log(response.data.body)
-        setClosedDates(response.data.body);
-        
-        console.log("Closed dates data:", closedDates)
-        
-      } else {
-        
-        console.log("Error fetching closed dates");
-      }
-    }).catch (function(error) {
-      
-      console.error("Error fetching closed dates:", error);
-    });
-  };
-  
-
-
   // REACT COMPONENTS
   async function EditRestaurantTime() {
 
@@ -339,20 +317,6 @@ export default function managerHomePage() {
           {/* Table Info*/ }
           <div className = "view-tablesButton">
             <button className="view-tables" onClick={retrieveTables}>Click Here To View Tables</button>
-          </div>
-
-          
-            <div className="closed-dates">
-              <button className = "closedDatesButton" onClick={getClosedDates}>Get Closed Dates</button>
-            <h2>Closed Dates:</h2>
-            <ul>
-              {closedDates.map((closedDates) => (
-                  <li key={closedDates.date}>
-                    <p>{closedDates.date}</p>
-                  </li>
-                ))
-              }
-            </ul>
           </div>
         
           <div className="table-info"> 
