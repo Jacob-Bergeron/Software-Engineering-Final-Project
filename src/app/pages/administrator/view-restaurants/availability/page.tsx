@@ -105,9 +105,21 @@ export default function AdminReportUtil() {
     };
     
     //TODO: call the adminDeleteReservation lambda function in ordr to expunge chosen reservation from database
-    const handleDelete = async (reservationId: string) => {
+    const handleDelete = async () => {
         instance.post('/deleteReservation',{
             "consumer_UUID" : consumer_UUID
+        }).then(function (response) {
+            let status = response.data.statusCode
+
+            //if successful in reaching database AND there is something in the payload coming to client
+            if (status == 200 && response.data.result) {
+                alert("Reservation Canceled");
+            } else {
+                alert("Cancelation failed");
+            }
+
+        }).catch(function (error) {
+            console.log(error)
         })
     };
 
@@ -208,7 +220,7 @@ export default function AdminReportUtil() {
                             <p><strong>Availability: </strong> {/* ADD VAR HERE */} </p>
                             </div>
 
-                            <button className="deleteResButton" onClick={() => handleDelete(res_UUID)}>Delete this reservation?</button>
+                            <button className="deleteResButton" onClick={() => handleDelete()}>Delete this reservation?</button>
                         </div>
 
                         
