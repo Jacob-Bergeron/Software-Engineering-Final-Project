@@ -2,6 +2,8 @@ Admin Login Credentials:
     Username: admin
     Password: password
 
+Check group report for a more detailed breakdown of how the system works. 
+
 There no edge-case checking for when creating a table to ensure that you use a different table number for each table for that restaurant.
 
 
