@@ -125,7 +125,7 @@ export default function AdminReportUtil() {
 
     const viewReservation = async (time: number) => {
         instance.post('/getReservationData', {
-            "table_UUID": selectedTable_UUID, "resName" : res_UUID, "date" : date
+            "table_UUID": selectedTable_UUID, "resName" : restaurantName, "date" : date
         }).then(function (response) {
             const status = response.data.statusCode;
             if (status === 200) {
@@ -209,7 +209,7 @@ export default function AdminReportUtil() {
                             <p><strong>Time: </strong> {reservationTime}</p>
                             <p><strong>Seats:</strong> {numSeats}</p>
                             <p><strong>Seats Filled:</strong> {seatsFilled}</p>
-                            <p><strong>Available Seats: </strong>{+seatsFilled - +numSeats}</p>
+                            <p><strong>Available Seats: </strong>{+numSeats - +seatsFilled}</p>
                             <button className="deleteResButton" onClick={() => handleDelete()}>Delete this reservation?</button>
                         </div>
 
