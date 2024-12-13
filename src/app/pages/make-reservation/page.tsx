@@ -57,7 +57,7 @@ export default function MakeReservation() {
             const reservationData = JSON.parse(storedreservationData);
             setResName(reservationData.resName)
             setDate(reservationData.date)
-            setNumSeats(reservationData.numSeats)
+            setNumSeats(reservationData.numPeople)
             setTable_UUID(reservationData.table_UUID)
             setTimeStart(reservationData.startTime)
         }

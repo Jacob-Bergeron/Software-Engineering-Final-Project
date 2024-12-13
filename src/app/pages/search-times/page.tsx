@@ -89,7 +89,7 @@ export default function SearchTimes() {
         return "Yes";
     }
 
-    function MakeReservation(table_UUID: any, numSeats: any,) {
+    function MakeReservation(table_UUID: any, numSeats: number,) {
         modelInstance.setReservationInfo(table_UUID, dateInput, numSeats, timeInput, resName);
         localStorage.setItem('reservationInfo', JSON.stringify(modelInstance.getReservationInfo()))
         router.push('/pages/make-reservation');
