@@ -33,6 +33,7 @@ export default function AdminReportUtil() {
     const [seatsFilled, setSeatsFilled] = useState("")
     const [numSeats, setNumSeats] = useState("")
     const [tableNumber, setTableNumber] = useState("")
+    const [consumer_UUID, setConsumer_UUID] = useState("")
 
     useEffect(() => {
         //retrieve the restaurant UUID from local storage
@@ -105,7 +106,9 @@ export default function AdminReportUtil() {
     
     //TODO: call the adminDeleteReservation lambda function in ordr to expunge chosen reservation from database
     const handleDelete = async (reservationId: string) => {
-        
+        instance.post('/deleteReservation',{
+            "consumer_UUID" : consumer_UUID
+        })
     };
 
     const viewReservation = async (time: number) => {
@@ -116,6 +119,7 @@ export default function AdminReportUtil() {
             if (status === 200) {
                 setReservationTime(response.data.data[0].bookingTime)
                 setSeatsFilled(response.data.data[0].numGuests)
+                setConsumer_UUID(response.data.data[0].consumer_UUID)
             } else {
               alert("Failed to retrieve tables.");
             }
@@ -192,6 +196,7 @@ export default function AdminReportUtil() {
                             <h2>Reservation Details</h2>
                             <p><strong>Seats:</strong> {numSeats}</p>
                             <p><strong>Seats Filled:</strong> {seatsFilled}</p>
+                            <p><strong>Available Seats: </strong>{+seatsFilled - +numSeats}</p>
                             <button onClick={() => handleDelete(res_UUID)}>Delete this reservation?</button>
                         </div>
                     ) : (
