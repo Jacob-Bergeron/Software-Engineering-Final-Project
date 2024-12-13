@@ -206,20 +206,10 @@ export default function AdminReportUtil() {
                     {selectedTable && isReserved ? (
                         <div>
                             <h2><u>Reservation Details</u></h2>
+                            <p><strong>Time: </strong> {reservationTime}</p>
                             <p><strong>Seats:</strong> {numSeats}</p>
                             <p><strong>Seats Filled:</strong> {seatsFilled}</p>
                             <p><strong>Available Seats: </strong>{+seatsFilled - +numSeats}</p>
-                            
-
-                            {/* Statistics */}
-                            <div className="statistics">
-                            <h2><u>Statistics</u></h2>
-                            <p><strong>Time: </strong> {reservationTime}</p>
-                            <p><strong>Total Available Seats: </strong> {/* ADD VAR HERE */} </p>
-                            <p><strong>Utilization: </strong> {/* ADD VAR HERE */} </p>
-                            <p><strong>Availability: </strong> {/* ADD VAR HERE */} </p>
-                            </div>
-
                             <button className="deleteResButton" onClick={() => handleDelete()}>Delete this reservation?</button>
                         </div>
 
