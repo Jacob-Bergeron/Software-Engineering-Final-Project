@@ -158,7 +158,7 @@ export default function AdminReportUtil() {
                                 <li style={{ backgroundColor: 'lightgray', marginBottom: 8, padding: 3 }} key={obj.table_UUID}>
                                     <div className="tableBox">
                                             <h3>Table #{obj.tableNumber}</h3>
-                                            <button className="selectTableButton" onClick={() => handleTableClick(obj.table_UUID, obj.tableNumber, obj.numSeats)}>View Schedule</button>
+                                            <button  className="selectTableButton" onClick={() => handleTableClick(obj.table_UUID, obj.tableNumber, obj.numSeats)} >View Schedule</button>
                                     </div>
                                 </li>
                             ))}
@@ -193,15 +193,30 @@ export default function AdminReportUtil() {
                 <div className="right-column">
                     {selectedTable && isReserved ? (
                         <div>
-                            <h2>Reservation Details</h2>
+                            <h2><u>Reservation Details</u></h2>
                             <p><strong>Seats:</strong> {numSeats}</p>
                             <p><strong>Seats Filled:</strong> {seatsFilled}</p>
                             <p><strong>Available Seats: </strong>{+seatsFilled - +numSeats}</p>
-                            <button onClick={() => handleDelete(res_UUID)}>Delete this reservation?</button>
+                            
+
+                            {/* Statistics */}
+                            <div className="statistics">
+                            <h2><u>Statistics</u></h2>
+                            <p><strong>Time: </strong> {reservationTime}</p>
+                            <p><strong>Total Available Seats: </strong> {/* ADD VAR HERE */} </p>
+                            <p><strong>Utilization: </strong> {/* ADD VAR HERE */} </p>
+                            <p><strong>Availability: </strong> {/* ADD VAR HERE */} </p>
+                            </div>
+
+                            <button className="deleteResButton" onClick={() => handleDelete(res_UUID)}>Delete this reservation?</button>
                         </div>
+
+                        
+
                     ) : (
                         <p>No reservation details to display</p>
                     )}
+                    
                 </div>
             </div>
         </div>
