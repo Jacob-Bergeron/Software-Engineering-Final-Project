@@ -31,6 +31,7 @@ Assumptions:
 'use client'                     // NEED THIS to be able to embed HTML in TSX file
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
+import { time } from 'console';
 
 const instance = axios.create({
     baseURL: 'https://q3l4c6o0hh.execute-api.us-east-2.amazonaws.com/initial/'
@@ -108,23 +109,29 @@ export default function MakeReservation() {
 
             <div style={{ display: 'flex' }}>
                 <label>Restaurant Name: </label>
-                <input onChange={(e) => setResName(e.target.value)} style={{ color: "black", textAlign: 'center' }}></input>
+                {resName ? (<div> {resName} </div>) 
+                : (<input onChange={(e) => setResName(e.target.value)} style={{ color: "black", textAlign: 'center' }}></input>)}
+                
 
             </div>
 
             <div style={{ display: 'flex' }}>
                 <label>Date:</label>
-                <input onChange={(e) => setDate(e.target.value)} style={{ color: "black", textAlign: 'center' }} ></input>
+                {date ? (<div>{date}</div>) 
+                : (<input onChange={(e) => setDate(e.target.value)} style={{ color: "black", textAlign: 'center' }} ></input>)}
+
             </div>
 
             <div style={{ display: 'flex' }}>
                 <label>Table ID:</label>
-                <input onChange={(e) => setTable_UUID(e.target.value)} style={{ color: "black", textAlign: 'center' }}></input>
+                {table_UUID ? (<div>{table_UUID}</div>) 
+                : (<input onChange={(e) => setTable_UUID(e.target.value)} style={{ color: "black", textAlign: 'center' }}></input>)}
             </div>
 
             <div style={{ display: 'flex' }}>
                 <label>Start Time:</label>
-                <input onChange={(e) => setTimeStart(e.target.value)} style={{ color: "black", textAlign: 'center' }}></input>
+                {timeStart ? (<div>{timeStart}</div>) 
+                : (<input onChange={(e) => setTimeStart(e.target.value)} style={{ color: "black", textAlign: 'center' }}></input>)}
             </div>
 
             <div style={{ display: 'flex' }}>
