@@ -106,7 +106,7 @@ export default function AdminReportUtil() {
     
     //TODO: call the adminDeleteReservation lambda function in ordr to expunge chosen reservation from database
     const handleDelete = async () => {
-        instance.post('/deleteReservation',{
+        instance.post('/adminCancelReservation',{
             "consumer_UUID" : consumer_UUID
         }).then(function (response) {
             let status = response.data.statusCode
