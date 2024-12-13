@@ -8,7 +8,7 @@ export const handler = async (event) => {
         database: "Tables4u"
     });
 
-    const adminGetAvailability = async (res_UUID) => {
+    const adminGetAvailability = async (res_UUID) => {  //skibidi sure
         try {
             // First query
             const tableInfo = await new Promise((resolve, reject) => {
@@ -37,7 +37,7 @@ export const handler = async (event) => {
     };
 
     try {
-        const availabilityData = await adminGetAvailability(event.res_id);
+        const availabilityData = await adminGetAvailability(event.res_UUID);
         const response = {
             statusCode: 200,
             body: availabilityData
