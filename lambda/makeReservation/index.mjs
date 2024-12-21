@@ -2,12 +2,7 @@ import mysql from "mysql";
 import { v4 as uuidv4 } from 'uuid';
 
 export const handler = async (event) => {
-  var pool = mysql.createPool({
-    host: "cs3733db.c5ia86k2epli.us-east-2.rds.amazonaws.com",
-    user: "cs3733",
-    password: "database720$",
-    database: "Tables4u",
-  });
+
 
 
   // First need to check that the desired reservation slot is available
